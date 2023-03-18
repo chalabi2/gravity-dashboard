@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Text, Box, Flex } from '@chakra-ui/react';
+import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack } from '@chakra-ui/react';
 
 export const Assets: React.FC = () => (
   <Grid
@@ -21,13 +21,14 @@ export const Assets: React.FC = () => (
       fontSize="24px"
       color="#FFFFFF"
       textAlign="center"
+      paddingRight="30px"
       gridColumn="1 / 3"
     >
       Ibc & Eth Assets
     </Text>
     <Flex direction="column">
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -46,7 +47,7 @@ export const Assets: React.FC = () => (
     </Flex>
     <Flex direction="column">
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -74,7 +75,7 @@ export const Assets: React.FC = () => (
         $65,000
       </Text>
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -94,7 +95,7 @@ export const Assets: React.FC = () => (
         $12,248
       </Text>
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -110,37 +111,47 @@ export const Assets: React.FC = () => (
       background="linear-gradient(270deg, #ff0000 0%, #00ff38 100%)"
       gridColumn="1 / 3"
     />
-        <Text
-      fontFamily="futura"
-      fontWeight="light"
-      fontSize="20px"
-      textTransform="capitalize"
-      color="#FFFFFF"
-      gridColumn="1 / 3"
-    >
-      Biggest Movers
-    </Text>
-     <Text
-      fontFamily="futura"
-      fontWeight="light"
-      fontSize="18px"
-      textTransform="capitalize"
-      color="#FFFFFF"
-      gridColumn="1 / 3"
-    >
-      1. USDC 
-      2. ETH 
-      3. CANTO
-    </Text>
-    <Text
+  <Text
+    fontFamily="Futura MD BT"
+    fontWeight="light"
+    fontSize="20px"
+    textTransform="capitalize"
+    color="#FFFFFF"
+    gridColumn="1 / 3"
+  >
+    Biggest Movers
+  </Text>
+  <HStack ml="30px" spacing={12} gridColumn="1 / 3">
+    <UnorderedList
+      listStyleType="none"
+      ml={0}
+      pl={0}
       fontFamily="futura"
       fontWeight="light"
       fontSize="18px"
       textTransform="capitalize"
       color="#FFFFFF"
-      gridColumn="1 / 3"
     >
-      4. ATOM 5. DAI 6. WETH
-    </Text>
+      <ListItem>1. USDC</ListItem>
+      <ListItem>2. ETH</ListItem>
+      <ListItem>3. CANTO</ListItem>
+      <ListItem>4. ATOM</ListItem>
+    </UnorderedList>
+    <UnorderedList
+      listStyleType="none"
+      ml={0}
+      pl={0}
+      fontFamily="futura"
+      fontWeight="light"
+      fontSize="18px"
+      textTransform="capitalize"
+      color="#FFFFFF"
+    >
+      <ListItem>5. DAI</ListItem>
+      <ListItem>6. WETH</ListItem>
+      <ListItem>7. Example</ListItem>
+      <ListItem>8. Example</ListItem>
+    </UnorderedList>
+  </HStack>
   </Grid>
 );

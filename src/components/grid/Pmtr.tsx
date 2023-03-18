@@ -17,7 +17,7 @@ export const Pmtr = () => (
     >
       <Box mb={{ base: '10px', md: 0 }}>
         <Text
-          fontFamily="futura"
+          fontFamily="Futura MD BT"
           lineHeight="1.4"
           fontWeight="light"
           fontSize="20px"
@@ -39,7 +39,7 @@ export const Pmtr = () => (
       </Box>
       <Box mb={{ base: '10px', md: 0 }}>
         <Text
-          fontFamily="futura"
+          fontFamily="Futura MD BT"
           lineHeight="1.4"
           fontWeight="light"
           fontSize="20px"
@@ -61,7 +61,7 @@ export const Pmtr = () => (
       </Box>
       <Box mb={{ base: '10px', md: 0 }}>
         <Text
-          fontFamily="futura"
+          fontFamily="Futura MD BT"
           lineHeight="1.4"
           fontWeight="light"
           fontSize="20px"
@@ -83,7 +83,7 @@ export const Pmtr = () => (
       </Box>
       <Box>
         <Text
-          fontFamily="futura"
+          fontFamily="Futura MD BT"
           lineHeight="1.4"
           fontWeight="light"
           fontSize="20px"

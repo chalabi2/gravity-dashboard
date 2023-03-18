@@ -45,7 +45,7 @@ export const VolumeComparison = () => (
   >
     <Stack padding="10px" justify="flex-start" align="flex-start" spacing="10px">
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         fontWeight="light"
         fontSize="24px"
         color="#FFFFFF"
@@ -54,7 +54,7 @@ export const VolumeComparison = () => (
       >
         Compare
       </Text>
-      <HStack justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
+      <HStack pl="190px" pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
         <Label color="rgba(0, 10, 255, 0.35)">Gravity</Label>
         <Label color="rgba(255, 0, 0, 0.35)">Axelar</Label>
         <Label color="rgba(86, 86, 86, 0.35)">Wormhole</Label>
@@ -63,7 +63,7 @@ export const VolumeComparison = () => (
         {[1000, 900, 800, 700, 600, 500, 400, 200].map((value, index) => (
           <Text
             key={index}
-            fontFamily="futura"
+            fontFamily="Futura MD BT"
             fontWeight="light"
             fontSize="16px"
             color="#FFFFFF"
