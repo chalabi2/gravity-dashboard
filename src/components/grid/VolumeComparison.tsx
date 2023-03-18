@@ -40,6 +40,7 @@ export const VolumeComparison = () => (
     align="flex-start"
     spacing="10px"
     height="529px"
+    width="99.3%"
     background="rgba(0, 18, 183, 0.35)"
   >
     <Stack padding="10px" justify="flex-start" align="flex-start" spacing="10px">

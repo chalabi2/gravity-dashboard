@@ -5,7 +5,8 @@ export const Pmtr = () => (
     p={{ base: '14px', md: '25px' }}
     borderRadius="6px"
     maxWidth="736px"
-    width="100%"
+    width="99.3%"
+    marginLeft="5px"
     bg="rgba(0, 18, 183, 0.35)"
   >
     <Flex

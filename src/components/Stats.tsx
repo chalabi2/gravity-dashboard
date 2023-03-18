@@ -12,7 +12,7 @@ import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
 
 export const Stats: React.FC = () => (
-    <VStack minH="100vh" justifyContent="center" alignItems="center" marginTop="-0px" width="100%">
+    <VStack minH="100vh" justifyContent="center" alignItems="center" width="100%">
       <Flex
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
@@ -22,6 +22,7 @@ export const Stats: React.FC = () => (
         borderRadius="6px"
         maxWidth="736px"
         width="100%"
+        marginTop="-150px"
       >
         <Box maxWidth="736px" width="100%" m="10px">
           <Pmtr />
