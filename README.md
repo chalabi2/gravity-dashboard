@@ -11,3 +11,4 @@ Simply fork the repository and a github pages action will automatically run and 
 * Figure out chartjs
 * Implement the data app
 * Find the data thats unavailable in the app
+* Add pages actions and automated testing/deployment
