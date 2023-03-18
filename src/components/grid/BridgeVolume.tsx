@@ -15,7 +15,7 @@ export const BridgeVolume = () => (
     <Stack paddingX="40px" justify="center" align="flex-start" alignSelf="stretch">
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Text
-          fontFamily="futura"
+          fontFamily="Futura MD BT"
           lineHeight="1.17"
           fontWeight="light"
           fontSize="24px"
@@ -49,7 +49,7 @@ export const BridgeVolume = () => (
       spacing="16px"
       alignSelf="stretch"
     >
-      {['Daily', 'Weekly'].map((label, index) => (
+      {['Daily:', 'Weekly:'].map((label, index) => (
         <Flex
           key={index}
           justify="space-between"
@@ -57,7 +57,7 @@ export const BridgeVolume = () => (
           alignSelf="stretch"
         >
           <Text
-            fontFamily="futura"
+            fontFamily="Futura MD BT"
             fontWeight="light"
             fontSize="20px"
             textTransform="capitalize"
@@ -74,23 +74,14 @@ export const BridgeVolume = () => (
                 textTransform="capitalize"
                 color="#FFFFFF"
               >
-                {index === 0 ? '24m' : '120m'}
-              </Text>
-              <Text
-                fontFamily="futura"
-                lineHeight="1"
-                fontWeight="light"
-                fontSize="20px"
-                letterSpacing="0.32px"
-                color="#FFFFFF"
-              >
-                $
+                {index === 0 ? '$2m' : '$20m'}
               </Text>
             </Flex>
             <Flex
               paddingX="12px"
               paddingY="2px"
               borderRadius="64px"
+              ml="5px"
               align="center"
               background={index === 0 ? 'rgba(8, 189, 186, 0.35)' : 'rgba(255, 131, 137, 0.35)'}
             >

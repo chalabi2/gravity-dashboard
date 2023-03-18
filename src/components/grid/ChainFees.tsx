@@ -17,10 +17,10 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
       ml="15px"
     >
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         lineHeight="1.56"
         fontWeight="light"
-        fontSize="18px"
+        fontSize="24px"
         textTransform="capitalize"
         color="#FFFFFF"
       >
@@ -31,7 +31,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
           <Text
             fontFamily="futura"
             fontWeight="light"
-            fontSize="32px"
+            fontSize="26px"
             color="#FFFFFF"
           >
             15k
@@ -43,6 +43,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
             fontSize="14px"
             letterSpacing="0.32px"
             color="#FFFFFF"
+            paddingRight="8px"
           >
             USDC
           </Text>
@@ -51,7 +52,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
           <Text
             fontFamily="futura"
             fontWeight="light"
-            fontSize="32px"
+            fontSize="26px"
             color="#FFFFFF"
           >
             150k
@@ -63,6 +64,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
             fontSize="14px"
             letterSpacing="0.32px"
             color="#FFFFFF"
+            paddingRight="8px"
           >
             Graviton
           </Text>
@@ -71,7 +73,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
           <Text
             fontFamily="futura"
             fontWeight="light"
-            fontSize="32px"
+            fontSize="26px"
             color="#FFFFFF"
           >
             32
@@ -89,10 +91,10 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
         </Stack>
       </Flex>
       <Text
-        fontFamily="futura"
+        fontFamily="Futura MD BT"
         lineHeight="2.8"
         fontWeight="light"
-        fontSize="10px"
+        fontSize="11px"
         textTransform="capitalize"
         color="#FFFFFF"
       >
