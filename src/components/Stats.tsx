@@ -4,6 +4,7 @@ import {
   VStack,
   Flex,
   Spacer,
+  Text
 } from "@chakra-ui/react";
 import { Pmtr } from "./grid/Pmtr";
 import { ChainFee } from "./grid/ChainFees";
@@ -45,5 +46,8 @@ export const Stats: React.FC = () => (
           </Box>
         </Flex>
       </Flex>
+      <Text textAlign="center" fontSize="sm" mt={4}>
+        Gravity Bridge Is A Registered Trademark | Powered By Chandra Station
+      </Text>
     </VStack>
 );
