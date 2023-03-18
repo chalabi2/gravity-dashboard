@@ -11,7 +11,7 @@ import {
     useColorModeValue,
   } from "@chakra-ui/react";
   import { ChevronDownIcon } from "@chakra-ui/icons";
-  import { Logo } from "../Logo";
+ import { Logo } from "./theme/Logo";
   import { ColorModeSwitcher } from "../ColorModeSwitcher";
   
   export const Header = () => {
@@ -24,19 +24,19 @@ import {
         paddingX="2rem"
         width="100%"
         height="135.52px"
-        marginTop="30px"
+        marginTop="25px"
       >
         <Box>
-          <Logo height="200%" width="200%" />
+          <Logo marginBottom="-10px" height="200%" width="200%" />
           <Heading
             as="h1"
             size="lg"
-            fontFamily="Futura Md BT"
+            fontFamily="Futura MD BT"
             lineHeight="1.36"
             fontWeight="medium"
             letterSpacing="0.1em"
             color={headerTextColor}
-            marginLeft="400px"
+            marginLeft="440px"
           >
             STATISTICS
           </Heading>
@@ -50,7 +50,7 @@ import {
               fontSize="18px"
               fontWeight="light"
               rightIcon={<ChevronDownIcon />}
-              fontFamily="Futura Lt BT"
+              fontFamily="Futura"
             >
               API
             </MenuButton>
@@ -61,7 +61,7 @@ import {
             </MenuList>
           </Menu>
           <Text
-            fontFamily="Futura Lt BT"
+            fontFamily="Futura"
             fontWeight="light"
             fontSize="18px"
             color={headerTextColor}
