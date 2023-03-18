@@ -128,7 +128,9 @@ export const Assets: React.FC = () => (
       color="#FFFFFF"
       gridColumn="1 / 3"
     >
-      1. USDC 2. ETH 3. CANTO
+      1. USDC 
+      2. ETH 
+      3. CANTO
     </Text>
     <Text
       fontFamily="futura"
