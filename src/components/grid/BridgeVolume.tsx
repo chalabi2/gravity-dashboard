@@ -1,4 +1,5 @@
 import { Stack, Text, Box, Flex } from '@chakra-ui/react';
+import BridgeVolumeChart from '../charts/BridgeVolume';
 
 export const BridgeVolume = () => (
   <Stack
@@ -24,9 +25,7 @@ export const BridgeVolume = () => (
         >
           Bridge Volume
         </Text>
-        <Box width="24px" height="24px" background="#D9D9D9" />
       </Flex>
-
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Flex align="baseline">
           <Text
@@ -41,7 +40,6 @@ export const BridgeVolume = () => (
         <Box width="160px" height="80px" background="url('/path/to/chart/image')" />
       </Flex>
     </Stack>
-
     <Stack
       paddingX="40px"
       justify="flex-end"
@@ -83,7 +81,7 @@ export const BridgeVolume = () => (
               borderRadius="64px"
               ml="5px"
               align="center"
-              background={index === 0 ? 'rgba(8, 189, 186, 0.35)' : 'rgba(255, 131, 137, 0.35)'}
+              background={index === 0 ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)'}
             >
                <Text
                 fontFamily="futura"

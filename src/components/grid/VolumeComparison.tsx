@@ -14,7 +14,7 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
     justify="center"
     align="center"
     overflow="hidden"
-    width="72px"
+    width="90px"
     height="26px"
     background={color}
   >
@@ -22,7 +22,7 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
       fontFamily="futura"
       lineHeight="1.43"
       fontWeight="light"
-      fontSize="14px"
+      fontSize="16px"
       letterSpacing="0.32px"
       color="#D9D9D9"
     >
@@ -47,17 +47,17 @@ export const VolumeComparison = () => (
       <Text
         fontFamily="Futura MD BT"
         fontWeight="light"
-        fontSize="24px"
+        fontSize="26px"
         color="#FFFFFF"
         width="116.23px"
         height="39.26px"
       >
         Compare
       </Text>
-      <HStack pl="190px" pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
-        <Label color="rgba(0, 10, 255, 0.35)">Gravity</Label>
-        <Label color="rgba(255, 0, 0, 0.35)">Axelar</Label>
-        <Label color="rgba(86, 86, 86, 0.35)">Wormhole</Label>
+      <HStack pl="170px" pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
+        <Label color="rgba(0, 10, 255, 0.5)">Gravity</Label>
+        <Label color="rgba(255, 0, 0, 0.5)">Axelar</Label>
+        <Label color="rgba(86, 86, 86, 0.5)">Wormhole</Label>
       </HStack>
       <VStack alignItems="flex-start" spacing="12px">
         {[1000, 900, 800, 700, 600, 500, 400, 200].map((value, index) => (

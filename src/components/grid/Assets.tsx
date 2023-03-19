@@ -1,7 +1,11 @@
 import React from 'react';
 import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack } from '@chakra-ui/react';
+import { dailyIn, dailyOut, monthlyIn, monthlyOut, biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6, biggestMover7, biggestMover8 } from '../calculations/Assets';
 
-export const Assets: React.FC = () => (
+export const Assets: React.FC = () => {
+  const percentageDifference = (dailyOut / (dailyIn + dailyOut)) * 100;
+
+  return (
   <Grid
     padding="10px"
     p={{ base: '14px', ml: '25px', md: '25px' }}
@@ -42,7 +46,7 @@ export const Assets: React.FC = () => (
         fontSize="18px"
         color="#FFFFFF"
       >
-        $12,652,193
+        ${monthlyIn.toLocaleString()}
       </Text>
     </Flex>
     <Flex direction="column">
@@ -61,7 +65,7 @@ export const Assets: React.FC = () => (
         fontSize="18px"
         color="#FFFFFF"
       >
-        $6,111,235
+        ${monthlyOut.toLocaleString()}
       </Text>
     </Flex>
     <Flex direction="column">
@@ -72,7 +76,7 @@ export const Assets: React.FC = () => (
         textTransform="capitalize"
         color="#FFFFFF"
       >
-        $65,000
+        ${dailyIn.toLocaleString()}
       </Text>
       <Text
         fontFamily="Futura MD BT"
@@ -92,7 +96,7 @@ export const Assets: React.FC = () => (
         textTransform="capitalize"
         color="#FFFFFF"
       >
-        $12,248
+        ${dailyOut.toLocaleString()}
       </Text>
       <Text
         fontFamily="Futura MD BT"
@@ -105,12 +109,22 @@ export const Assets: React.FC = () => (
       </Text>
     </Flex>
     <Box
-      borderRadius="1px"
-      width="100%"
-      height="4px"
-      background="linear-gradient(270deg, #ff0000 0%, #00ff38 100%)"
-      gridColumn="1 / 3"
-    />
+        borderRadius="1px"
+        width="100%"
+        height="4px"
+        background="linear-gradient(270deg, #ff0000 0%, #00ff38 100%)"
+        gridColumn="1 / 3"
+        position="relative"
+      >
+        <Box
+          width="2px"
+          height="8px"
+          bgColor="white"
+          position="absolute"
+          left={`calc(${percentageDifference}% - 1px)`}
+          top="-2px"
+        />
+      </Box>
   <Text
     fontFamily="Futura MD BT"
     fontWeight="light"
@@ -132,10 +146,10 @@ export const Assets: React.FC = () => (
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>1. USDC</ListItem>
-      <ListItem>2. ETH</ListItem>
-      <ListItem>3. CANTO</ListItem>
-      <ListItem>4. ATOM</ListItem>
+      <ListItem>1. {biggestMover1.toLocaleString()}</ListItem>
+      <ListItem>2. {biggestMover2.toLocaleString()}</ListItem>
+      <ListItem>3. {biggestMover3.toLocaleString()}</ListItem>
+      <ListItem>4. {biggestMover4.toLocaleString()}</ListItem>
     </UnorderedList>
     <UnorderedList
       listStyleType="none"
@@ -147,11 +161,12 @@ export const Assets: React.FC = () => (
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>5. DAI</ListItem>
-      <ListItem>6. WETH</ListItem>
-      <ListItem>7. Example</ListItem>
-      <ListItem>8. Example</ListItem>
+      <ListItem>5. {biggestMover5.toLocaleString()}</ListItem>
+      <ListItem>6. {biggestMover6.toLocaleString()}</ListItem>
+      <ListItem>7. {biggestMover7.toLocaleString()}</ListItem>
+      <ListItem>8. {biggestMover8.toLocaleString()}</ListItem>
     </UnorderedList>
   </HStack>
   </Grid>
-);
+   );
+};
