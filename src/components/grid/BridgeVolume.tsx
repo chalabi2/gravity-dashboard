@@ -1,5 +1,4 @@
 import { Stack, Text, Box, Flex } from '@chakra-ui/react';
-import BridgeVolumeChart from '../charts/BridgeVolume';
 
 export const BridgeVolume = () => (
   <Stack
