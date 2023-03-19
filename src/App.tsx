@@ -4,6 +4,7 @@ import { Stats } from "./components/Stats";
 import theme from "./components/theme/theme";
 import { Header } from "./components/Header";
 import { Background } from "./components/theme/Background";
+import { Flares } from "./components/theme/flares";
 
 export const App: React.FC = () => (
   <ChakraProvider theme={theme}>
@@ -17,6 +18,7 @@ export const App: React.FC = () => (
         objectFit="cover"
         style={{ opacity: 0.20 }}
       />
+    <Flares />
     <VStack width="100%" spacing={0}>
       <Header />
       <Stats />

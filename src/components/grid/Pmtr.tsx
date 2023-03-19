@@ -1,6 +1,32 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { fetchGravityBridgeData } from '../calculations/Pmtr';
 
-export const Pmtr = () => (
+type GravityBridgeData = {
+  price: number;
+  marketCap: string;
+  tradingVolume: string;
+  rank: number;
+};
+
+export const Pmtr = () => {
+  const [data, setData] = useState<GravityBridgeData>({
+    price: 0,
+    marketCap: '0',
+    tradingVolume: '0',
+    rank: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedData = await fetchGravityBridgeData();
+      setData(fetchedData);
+    };
+
+    fetchData();
+  }, []);
+
+  return (
   <Box
     p={{ base: '14px', md: '25px' }}
     borderRadius="6px"
@@ -34,7 +60,7 @@ export const Pmtr = () => (
           textTransform="capitalize"
           color="#FFFFFF"
         >
-          $0.012
+          ${data.price.toFixed(3)}
         </Text>
       </Box>
       <Box mb={{ base: '10px', md: 0 }}>
@@ -56,7 +82,7 @@ export const Pmtr = () => (
           textTransform="capitalize"
           color="#FFFFFF"
         >
-          $32,002,514
+          ${data.marketCap}
         </Text>
       </Box>
       <Box mb={{ base: '10px', md: 0 }}>
@@ -78,7 +104,7 @@ export const Pmtr = () => (
           textTransform="capitalize"
           color="#FFFFFF"
         >
-          $625,000
+          ${data.tradingVolume}
         </Text>
       </Box>
       <Box>
@@ -100,9 +126,10 @@ export const Pmtr = () => (
           textTransform="capitalize"
           color="#FFFFFF"
         >
-          315
+          {data.rank}
         </Text>
       </Box>
     </Flex>
   </Box>
-);
+    );
+  };
