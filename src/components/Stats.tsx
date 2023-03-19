@@ -7,7 +7,7 @@ import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
 
 export const Stats: React.FC = () => {
-  const marginTopValue = useBreakpointValue({ base: "-50px", md: "-150px" });
+  const marginTopValue = useBreakpointValue({ base: "-50px", md: "0" });
   const pmtrWidth = useBreakpointValue({ base: "331px", md: "736px" });
 
   return (
