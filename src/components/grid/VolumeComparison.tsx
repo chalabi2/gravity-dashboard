@@ -39,7 +39,7 @@ export const VolumeComparison = () => (
     justify="flex-start"
     align="flex-start"
     spacing="10px"
-    height="529px"
+    height="510px"
     width="99.3%"
     background="rgba(0, 18, 183, 0.35)"
   >
@@ -54,7 +54,7 @@ export const VolumeComparison = () => (
       >
         Compare
       </Text>
-      <HStack pl="170px" pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
+      <HStack pl={{base: "0px", md: "170px"}} pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
         <Label color="rgba(0, 10, 255, 0.5)">Gravity</Label>
         <Label color="rgba(255, 0, 0, 0.5)">Axelar</Label>
         <Label color="rgba(86, 86, 86, 0.5)">Wormhole</Label>

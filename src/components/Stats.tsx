@@ -3,8 +3,8 @@ import {
   Box,
   VStack,
   Flex,
-  Spacer,
-  Text
+  Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Pmtr } from "./grid/Pmtr";
 import { ChainFee } from "./grid/ChainFees";
@@ -12,7 +12,12 @@ import { Assets } from "./grid/Assets";
 import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
 
-export const Stats: React.FC = () => (
+export const Stats: React.FC = () => {
+  const marginTopValue = useBreakpointValue({ base: "-50px", md: "-150px" });
+  const pmtrWidth = useBreakpointValue({ base: "331px", md: "736px" });
+  
+
+  return (
     <VStack minH="100vh" justifyContent="center" alignItems="center" width="100%">
       <Flex
         direction={{ base: "column", md: "row" }}
@@ -23,31 +28,46 @@ export const Stats: React.FC = () => (
         borderRadius="6px"
         maxWidth="736px"
         width="100%"
-        marginTop="-150px"
+        marginTop={marginTopValue}
+        ml={{base: "33px", md: "20px"}}
       >
-        <Box maxWidth="736px" width="100%" m="10px">
+        <Box maxWidth={pmtrWidth} width="100%" m="10px">
           <Pmtr />
         </Box>
-        <Flex flexDirection="column" width="100%">
-          <Flex>
-            <VStack>
-              <Box width="360px" height="120px" maxWidth="100%">
-                <ChainFee />
-              </Box>
-              <Box p="5px">
-                <BridgeVolume />
-              </Box>
-            </VStack>
-            <Spacer />
+        <Flex
+          flexDirection={{ base: "column", md: "row" }}
+          width="100%"
+          justifyContent={{ base: "center", md: "center" }}
+        >
+          <VStack >
+            <Box
+              width={{ base: "100%", md: "360px" }}
+              height="120px"
+              maxWidth="100%"
+              mb={{ base: "0px", md: 0 }}
+            >
+              <ChainFee />
+            </Box>
+            <Box width={{ base: "360px", md: "auto"}} p="5px" mb={{ base: "10px", md: 0 }}>
+              <BridgeVolume />
+            </Box>
+          </VStack>
+          <Box
+            mb={{ base: "10px", md: 0 }}
+            width={{ base: "330px", md: "auto" }}
+            ml={{ base: "18px", md: "0"}}
+            mt={{ base: "10px", md: "0"}}
+          >
             <Assets />
-          </Flex>
-          <Box ml="10px" p="5px">
-            <VolumeComparison />
           </Box>
         </Flex>
+        <Box width={{ base: "340px", md: "100%" }} ml={{ md: "10px", base: "15px"}} p="5px">
+          <VolumeComparison />
+        </Box>
       </Flex>
       <Text textAlign="center" fontSize="sm" mt={4}>
         Gravity Bridge Is A Registered Trademark | Powered By Chandra Station
       </Text>
     </VStack>
-);
+  );
+};
