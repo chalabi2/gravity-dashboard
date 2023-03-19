@@ -6,6 +6,7 @@ import {
   Text,
   useBreakpointValue,
   useColorModeValue,
+  useColorMode,
   Link,
   IconButton,
   useDisclosure,
@@ -16,6 +17,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   VStack,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { Logo } from "./theme/Logo";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
@@ -23,11 +25,15 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 
 export const Header = () => {
   const headerTextColor = useColorModeValue("black", "white");
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const [isMobile] = useMediaQuery("(max-width: 1200px)");
+  const { colorMode } = useColorMode();
+  const drawerBgColor = colorMode === "dark" ? "black" : "white";
+
 
   const logoSize = useBreakpointValue({ base: "100%", md: "200%" });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
 
   const MobileMenuItems = () => (
     <VStack alignItems="center" spacing="1rem">
@@ -161,20 +167,24 @@ export const Header = () => {
       {isMobile ? (
       <>
         <IconButton
-            icon={<HamburgerIcon />}
+            icon={<HamburgerIcon 
+              boxSize={6}
+              />}
             variant="ghost"
             onClick={onOpen}
-            display={{ base: "block", md: "none" }} aria-label={""} 
+            display={{ base: "block", md: "block" }} aria-label={""} 
             _hover={{
               textDecoration: "none",
               color: "blue",
             }}       />
-        <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+        <Drawer  placement="right" onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
-          <DrawerContent>
+          <DrawerContent backgroundColor={drawerBgColor}>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth="1px">
+              <Text fontFamily="Futura">
               Menu
+              </Text>
             </DrawerHeader>
             <DrawerBody>
               <MobileMenuItems />
