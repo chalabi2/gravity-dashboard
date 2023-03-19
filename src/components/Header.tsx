@@ -141,6 +141,7 @@ export const Header = () => {
   
   return (
     <Flex
+    ml={{base: "-10", md: "0"}}
     alignItems="flex-start"
     justifyContent="space-between"
     paddingX="2rem"
@@ -168,8 +169,9 @@ export const Header = () => {
       <>
         <IconButton
             icon={<HamburgerIcon 
-              boxSize={6}
+              boxSize={8}
               />}
+            marginLeft="25px"
             variant="ghost"
             onClick={onOpen}
             display={{ base: "block", md: "block" }} aria-label={""} 
