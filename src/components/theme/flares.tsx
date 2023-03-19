@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useColorModeValue } from "@chakra-ui/react";
 
 const FlareAnimation = () => {
   const flareStyle = {
@@ -6,7 +7,7 @@ const FlareAnimation = () => {
     width: "4px",
     height: "4px",
     borderRadius: "100%",
-    background: "white",
+    background: useColorModeValue("black", "white"),
     animation: "flareAnimation var(--flare-duration, 30s) linear infinite",
   };
   
