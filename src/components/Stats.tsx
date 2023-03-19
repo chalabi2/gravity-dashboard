@@ -11,6 +11,7 @@ import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
 import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
+import "../global.css"
 
 export const Stats: React.FC = () => (
     <VStack minH="100vh" justifyContent="center" alignItems="center" width="100%">

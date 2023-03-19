@@ -37,7 +37,7 @@ export const Header = () => {
           STATISTICS
         </Heading>
       </Box>
-      <HStack spacing="49px">
+      <HStack marginTop="10px" spacing="49px">
         <ColorModeSwitcher />
         <Link
           fontFamily="Futura"
