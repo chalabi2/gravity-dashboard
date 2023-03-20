@@ -1,9 +1,9 @@
-import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 
 interface ChainFeeProps {}
 
 export const ChainFee: React.FC<ChainFeeProps> = () => (
-  <Box  mb={{ base: '10px', md: 0 }} width={{ base: '100%', md: '100%' }}>
+  <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "100%" }}>
     <Stack
       justify="flex-start"
       align="center"
@@ -11,7 +11,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
       width="330px"
       height="120px"
       maxWidth="100%"
-      bg="rgba(0, 18, 183, 0.35)"
+      bg="rgba(0, 18, 183, 0.5)"
       borderRadius="6px"
       p="14px"
       ml="15px"
@@ -26,7 +26,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
       >
         Total Chain Fees Paid
       </Text>
-      <Flex justify="center" align="center" >
+      <Flex justify="center" align="center">
         <Stack direction="row" justify="flex-start" align="baseline">
           <Text
             fontFamily="futura"

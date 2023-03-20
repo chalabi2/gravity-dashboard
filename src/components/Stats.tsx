@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, VStack, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, VStack, Flex, Text, useBreakpointValue, Link, useColorModeValue } from "@chakra-ui/react";
 import { Pmtr } from "./grid/Pmtr";
 import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
@@ -8,11 +8,12 @@ import { VolumeComparison } from "./grid/VolumeComparison";
 
 export const Stats: React.FC = () => {
   const marginTopValue = useBreakpointValue({ base: "-50px", md: "0" });
-  const pmtrWidth = useBreakpointValue({ base: "331px", md: "736px" });
+  const pmtrWidth = useBreakpointValue({ base: "331px", md: "732px !important" });
+  const BottomTextColor = useColorModeValue("black", "white");
 
   return (
     <VStack
-      minH="100vh"
+      minH="50vh"
       justifyContent="center"
       alignItems="center"
       width="100%"
@@ -27,7 +28,7 @@ export const Stats: React.FC = () => {
         maxWidth="736px"
         width="736ppx"
         marginTop={marginTopValue}
-        ml={{ base: "0px", md: "50px" }}
+        ml={{ base: "11px", md: "50px" }}
       >
         <Box maxWidth={pmtrWidth} width="100%" m="10px">
           <Pmtr />
@@ -44,6 +45,7 @@ export const Stats: React.FC = () => {
               height="120px"
               maxWidth="100%"
               mb={{ base: "0px", md: 0 }}
+              ml={{base: "0px", md:"0"}}
             >
               <ChainFee />
             </Box>
@@ -51,7 +53,7 @@ export const Stats: React.FC = () => {
               width={{ base: "360px", md: "auto" }}
               p="5px"
               mb={{ base: "10px", md: 0 }}
-              marginLeft={{base: "10px !important", md: "0" }}
+              marginLeft={{base: "10px !important", md: "-0px !important" }}
             >
               <BridgeVolume />
             </Box>
@@ -59,7 +61,7 @@ export const Stats: React.FC = () => {
           <Box
             mb={{ base: "10px", md: 0 }}
             width={{ base: "330px", md: "auto" }}
-            ml={{ base: "18px", md: "0" }}
+            ml={{ base: "18px", md: "-5px" }}
             mt={{ base: "10px", md: "0" }}
           >
             <Assets />
@@ -67,14 +69,14 @@ export const Stats: React.FC = () => {
         </Flex>
         <Box
           width={{ base: "340px", md: "100%" }}
-          ml={{ md: "10px", base: "15px" }}
+          ml={{ md: "12px", base: "15px" }}
           p="5px"
         >
           <VolumeComparison />
         </Box>
       </Flex>
       <Text textAlign="center" fontSize="sm" mt={4}>
-        Gravity Bridge Is A Registered Trademark | Powered By Chandra Station
+        Gravity Bridge ® Is A Registered Trademark | Powered By <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://chandrastation.com" >Chandra Station</Link>
       </Text>
     </VStack>
   );

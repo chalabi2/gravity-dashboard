@@ -10,7 +10,7 @@ export const BridgeVolume = () => (
     spacing="24px"
     width="330px"
     maxWidth="100%"
-    background="rgba(0, 18, 183, 0.35)"
+    background="rgba(0, 18, 183, 0.5)"
   >
     <Stack paddingX="40px" justify="center" align="flex-start" alignSelf="stretch">
       <Flex justify="space-between" align="center" alignSelf="stretch">

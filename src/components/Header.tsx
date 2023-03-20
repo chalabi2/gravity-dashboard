@@ -29,11 +29,9 @@ export const Header = () => {
   const { colorMode } = useColorMode();
   const drawerBgColor = colorMode === "dark" ? "black" : "white";
 
-
   const logoSize = useBreakpointValue({ base: "100%", md: "200%" });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
 
   const MobileMenuItems = () => (
     <VStack alignItems="center" spacing="1rem">
@@ -86,7 +84,7 @@ export const Header = () => {
       </Box>
     </VStack>
   );
-  
+
   const DesktopMenuItems = () => (
     <HStack mt="10px" spacing="49px">
       <ColorModeSwitcher />
@@ -138,67 +136,65 @@ export const Header = () => {
       </Box>
     </HStack>
   );
-  
+
   return (
     <Flex
-    ml={{base: "-10", md: "0"}}
-    alignItems="flex-start"
-    justifyContent="space-between"
-    paddingX="2rem"
-    width="100%"
-    height="135.52px"
-    marginTop="20px"
-  >
-    <Box>
-      {/* Update the height and width */}
-      <Logo marginBottom="-10px" height={logoSize} width={logoSize} />
-      <Heading
-        as="h1"
-        fontFamily="Futura MD BT"
-        lineHeight="1.36"
-        fontWeight="medium"
-        letterSpacing="0.1em"
-        color={headerTextColor}
-        marginLeft={{base: "220", md: "440px"}}
-        fontSize={{base: "18px", md: "30px"}}
-      >
-        STATISTICS
-      </Heading>
-    </Box>
+      ml={{ base: "-10", md: "0" }}
+      alignItems="flex-start"
+      justifyContent="space-between"
+      paddingX="2rem"
+      width="100%"
+      height="135.52px"
+      marginTop="20px"
+    >
+      <Box>
+        {/* Update the height and width */}
+        <Logo marginBottom="-10px" height={logoSize} width={logoSize} />
+        <Heading
+          as="h1"
+          fontFamily="Futura MD BT"
+          lineHeight="1.36"
+          fontWeight="medium"
+          letterSpacing="0.1em"
+          color={headerTextColor}
+          marginLeft={{ base: "220", md: "440px" }}
+          fontSize={{ base: "18px", md: "30px" }}
+        >
+          STATISTICS
+        </Heading>
+      </Box>
       {isMobile ? (
-      <>
-        <IconButton
-            icon={<HamburgerIcon 
-              boxSize={8}
-              />}
+        <>
+          <IconButton
+            icon={<HamburgerIcon boxSize={8} />}
             marginLeft="25px"
             variant="ghost"
             onClick={onOpen}
-            display={{ base: "block", md: "block" }} aria-label={""} 
+            display={{ base: "block", md: "block" }}
+            aria-label={""}
             _hover={{
               textDecoration: "none",
               color: "blue",
-            }}       />
-        <Drawer  placement="right" onClose={onClose} isOpen={isOpen}>
-          <DrawerOverlay />
-          <DrawerContent backgroundColor={drawerBgColor}>
-            <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth="1px">
-              <Text fontFamily="Futura">
-              Menu
-              </Text>
-            </DrawerHeader>
-            <DrawerBody>
-              <MobileMenuItems />
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </>
-    ) : (
-      <HStack spacing="49px">
-        <DesktopMenuItems />
-      </HStack>
-    )}
-  </Flex>
-);
+            }}
+          />
+          <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+            <DrawerOverlay />
+            <DrawerContent backgroundColor={drawerBgColor}>
+              <DrawerCloseButton />
+              <DrawerHeader borderBottomWidth="1px">
+                <Text fontFamily="Futura">Menu</Text>
+              </DrawerHeader>
+              <DrawerBody>
+                <MobileMenuItems />
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
+      ) : (
+        <HStack spacing="49px">
+          <DesktopMenuItems />
+        </HStack>
+      )}
+    </Flex>
+  );
 };
