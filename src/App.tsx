@@ -8,18 +8,20 @@ import { Flares } from "./components/theme/flares";
 
 export const App: React.FC = () => (
   <ChakraProvider theme={theme}>
-        <Background
-        position="absolute"
-        top={0}
-        left={0}
-        width="100%"
-        height="100%"
-        zIndex={-1}
-        objectFit="cover"
-        style={{ opacity: 0.20 }}
-      />
+    <Background
+      position="absolute"
+      top={0}
+      left={0}
+      width="100%"
+      height="100%"
+      zIndex={-1}
+      objectFit="cover"
+      style={{ opacity: 0.2 }}
+    />
     <Flares />
-    <VStack width="100%" spacing={0}>
+    <VStack 
+        width="100%" 
+        spacing={0}>
       <Header />
       <Stats />
     </VStack>

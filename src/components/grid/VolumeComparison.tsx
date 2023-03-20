@@ -1,4 +1,4 @@
-import { Stack, Text, VStack, HStack } from '@chakra-ui/react';
+import { Stack, Text, VStack, HStack } from "@chakra-ui/react";
 
 interface LabelProps {
   children: React.ReactNode;
@@ -33,17 +33,23 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
 
 export const VolumeComparison = () => (
   <Stack
-    paddingX="31px"
-    paddingY="48px"
+    paddingX="25px"
+    paddingY="25px"
     borderRadius="6px"
     justify="flex-start"
     align="flex-start"
     spacing="10px"
-    height="510px"
-    width="99.3%"
-    background="rgba(0, 18, 183, 0.35)"
+    height="465px"
+    width={{md: "99.0%", base: "100%"}}
+    background="rgba(0, 18, 183, 0.5)"
   >
-    <Stack padding="10px" justify="flex-start" align="flex-start" spacing="10px">
+    <Stack
+      padding="10px"
+      justify="flex-start"
+      align="flex-start"
+      spacing="10px"
+      ml={{base: "-14px", md: "0"}}
+    >
       <Text
         fontFamily="Futura MD BT"
         fontWeight="light"
@@ -54,7 +60,14 @@ export const VolumeComparison = () => (
       >
         Compare
       </Text>
-      <HStack pl={{base: "0px", md: "170px"}} pb="35px" justifyContent="center" width="100%" marginTop="-10px" marginBottom="10px">
+      <HStack
+        pl={{ base: "0px", md: "170px" }}
+        pb="35px"
+        justifyContent="center"
+        width="100%"
+        marginTop="-10px"
+        marginBottom="10px"
+      >
         <Label color="rgba(0, 10, 255, 0.5)">Gravity</Label>
         <Label color="rgba(255, 0, 0, 0.5)">Axelar</Label>
         <Label color="rgba(86, 86, 86, 0.5)">Wormhole</Label>

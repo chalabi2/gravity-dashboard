@@ -12,7 +12,7 @@ export const Assets: React.FC = () => {
     templateRows="repeat(4, auto)"
     templateColumns="repeat(2, 1fr)"
     gap={4}
-    background="rgba(0, 18, 183, 0.35)"
+    background="rgba(0, 18, 183, 0.5)"
     borderRadius="8px"
     width="340px"
     height="400px"

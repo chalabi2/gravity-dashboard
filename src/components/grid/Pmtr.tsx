@@ -1,6 +1,6 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { fetchGravityBridgeData } from '../calculations/Pmtr';
+import { Box, Flex, Text } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { fetchGravityBridgeData } from "../calculations/Pmtr";
 
 type GravityBridgeData = {
   price: number;
@@ -12,8 +12,8 @@ type GravityBridgeData = {
 export const Pmtr = () => {
   const [data, setData] = useState<GravityBridgeData>({
     price: 0,
-    marketCap: '0',
-    tradingVolume: '0',
+    marketCap: "0",
+    tradingVolume: "0",
     rank: 0,
   });
 
@@ -28,21 +28,21 @@ export const Pmtr = () => {
 
   return (
     <Box
-      p={{ base: '14px', md: '25px' }}
+      p={{ base: "14px", md: "25px" }}
       borderRadius="6px"
-      maxWidth="736px"
+      maxWidth="682px"
       width="99.3%"
-      marginLeft="5px"
-      bg="rgba(0, 18, 183, 0.35)"
+      marginLeft="6px"
+      bg="rgba(0, 18, 183, 0.5)"
     >
       <Flex
-        direction={{ base: 'column', md: 'row' }}
+        direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
-        alignItems={{ base: 'center', md: 'flex-start' }}
+        alignItems={{ base: "center", md: "flex-start" }}
         wrap="wrap"
-        textAlign={{ base: 'center', md: 'left' }}
+        textAlign={{ base: "center", md: "left" }}
       >
-        <Box mb={{ base: '10px', md: 0 }} width={{ base: '100%', md: 'auto' }}>
+        <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
             fontFamily="Futura MD BT"
             lineHeight="1.4"
@@ -64,10 +64,7 @@ export const Pmtr = () => {
             ${data.price.toFixed(3)}
           </Text>
         </Box>
-        <Box
-          mb={{ base: '10px', md: 0 }}
-          width={{ base: '100%', md: 'auto' }}
-        >
+        <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
             fontFamily="Futura MD BT"
             lineHeight="1.4"
@@ -89,10 +86,7 @@ export const Pmtr = () => {
             ${data.marketCap}
           </Text>
         </Box>
-        <Box
-          mb={{ base: '10px', md: 0 }}
-          width={{ base: '100%', md: 'auto' }}
-        >
+        <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
             fontFamily="Futura MD BT"
             lineHeight="1.4"
@@ -114,7 +108,7 @@ export const Pmtr = () => {
             ${data.tradingVolume}
           </Text>
         </Box>
-        <Box width={{ base: '100%', md: 'auto' }}>
+        <Box width={{ base: "100%", md: "auto" }}>
           <Text
             fontFamily="Futura MD BT"
             lineHeight="1.4"
