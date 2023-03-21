@@ -1,4 +1,6 @@
-import { Stack, Text, VStack, HStack } from "@chakra-ui/react";
+import { Stack, Text, HStack, Box } from "@chakra-ui/react";
+import VolumeComparisonChart from "../charts/VolumeComparisonCharts";
+import { VolumeComparisonData } from "../calculations/VolumeComparison";
 
 interface LabelProps {
   children: React.ReactNode;
@@ -31,7 +33,8 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
   </Stack>
 );
 
-export const VolumeComparison = () => (
+export const VolumeComparison = () => {
+  return (
   <Stack
     paddingX="25px"
     paddingY="25px"
@@ -40,7 +43,7 @@ export const VolumeComparison = () => (
     align="flex-start"
     spacing="10px"
     height="465px"
-    width={{md: "99.0%", base: "100%"}}
+    width={{md: "99.3%", base: "100%"}}
     background="rgba(0, 18, 183, 0.5)"
   >
     <Stack
@@ -61,31 +64,23 @@ export const VolumeComparison = () => (
         Compare
       </Text>
       <HStack
-        pl={{ base: "0px", md: "170px" }}
+        pl={{ base: "0px", md: "40px" }}
         pb="35px"
         justifyContent="center"
         width="100%"
         marginTop="-10px"
         marginBottom="10px"
       >
-        <Label color="rgba(0, 10, 255, 0.5)">Gravity</Label>
-        <Label color="rgba(255, 0, 0, 0.5)">Axelar</Label>
-        <Label color="rgba(86, 86, 86, 0.5)">Wormhole</Label>
+        <Label color="rgba(0, 255, 0, 0.5)"><Text color="white">Gravity</Text></Label>
+        <Label color="rgba(255, 0, 0, 0.5)"><Text color="white">Axelar</Text></Label>
+        <Label color="rgba(255, 255, 0, 0.5)"><Text color="white">Wormhole</Text></Label>
       </HStack>
-      <VStack alignItems="flex-start" spacing="12px">
-        {[1000, 900, 800, 700, 600, 500, 400, 200].map((value, index) => (
-          <Text
-            key={index}
-            fontFamily="Futura MD BT"
-            fontWeight="light"
-            fontSize="16px"
-            color="#FFFFFF"
-            textAlign="center"
-          >
-            {value}
-          </Text>
-        ))}
-      </VStack>
+      <HStack width="100%" justifyContent="space-between">
+      <Box flexGrow={1} height={{ base: "250px", md: "375px" }} >
+          <VolumeComparisonChart data={VolumeComparisonData} />
+        </Box>
+      </HStack>
     </Stack>
-  </Stack>
-);
+    </Stack>
+  );
+};

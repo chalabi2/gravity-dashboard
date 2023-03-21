@@ -61,7 +61,7 @@ export const Stats: React.FC = () => {
           <Box
             mb={{ base: "10px", md: 0 }}
             width={{ base: "330px", md: "auto" }}
-            ml={{ base: "18px", md: "-5px" }}
+            ml={{ base: "16px", md: "-5px" }}
             mt={{ base: "10px", md: "0" }}
           >
             <Assets />
@@ -69,14 +69,14 @@ export const Stats: React.FC = () => {
         </Flex>
         <Box
           width={{ base: "340px", md: "100%" }}
-          ml={{ md: "12px", base: "15px" }}
+          ml={{ md: "12px", base: "12px" }}
           p="5px"
         >
           <VolumeComparison />
         </Box>
       </Flex>
       <Text textAlign="center" fontSize="sm" mt={4}>
-        Gravity Bridge ® Is A Registered Trademark | Powered By <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://chandrastation.com" >Chandra Station</Link>
+      <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://www.gravitybridge.net/" >Gravity Bridge ® </Link>Is A Registered Trademark | Powered By <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://chandrastation.com" >Chandra Station</Link>
       </Text>
     </VStack>
   );

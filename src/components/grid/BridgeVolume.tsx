@@ -1,4 +1,6 @@
-import { Stack, Text, Box, Flex } from '@chakra-ui/react';
+import { Stack, Text, Flex, HStack } from '@chakra-ui/react';
+import BridgeVolumeChart from '../charts/BridgeVolumeChart';
+import { BridgeVolumeChartData } from '../calculations/BridgeVolume';
 
 export const BridgeVolume = () => (
   <Stack
@@ -25,6 +27,7 @@ export const BridgeVolume = () => (
           Bridge Volume
         </Text>
       </Flex>
+      <HStack>
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Flex align="baseline">
           <Text
@@ -36,8 +39,9 @@ export const BridgeVolume = () => (
             $800m
           </Text>
         </Flex>
-        <Box width="160px" height="80px" background="url('/path/to/chart/image')" />
+        <BridgeVolumeChart data={BridgeVolumeChartData}/>
       </Flex>
+      </HStack>
     </Stack>
     <Stack
       paddingX="40px"
@@ -88,7 +92,7 @@ export const BridgeVolume = () => (
                 fontWeight="light"
                 fontSize="20px"
                 letterSpacing="0.32px"
-                color={index === 0 ? 'Teal.50' : 'Red.50'}
+                color="white"
               >
                 {index === 0 ? '30%' : '15%'}
               </Text>
