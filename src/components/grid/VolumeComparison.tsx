@@ -62,6 +62,15 @@ export const VolumeComparison = () => {
         height="39.26px"
       >
         Compare
+        <Box
+    width={{md: "86%", base: "85%"}}
+    ml={{md: "0", base: "0px"}}
+    height="1px"
+    bgColor="#FFFFFF"
+    position={{md: "relative", base: "sticky"}}
+
+    bottom="1px"
+  />
       </Text>
       <HStack
         pl={{ base: "0px", md: "40px" }}

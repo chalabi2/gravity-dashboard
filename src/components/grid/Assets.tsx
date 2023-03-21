@@ -1,9 +1,16 @@
 import React from 'react';
 import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack } from '@chakra-ui/react';
-import { dailyIn, dailyOut, monthlyIn, monthlyOut, biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6, biggestMover7, biggestMover8 } from '../calculations/Assets';
+import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6, biggestMover7, biggestMover8 } from '../calculations/Assets';
+import { useVolumeInfo } from '../calculations/ApiCalls';
 
 export const Assets: React.FC = () => {
-  const percentageDifference = (dailyOut / (dailyIn + dailyOut)) * 100;
+  const volumeInfo = useVolumeInfo();
+  const dailyIn = Math.round(volumeInfo?.daily_inflow || 0);
+  const dailyOut = Math.round(volumeInfo?.daily_outflow || 0);
+  const monthlyIn = Math.round(volumeInfo?.weekly_inflow || 0);
+  const monthlyOut = Math.round(volumeInfo?.weekly_outflow || 0);
+
+  const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
 
   return (
   <Grid
@@ -19,17 +26,26 @@ export const Assets: React.FC = () => {
     maxWidth="100%"
     marginRight="10px"
   >
-    <Text
-      fontFamily="Futura MD BT"
-      fontWeight="light"
-      fontSize="24px"
-      color="#FFFFFF"
-      textAlign="center"
-      paddingRight="30px"
-      gridColumn="1 / 3"
-    >
-      Ibc & Eth Assets
-    </Text>
+<Text
+  fontFamily="Futura MD BT"
+  fontWeight="light"
+  fontSize="24px"
+  color="#FFFFFF"
+  textAlign="center"
+  paddingRight="30px"
+  gridColumn="1 / 3"
+  position="relative"
+>
+  Ibc & Eth Bridged Assets
+  <Box
+    width="100%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="2px"
+  />
+</Text>
     <Flex direction="column">
       <Text
         fontFamily="Futura MD BT"
@@ -39,6 +55,14 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly In
+        <Box
+    width="75%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="1px"
+  />
       </Text>
       <Text
         fontFamily="futura"
@@ -58,6 +82,14 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly Out
+        <Box
+    width="85%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="1px"
+  />
       </Text>
       <Text
         fontFamily="futura"
@@ -66,46 +98,6 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         ${monthlyOut.toLocaleString()}
-      </Text>
-    </Flex>
-    <Flex direction="column">
-      <Text
-        fontFamily="futura"
-        fontWeight="light"
-        fontSize="20px"
-        textTransform="capitalize"
-        color="#FFFFFF"
-      >
-        ${dailyIn.toLocaleString()}
-      </Text>
-      <Text
-        fontFamily="Futura MD BT"
-        fontWeight="light"
-        fontSize="20px"
-        textTransform="capitalize"
-        color="#FFFFFF"
-      >
-        Daily In
-      </Text>
-    </Flex>
-    <Flex direction="column">
-      <Text
-        fontFamily="futura"
-        fontWeight="light"
-        fontSize="20px"
-        textTransform="capitalize"
-        color="#FFFFFF"
-      >
-        ${dailyOut.toLocaleString()}
-      </Text>
-      <Text
-        fontFamily="Futura MD BT"
-        fontWeight="light"
-        fontSize="20px"
-        textTransform="capitalize"
-        color="#FFFFFF"
-      >
-        Daily Out
       </Text>
     </Flex>
     <Box
@@ -125,6 +117,62 @@ export const Assets: React.FC = () => {
           top="-2px"
         />
       </Box>
+    <Flex direction="column">
+      <Text
+        fontFamily="Futura MD BT"
+        fontWeight="light"
+        fontSize="20px"
+        textTransform="capitalize"
+        color="#FFFFFF"
+      >
+        Daily In
+        <Box
+    width="56%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="1px"
+  />
+      </Text>
+      <Text
+        fontFamily="futura"
+        fontWeight="light"
+        fontSize="20px"
+        textTransform="capitalize"
+        color="#FFFFFF"
+      >
+        ${dailyIn.toLocaleString()}
+      </Text>
+    </Flex>
+    <Flex direction="column">
+    <Text
+        fontFamily="Futura MD BT"
+        fontWeight="light"
+        fontSize="20px"
+        textTransform="capitalize"
+        color="#FFFFFF"
+      >
+        Daily Out
+        <Box
+    width="65%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="1px"
+  />
+      </Text>
+      <Text
+        fontFamily="futura"
+        fontWeight="light"
+        fontSize="20px"
+        textTransform="capitalize"
+        color="#FFFFFF"
+      >
+        ${dailyOut.toLocaleString()}
+      </Text>
+    </Flex>
   <Text
     fontFamily="Futura MD BT"
     fontWeight="light"
@@ -134,6 +182,14 @@ export const Assets: React.FC = () => {
     gridColumn="1 / 3"
   >
     Biggest Movers
+    <Box
+    width="45%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="1px"
+  />
   </Text>
   <HStack ml="30px" spacing={12} gridColumn="1 / 3">
     <UnorderedList

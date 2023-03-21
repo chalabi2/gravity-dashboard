@@ -52,6 +52,15 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Price
+            <Box
+    width={{md: "85%", base: "15%"}}
+    ml={{md: "0", base: "128px"}}
+    height="1px"
+    bgColor="#FFFFFF"
+    position={{md: "relative", base: "sticky"}}
+
+    bottom="1px"
+  />
           </Text>
           <Text
             fontFamily="futura"
@@ -74,6 +83,15 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Market Cap
+            <Box
+    width={{md: "100%", base: "33%"}}
+    ml={{md: "0", base: "102px"}}
+    height="1px"
+    bgColor="#FFFFFF"
+    position={{md: "relative", base: "sticky"}}
+
+    bottom="1px"
+  />
           </Text>
           <Text
             fontFamily="futura"
@@ -96,6 +114,15 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Trading Volume
+            <Box
+    width={{md: "100%", base: "43%"}}
+    ml={{md: "0", base: "88px"}}
+    height="1px"
+    bgColor="#FFFFFF"
+    position={{md: "relative", base: "sticky"}}
+
+    bottom="1px"
+  />
           </Text>
           <Text
             fontFamily="futura"
@@ -118,6 +145,15 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Rank
+            <Box
+    width={{md: "100%", base: "16%"}}
+    ml={{md: "0", base: "125px"}}
+    height="1px"
+    bgColor="#FFFFFF"
+    position={{md: "relative", base: "sticky"}}
+
+    bottom="1px"
+  />
           </Text>
           <Text
             fontFamily="futura"

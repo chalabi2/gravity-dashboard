@@ -25,6 +25,14 @@ export const ChainFee: React.FC<ChainFeeProps> = () => (
         color="#FFFFFF"
       >
         Total Chain Fees Paid
+        <Box
+    width="100%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="2px"
+  />
       </Text>
       <Flex justify="center" align="center">
         <Stack direction="row" justify="flex-start" align="baseline">

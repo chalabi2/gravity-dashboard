@@ -1,8 +1,26 @@
-import { Stack, Text, Flex, HStack } from '@chakra-ui/react';
+import { Box, Stack, Text, Flex, HStack } from '@chakra-ui/react';
 import BridgeVolumeChart from '../charts/BridgeVolumeChart';
 import { BridgeVolumeChartData } from '../calculations/BridgeVolume';
+import { useVolumeInfo } from '../calculations/ApiCalls';
 
-export const BridgeVolume = () => (
+export const BridgeVolume = () => {
+  const volumeInfo = useVolumeInfo();
+  const monthlyVolume = volumeInfo?.weekly_volume || 0;
+  const dailyVolume = volumeInfo?.daily_volume || 0;
+  
+  const formatNumber = (number: number) => {
+    if (number >= 1e9) {
+      return `$${(number / 1e9).toFixed(1)}B`;
+    } else if (number >= 1e6) {
+      return `$${(number / 1e6).toFixed(1)}M`;
+    } else if (number >= 1e3) {
+      return `$${(number / 1e3).toFixed(1)}K`;
+    } else {
+      return `$${number.toFixed(1)}`;
+    }
+  };
+
+  return (
   <Stack
     paddingY="24px"
     borderRadius="6px"
@@ -25,6 +43,14 @@ export const BridgeVolume = () => (
           color="#FFFFFF"
         >
           Bridge Volume
+          <Box
+    width="100%"
+    height="1px"
+    bgColor="#FFFFFF"
+    position="relative"
+
+    bottom="-1px"
+  />
         </Text>
       </Flex>
       <HStack>
@@ -75,7 +101,7 @@ export const BridgeVolume = () => (
                 textTransform="capitalize"
                 color="#FFFFFF"
               >
-                {index === 0 ? '$2m' : '$20m'}
+                {index === 0 ? formatNumber(dailyVolume) : formatNumber(monthlyVolume)}
               </Text>
             </Flex>
             <Flex
@@ -102,4 +128,5 @@ export const BridgeVolume = () => (
       ))}
     </Stack>
   </Stack>
-);
+  )
+};
