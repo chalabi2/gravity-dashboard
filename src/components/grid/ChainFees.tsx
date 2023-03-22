@@ -7,7 +7,8 @@ import { Box, Flex, Stack, Text, Modal,
   ModalBody,
   ModalFooter,
   useDisclosure,
-  IconButton } from "@chakra-ui/react";
+  IconButton,
+  useMediaQuery } from "@chakra-ui/react";
   import { InfoIcon } from "@chakra-ui/icons";
 import React, {useState} from "react";
 
@@ -30,7 +31,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     onOpen();
   };
   const [showInfoIcon, setShowInfoIcon] = useState(false);
-
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box 
@@ -156,7 +157,11 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   </Box>
   <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText} >
+        <ModalContent top={isMobile ? 0 : clickPosition.y}
+          left={isMobile ? 0 : clickPosition.x}
+          position={isMobile ? "initial" : "fixed"}
+          bgColor={modalBgText}
+          maxH={isMobile ? "100vh" : undefined} >
           <ModalHeader fontFamily="Futura">Chain Fees</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">

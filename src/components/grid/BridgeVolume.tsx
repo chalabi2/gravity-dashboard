@@ -6,7 +6,8 @@ import { IconButton, Box, Stack, Text, Flex, HStack, Modal,
   useColorModeValue,
   ModalBody,
   ModalFooter,
-  useDisclosure } from '@chakra-ui/react';
+  useDisclosure,
+  useMediaQuery } from '@chakra-ui/react';
 import BridgeVolumeChart from '../charts/BridgeVolumeChart';
 import { BridgeVolumeChartData } from '../calculations/BridgeVolume';
 import { useVolumeInfo } from '../calculations/GravityChainApi';
@@ -49,7 +50,7 @@ export const BridgeVolume = () => {
   };
 
   const [showInfoIcon, setShowInfoIcon] = useState(false);
-
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box 
@@ -147,7 +148,7 @@ export const BridgeVolume = () => {
           >
             {label}
           </Text>
-          <Flex align="center">
+          <Flex ml="25px" align="center">
             <Flex align="baseline">
               <Text
                 fontFamily="futura"
@@ -165,7 +166,7 @@ export const BridgeVolume = () => {
               borderRadius="64px"
               ml="5px"
               align="center"
-              background={index === 0 ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)'}
+              background={index === 0 ? '#32CD32' : '#FF4500'}
             >
                <Text
                 fontFamily="futura"
@@ -185,7 +186,11 @@ export const BridgeVolume = () => {
     </Stack>
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText} >
+        <ModalContent  top={isMobile ? 0 : clickPosition.y}
+          left={isMobile ? 0 : clickPosition.x}
+          position={isMobile ? "initial" : "fixed"}
+          bgColor={modalBgText}
+          maxH={isMobile ? "100vh" : undefined} >
           <ModalHeader fontFamily="Futura">Volume Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">

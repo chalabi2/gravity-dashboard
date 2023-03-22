@@ -11,7 +11,8 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  useDisclosure
+  useDisclosure,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
@@ -54,6 +55,7 @@ export const Pmtr = () => {
   };
 
   const [showInfoIcon, setShowInfoIcon] = useState(false);
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box
@@ -71,7 +73,7 @@ export const Pmtr = () => {
       bg="rgba(0, 18, 183, 0.5)"
     >
       <Box 
-      ml={{md: "-30px"}} position="relative" width="100%" height="100%" >
+      ml={{md: "-28px", base: "-18px"}} position="relative" width="100%" height="100%" >
        <IconButton
         aria-label="Info"
         icon={<InfoIcon />}
@@ -83,8 +85,7 @@ export const Pmtr = () => {
         color="white"
         onClick={handleClick}
         zIndex={1}
-        mt={{md: "-30px"}}
-        mr={{md: "40px"}}
+        mt={{md: "-30px", base: "-20px"}}
         style={{
           opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
           transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
@@ -225,7 +226,11 @@ export const Pmtr = () => {
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText}>
+        <ModalContent top={isMobile ? 0 : clickPosition.y}
+          left={isMobile ? 0 : clickPosition.x}
+          position={isMobile ? "initial" : "fixed"}
+          bgColor={modalBgText}
+          maxH={isMobile ? "100vh" : undefined}>
           <ModalHeader>Price Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">

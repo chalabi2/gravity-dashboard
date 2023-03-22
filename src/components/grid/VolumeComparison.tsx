@@ -7,7 +7,8 @@ import { Stack, Text, HStack, Box, Modal,
   useColorModeValue,
   ModalBody,
   ModalFooter,
-  useDisclosure } from "@chakra-ui/react";
+  useDisclosure,
+  useMediaQuery } from "@chakra-ui/react";
 import VolumeComparisonChart from "../charts/VolumeComparisonCharts";
 import { VolumeComparisonData } from "../calculations/VolumeComparison";
 import { InfoIcon } from "@chakra-ui/icons";
@@ -65,6 +66,7 @@ export const VolumeComparison = () => {
     onOpen();
   };
   const [showInfoIcon, setShowInfoIcon] = useState(false);
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box
@@ -136,9 +138,9 @@ export const VolumeComparison = () => {
         marginTop="-10px"
         marginBottom="10px"
       >
-        <Label color="rgba(0, 255, 0, 0.5)"><Text color="white">Gravity</Text></Label>
-        <Label color="rgba(255, 0, 0, 0.5)"><Text color="white">Axelar</Text></Label>
-        <Label color="rgba(255, 255, 0, 0.5)"><Text color="white">Wormhole</Text></Label>
+        <Label color="#0053FF"><Text zIndex={0} color="white">Gravity</Text></Label>
+        <Label color="#FF8C00"><Text zIndex={0} color="white">Axelar</Text></Label>
+        <Label color="#9932CC"><Text color="white">Wormhole</Text></Label>
       </HStack>
       <HStack width="100%" justifyContent="space-between">
       <Box flexGrow={1} height={{ base: "250px", md: "375px" }} >
@@ -149,7 +151,11 @@ export const VolumeComparison = () => {
     </Stack>
     <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed"  bgColor={modalBgText} >
+        <ModalContent top={isMobile ? 0 : clickPosition.y}
+          left={isMobile ? 0 : clickPosition.x}
+          position={isMobile ? "initial" : "fixed"}
+          bgColor={modalBgText}
+          maxH={isMobile ? "100vh" : undefined} >
           <ModalHeader fontFamily="Futura">Volume Comparison Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">

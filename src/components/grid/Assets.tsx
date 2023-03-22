@@ -6,7 +6,8 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
   ModalCloseButton,
   useColorModeValue,
   ModalBody,
-  ModalFooter, } from '@chakra-ui/react';
+  ModalFooter,
+  useMediaQuery } from '@chakra-ui/react';
 import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6 } from '../calculations/Assets';
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
@@ -38,7 +39,8 @@ export const Assets: React.FC = () => {
   };
 
   const [showInfoIcon, setShowInfoIcon] = useState(false);
-
+  
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box 
@@ -156,7 +158,7 @@ export const Assets: React.FC = () => {
         borderRadius="1px"
         width="100%"
         height="4px"
-        background="linear-gradient(270deg, #ff0000 0%, #00ff38 100%)"
+        background="linear-gradient(270deg,  #FF4500 0%, #32CD32 100%)"
         gridColumn="1 / 3"
         position="relative"
       >
@@ -278,7 +280,11 @@ export const Assets: React.FC = () => {
   </Grid>
   <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText} >
+        <ModalContent           top={isMobile ? 0 : clickPosition.y}
+          left={isMobile ? 0 : clickPosition.x}
+          position={isMobile ? "initial" : "fixed"}
+          bgColor={modalBgText}
+          maxH={isMobile ? "100vh" : undefined} >
           <ModalHeader fontFamily="Futura">Total Asset Movement</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px" >
