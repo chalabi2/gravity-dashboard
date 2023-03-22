@@ -21,6 +21,7 @@ export const Assets: React.FC = () => {
   const monthlyOut = Math.round(volumeInfo?.weekly_outflow || 0);
 
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
+  const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const modalBgText = useColorModeValue("white", "black");
@@ -90,7 +91,7 @@ export const Assets: React.FC = () => {
   gridColumn="1 / 3"
   position="relative"
 >
-  Ibc & Eth Assets
+  IBC & Eth Assets
   <Box
     width="63%"
     height="1px"
@@ -227,6 +228,23 @@ export const Assets: React.FC = () => {
         ${dailyOut.toLocaleString()}
       </Text>
     </Flex>
+    <Box
+        borderRadius="1px"
+        width="100%"
+        height="4px"
+        background="linear-gradient(270deg,  #FF4500 0%, #32CD32 100%)"
+        gridColumn="1 / 3"
+        position="relative"
+      >
+        <Box
+          width="2px"
+          height="8px"
+          bgColor="white"
+          position="absolute"
+          left={`calc(${percentageDifferenceDaily}% - 1px)`}
+          top="-2px"
+        />
+      </Box>
   <Text
     fontFamily="Futura MD BT"
     mr="35px"
@@ -288,7 +306,7 @@ export const Assets: React.FC = () => {
           <ModalHeader fontFamily="Futura">Total Asset Movement</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px" >
-            This grid item shows the total movement of bridged assets and IBC assets. Assets that are bridged in from Ethereum can be bridged bi-directionaly to any other IBC enabled blockchain. 
+            This grid item shows the total movement of bridged assets and IBC assets. Assets that are bridged in from Ethereum can be bridged bi-directionaly to any other IBC enabled blockchain. Bigget movers represents the assets with the most movement between Gravity Bridge & other chains.  
           </ModalBody>
           <ModalFooter>
           </ModalFooter>

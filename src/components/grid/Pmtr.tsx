@@ -234,7 +234,7 @@ export const Pmtr = () => {
           <ModalHeader>Price Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">
-            This grid item shows the price, market cap, trading volume, and rank of graviton token.
+            This grid item shows the price, market cap, trading volume, and rank of the Graviton token according to CoinGecko.
           </ModalBody>
           <ModalFooter>
           </ModalFooter>
