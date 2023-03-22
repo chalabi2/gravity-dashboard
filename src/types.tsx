@@ -1,3 +1,11 @@
+export type GravityBridgeData = {
+    price: number;
+    marketCap: string;
+    tradingVolume: string;
+    rank: number;
+  };
+  
+
 export type BatchFees = {
     token: string,
     total_fees: number,

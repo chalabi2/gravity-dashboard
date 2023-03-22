@@ -1,7 +1,16 @@
-import React from 'react';
-import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack } from '@chakra-ui/react';
-import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6, biggestMover7, biggestMover8 } from '../calculations/Assets';
-import { useVolumeInfo } from '../calculations/ApiCalls';
+import React, {useState} from 'react';
+import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, useDisclosure, Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useColorModeValue,
+  ModalBody,
+  ModalFooter, } from '@chakra-ui/react';
+import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6 } from '../calculations/Assets';
+import { useVolumeInfo } from '../calculations/GravityChainApi';
+import { InfoIcon } from "@chakra-ui/icons";
+
 
 export const Assets: React.FC = () => {
   const volumeInfo = useVolumeInfo();
@@ -11,8 +20,51 @@ export const Assets: React.FC = () => {
   const monthlyOut = Math.round(volumeInfo?.weekly_outflow || 0);
 
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const modalBgText = useColorModeValue("white", "black");
+  const [clickPosition, setClickPosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  const handleClick = (event: React.MouseEvent) => {
+    // Store the click position
+    setClickPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+    onOpen();
+  };
+
+  const [showInfoIcon, setShowInfoIcon] = useState(false);
+
 
   return (
+    <Box 
+    onMouseEnter={() => setShowInfoIcon(true)}
+    onMouseLeave={() => {
+      if (!isOpen) {
+        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+      }
+    }}
+    position="relative">
+    <IconButton
+      aria-label="Info"
+      icon={<InfoIcon />}
+      position="absolute"
+      top={1}
+      left={2}
+      size="xs"
+      variant="ghost"
+      color="white"
+      onClick={handleClick}
+      zIndex={1}
+      style={{
+        opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
+        transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+      }}
+    />
   <Grid
     padding="10px"
     p={{ base: '14px', ml: '25px', md: '25px' }}
@@ -36,13 +88,13 @@ export const Assets: React.FC = () => {
   gridColumn="1 / 3"
   position="relative"
 >
-  Ibc & Eth Bridged Assets
+  Ibc & Eth Assets
   <Box
-    width="100%"
+    width="63%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
-
+    ml="50px"
     bottom="2px"
   />
 </Text>
@@ -58,7 +110,7 @@ export const Assets: React.FC = () => {
         <Box
     width="75%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
 
     bottom="1px"
@@ -85,7 +137,7 @@ export const Assets: React.FC = () => {
         <Box
     width="85%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
 
     bottom="1px"
@@ -129,7 +181,7 @@ export const Assets: React.FC = () => {
         <Box
     width="56%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
 
     bottom="1px"
@@ -157,7 +209,7 @@ export const Assets: React.FC = () => {
         <Box
     width="65%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
 
     bottom="1px"
@@ -175,6 +227,8 @@ export const Assets: React.FC = () => {
     </Flex>
   <Text
     fontFamily="Futura MD BT"
+    mr="35px"
+    align="center"
     fontWeight="light"
     fontSize="20px"
     textTransform="capitalize"
@@ -183,15 +237,15 @@ export const Assets: React.FC = () => {
   >
     Biggest Movers
     <Box
-    width="45%"
+    width="50%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
-
+    ml="66px"
     bottom="1px"
   />
   </Text>
-  <HStack ml="30px" spacing={12} gridColumn="1 / 3">
+  <HStack justifyContent="center"  spacing={12} gridColumn="1 / 3">
     <UnorderedList
       listStyleType="none"
       ml={0}
@@ -205,7 +259,6 @@ export const Assets: React.FC = () => {
       <ListItem>1. {biggestMover1.toLocaleString()}</ListItem>
       <ListItem>2. {biggestMover2.toLocaleString()}</ListItem>
       <ListItem>3. {biggestMover3.toLocaleString()}</ListItem>
-      <ListItem>4. {biggestMover4.toLocaleString()}</ListItem>
     </UnorderedList>
     <UnorderedList
       listStyleType="none"
@@ -217,12 +270,25 @@ export const Assets: React.FC = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
+      <ListItem>4. {biggestMover4.toLocaleString()}</ListItem>
       <ListItem>5. {biggestMover5.toLocaleString()}</ListItem>
       <ListItem>6. {biggestMover6.toLocaleString()}</ListItem>
-      <ListItem>7. {biggestMover7.toLocaleString()}</ListItem>
-      <ListItem>8. {biggestMover8.toLocaleString()}</ListItem>
     </UnorderedList>
   </HStack>
   </Grid>
+  <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText} >
+          <ModalHeader fontFamily="Futura">Total Asset Movement</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody fontFamily="Futura" fontSize="20px" >
+            This grid item shows the total movement of bridged assets and IBC assets. Assets that are bridged in from Ethereum can be bridged bi-directionaly to any other IBC enabled blockchain. 
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+  </Box>
    );
 };
+

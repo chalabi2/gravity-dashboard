@@ -1,7 +1,18 @@
-import { Box, Stack, Text, Flex, HStack } from '@chakra-ui/react';
+import { IconButton, Box, Stack, Text, Flex, HStack, Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useColorModeValue,
+  ModalBody,
+  ModalFooter,
+  useDisclosure } from '@chakra-ui/react';
 import BridgeVolumeChart from '../charts/BridgeVolumeChart';
 import { BridgeVolumeChartData } from '../calculations/BridgeVolume';
-import { useVolumeInfo } from '../calculations/ApiCalls';
+import { useVolumeInfo } from '../calculations/GravityChainApi';
+import { InfoIcon } from "@chakra-ui/icons";
+import React, {useState} from 'react';
+
 
 export const BridgeVolume = () => {
   const volumeInfo = useVolumeInfo();
@@ -20,18 +31,62 @@ export const BridgeVolume = () => {
     }
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const modalBgText = useColorModeValue("white", "black");
+  const [clickPosition, setClickPosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  const handleClick = (event: React.MouseEvent) => {
+    // Store the click position
+    setClickPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+    onOpen();
+  };
+
+  const [showInfoIcon, setShowInfoIcon] = useState(false);
+
+
   return (
-  <Stack
-    paddingY="24px"
-    borderRadius="6px"
-    justify="flex-start"
-    align="flex-start"
-    p={{ base: '14px', md: '25px' }}
-    spacing="24px"
-    width="330px"
-    maxWidth="100%"
-    background="rgba(0, 18, 183, 0.5)"
-  >
+    <Box 
+    onMouseEnter={() => setShowInfoIcon(true)}
+    onMouseLeave={() => {
+      if (!isOpen) {
+        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+      }
+    }}
+    position="relative">
+      <IconButton
+        aria-label="Info"
+        icon={<InfoIcon />}
+        position="absolute"
+        top={2}
+        left={2}
+        size="xs"
+        variant="ghost"
+        color="white"
+        onClick={handleClick}
+        zIndex={1}
+        style={{
+          opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
+          transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+        }}
+      />
+      <Stack
+        paddingY="24px"
+        borderRadius="6px"
+        justify="flex-start"
+        align="flex-start"
+        p={{ base: "14px", md: "25px" }}
+        spacing="24px"
+        width="330px"
+        maxWidth="100%"
+        background="rgba(0, 18, 183, 0.5)"
+      >
     <Stack paddingX="40px" justify="center" align="flex-start" alignSelf="stretch">
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Text
@@ -46,7 +101,7 @@ export const BridgeVolume = () => {
           <Box
     width="100%"
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position="relative"
 
     bottom="-1px"
@@ -127,6 +182,19 @@ export const BridgeVolume = () => {
         </Flex>
       ))}
     </Stack>
-  </Stack>
+    </Stack>
+    <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText} >
+          <ModalHeader fontFamily="Futura">Volume Data</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody fontFamily="Futura" fontSize="20px">
+            This grid item shows the the total volume transfered between Gravity Bridge & Ethereum including the daily and weekly amounts.
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
   )
 };

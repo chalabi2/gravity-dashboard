@@ -75,8 +75,29 @@ export const Stats: React.FC = () => {
           <VolumeComparison />
         </Box>
       </Flex>
-      <Text textAlign="center" fontSize="sm" mt={4}>
+      <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
       <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://www.gravitybridge.net/" >Gravity Bridge ® </Link>Is A Registered Trademark | Powered By <Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://chandrastation.com" >Chandra Station</Link>
+      <Text>
+        Data is feteched from:
+        <Link 
+        _hover={{textDecoration: "none", color: "blue",}} 
+        color={BottomTextColor} p="4px"  
+        fontFamily="futura" href="https://www.coingecko.com/en/coins/graviton" >
+        Coin Gecko |
+          </Link>
+          <Link 
+        _hover={{textDecoration: "none", color: "blue",}} 
+        color={BottomTextColor} p="4px"  
+        fontFamily="futura" href="https://github.com/Gravity-Bridge/gravity-info-api" >
+          Gravity Info API |
+          </Link>
+          <Link 
+        _hover={{textDecoration: "none", color: "blue",}} 
+        color={BottomTextColor} p="4px"  
+        fontFamily="futura" href="https://github.com/Gravity-Bridge/gravity-info-api" >
+          Dune Analytics
+          </Link>
+      </Text>
       </Text>
     </VStack>
   );

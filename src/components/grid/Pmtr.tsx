@@ -1,13 +1,24 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  IconButton,
+  Modal,
+  useColorModeValue,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure
+} from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
 import { fetchGravityBridgeData } from "../calculations/Pmtr";
+import { GravityBridgeData } from "../../types";
+import React from "react";
 
-type GravityBridgeData = {
-  price: number;
-  marketCap: string;
-  tradingVolume: string;
-  rank: number;
-};
 
 export const Pmtr = () => {
   const [data, setData] = useState<GravityBridgeData>({
@@ -26,8 +37,32 @@ export const Pmtr = () => {
     fetchData();
   }, []);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalBgText = useColorModeValue("white", "black");
+  const [clickPosition, setClickPosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  const handleClick = (event: React.MouseEvent) => {
+    // Store the click position
+    setClickPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+    onOpen();
+  };
+
+  const [showInfoIcon, setShowInfoIcon] = useState(false);
+
   return (
     <Box
+    onMouseEnter={() => setShowInfoIcon(true)}
+    onMouseLeave={() => {
+      if (!isOpen) {
+        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+      }
+    }}
       p={{ base: "14px", md: "25px" }}
       borderRadius="6px"
       maxWidth="682px"
@@ -35,6 +70,27 @@ export const Pmtr = () => {
       marginLeft="6px"
       bg="rgba(0, 18, 183, 0.5)"
     >
+      <Box 
+      ml={{md: "-30px"}} position="relative" width="100%" height="100%" >
+       <IconButton
+        aria-label="Info"
+        icon={<InfoIcon />}
+        position="absolute"
+        top={2}
+        left={2}
+        size="xs"
+        variant="ghost"
+        color="white"
+        onClick={handleClick}
+        zIndex={1}
+        mt={{md: "-30px"}}
+        mr={{md: "40px"}}
+        style={{
+          opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
+          transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+        }}
+      />
+      </Box>
       <Flex
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
@@ -56,7 +112,7 @@ export const Pmtr = () => {
     width={{md: "85%", base: "15%"}}
     ml={{md: "0", base: "128px"}}
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position={{md: "relative", base: "sticky"}}
 
     bottom="1px"
@@ -87,7 +143,7 @@ export const Pmtr = () => {
     width={{md: "100%", base: "33%"}}
     ml={{md: "0", base: "102px"}}
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position={{md: "relative", base: "sticky"}}
 
     bottom="1px"
@@ -118,7 +174,7 @@ export const Pmtr = () => {
     width={{md: "100%", base: "43%"}}
     ml={{md: "0", base: "88px"}}
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position={{md: "relative", base: "sticky"}}
 
     bottom="1px"
@@ -149,7 +205,7 @@ export const Pmtr = () => {
     width={{md: "100%", base: "16%"}}
     ml={{md: "0", base: "125px"}}
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position={{md: "relative", base: "sticky"}}
 
     bottom="1px"
@@ -167,6 +223,18 @@ export const Pmtr = () => {
           </Text>
         </Box>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed" bgColor={modalBgText}>
+          <ModalHeader>Price Data</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody fontFamily="Futura" fontSize="20px">
+            This grid item shows the price, market cap, trading volume, and rank of graviton token.
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

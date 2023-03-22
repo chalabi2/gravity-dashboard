@@ -8,5 +8,3 @@ export const biggestMover3 = 'USDC';
 export const biggestMover4 = 'USDC';
 export const biggestMover5 = 'USDC';
 export const biggestMover6 = 'USDC';
-export const biggestMover7 = 'USDC';
-export const biggestMover8 = 'USDC';

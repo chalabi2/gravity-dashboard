@@ -1,6 +1,18 @@
-import { Stack, Text, HStack, Box } from "@chakra-ui/react";
+import { Stack, Text, HStack, Box, Modal,
+  IconButton,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useColorModeValue,
+  ModalBody,
+  ModalFooter,
+  useDisclosure } from "@chakra-ui/react";
 import VolumeComparisonChart from "../charts/VolumeComparisonCharts";
 import { VolumeComparisonData } from "../calculations/VolumeComparison";
+import { InfoIcon } from "@chakra-ui/icons";
+import React, {useState} from "react";
+
 
 interface LabelProps {
   children: React.ReactNode;
@@ -34,7 +46,51 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
 );
 
 export const VolumeComparison = () => {
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const modalBgText = useColorModeValue("white", "black");
+
+  const [clickPosition, setClickPosition] = React.useState({
+    x: 0,
+    y: 0,
+  });
+
+  const handleClick = (event: React.MouseEvent) => {
+    // Store the click position
+    setClickPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+    onOpen();
+  };
+  const [showInfoIcon, setShowInfoIcon] = useState(false);
+
   return (
+    <Box
+    onMouseEnter={() => setShowInfoIcon(true)}
+    onMouseLeave={() => {
+      if (!isOpen) {
+        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+      }
+    }}
+    position="relative">
+    <IconButton
+      aria-label="Info"
+      icon={<InfoIcon />}
+      position="absolute"
+      top={2}
+      left={2}
+      size="xs"
+      variant="ghost"
+      color="white"
+      zIndex={1}
+      onClick={handleClick}
+      style={{
+        opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
+        transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+      }}
+    />
   <Stack
     paddingX="25px"
     paddingY="25px"
@@ -66,7 +122,7 @@ export const VolumeComparison = () => {
     width={{md: "86%", base: "85%"}}
     ml={{md: "0", base: "0px"}}
     height="1px"
-    bgColor="#FFFFFF"
+    bgColor="rgb(255,255,255, 0.5)"
     position={{md: "relative", base: "sticky"}}
 
     bottom="1px"
@@ -91,5 +147,18 @@ export const VolumeComparison = () => {
       </HStack>
     </Stack>
     </Stack>
+    <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent top={clickPosition.y} left={clickPosition.x} position="fixed"  bgColor={modalBgText} >
+          <ModalHeader fontFamily="Futura">Volume Comparison Data</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody fontFamily="Futura" fontSize="20px">
+            This grid item compares the total volume bridged on Gravity with the total volume bridged on other generic messaging bridges.
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Box>
   );
 };
