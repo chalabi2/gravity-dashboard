@@ -83,19 +83,7 @@ export const Stats: React.FC = () => {
         _hover={{textDecoration: "none", color: "blue",}} 
         color={BottomTextColor} p="4px"  
         fontFamily="futura" href="https://www.coingecko.com/en/coins/graviton" >
-        Coin Gecko |
-          </Link>
-          <Link 
-        _hover={{textDecoration: "none", color: "blue",}} 
-        color={BottomTextColor} p="4px"  
-        fontFamily="futura" href="https://github.com/Gravity-Bridge/gravity-info-api" >
-          Gravity Info API |
-          </Link>
-          <Link 
-        _hover={{textDecoration: "none", color: "blue",}} 
-        color={BottomTextColor} p="4px"  
-        fontFamily="futura" href="https://github.com/Gravity-Bridge/gravity-info-api" >
-          Dune Analytics
+        Coin Gecko |<Link _hover={{textDecoration: "none", color: "blue",}} color={BottomTextColor} p="4px"  fontFamily="futura" href="https://github.com/Gravity-Bridge/gravity-info-api"> Gravity Info API</Link>
           </Link>
       </Text>
       </Text>
