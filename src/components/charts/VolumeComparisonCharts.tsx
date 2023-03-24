@@ -5,8 +5,9 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 
 interface VolumeComparisonChartProps {
-  data: Array<{ x: string; y1: number; y2: number; y3: number }>;
+  data: Array<{ x: string; y1: number | null; y2: number | null; y3: number | null }>;
 }
+
 
 interface CustomTooltipProps {
   active?: boolean;
@@ -59,11 +60,12 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
 const VolumeComparisonChart: React.FC<VolumeComparisonChartProps> = ({ data }) => {
 
 const containerWidth = useBreakpointValue({ base: "100%", md: "100%"});
+const chartMargins = useBreakpointValue({ base: 10, md: 10})
 
   return (
-    <Box p={{md: "4", base: "0px"}} pb={{md: "-4", base: "0px"}} borderRadius="8px" backgroundColor="" mt={{base: "", md: "-30px"}} width={{ base: "300px", md: "600px" }}>
+    <Box p={{md: "4", base: "0px"}} pb={{md: "-4", base: "0px"}} borderRadius="8px" backgroundColor="" mt={{base: "-20px", md: "-30px"}} width={{ base: "300px", md: "600px" }}>
     <ResponsiveContainer width={containerWidth} height={310}>
-      <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+      <LineChart data={data} margin={{ top: 5, right: 20, bottom: 0, left: 0 }}>
       <defs>
             <linearGradient id="Gravity" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#0053FF" />
@@ -81,6 +83,7 @@ const containerWidth = useBreakpointValue({ base: "100%", md: "100%"});
         <CartesianGrid strokeDasharray="1 1" />
         <XAxis
           dataKey="x"
+          tickMargin={chartMargins}
           tick={{
             fontFamily: "Futura MD BT",
             fontWeight: "light",
@@ -89,6 +92,7 @@ const containerWidth = useBreakpointValue({ base: "100%", md: "100%"});
           }}
         />
         <YAxis
+        tickMargin={chartMargins}
   tick={{
     fontFamily: "Futura MD BT",
     fontWeight: "light",

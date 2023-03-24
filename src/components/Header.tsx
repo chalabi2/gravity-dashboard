@@ -64,6 +64,9 @@ export const Header = () => {
       >
         Block Explorer
       </Link>
+      <Link
+      href="https://chandrastation.github.io/space-station/"
+      >
       <Box
         as="button"
         borderRadius="5px"
@@ -78,10 +81,17 @@ export const Header = () => {
           cursor: "pointer",
         }}
       >
-        <Text color="#FFFFFF" fontSize="18px">
-          Launch App
-        </Text>
+      <Text
+        zIndex={5}
+        fontFamily="Futura"
+        fontWeight="light"
+        fontSize="18px"
+        color={headerTextColor}
+      >
+        Launch App
+      </Text>
       </Box>
+      </Link>
     </VStack>
   );
 
@@ -116,6 +126,9 @@ export const Header = () => {
       >
         Block Explorer
       </Link>
+      <Link
+      href="https://chandrastation.github.io/space-station/"
+      >
       <Box
         as="button"
         borderRadius="5px"
@@ -130,10 +143,17 @@ export const Header = () => {
           cursor: "pointer",
         }}
       >
-        <Text color="#FFFFFF" fontSize="18px">
-          Launch App
-        </Text>
+      <Text
+        zIndex={5}
+        fontFamily="Futura"
+        fontWeight="light"
+        fontSize="18px"
+        color={headerTextColor}
+      >
+        Launch App
+      </Text>
       </Box>
+      </Link>
     </HStack>
   );
 

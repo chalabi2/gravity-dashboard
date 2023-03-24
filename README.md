@@ -5,6 +5,7 @@ This is a dashboard to view various Gravity Bridge statistics. It uses the [Grav
 Simply fork the repository, enable github pages, and a github pages action will automatically run and deploy the application
 
 ### To do list
+Add a percentage value to the biggest mover token to show how much of the total movement that token is responsible for 
 * Format the text better (Use various fonts)
 * Find the data thats unavailable in the app
 * Data Added:

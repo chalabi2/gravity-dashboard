@@ -34,8 +34,12 @@ export const Pmtr = () => {
       const fetchedData = await fetchGravityBridgeData();
       setData(fetchedData);
     };
-
+  
     fetchData();
+  
+    const intervalId = setInterval(fetchData, 3 * 60 * 60 * 1000); // Refresh data every 3 hours
+  
+    return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
   }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
