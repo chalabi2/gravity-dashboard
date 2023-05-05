@@ -19,6 +19,7 @@ export const BridgeVolume = () => {
   const volumeInfo = useVolumeInfo();
   const monthlyVolume = volumeInfo?.weekly_volume || 0;
   const dailyVolume = volumeInfo?.daily_volume || 0;
+  const monthly_volume = volumeInfo?.monthly_volume || 0;
   
   const formatNumber = (number: number) => {
     if (number >= 1e9) {

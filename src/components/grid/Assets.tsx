@@ -17,8 +17,8 @@ export const Assets: React.FC = () => {
   const volumeInfo = useVolumeInfo();
   const dailyIn = Math.round(volumeInfo?.daily_inflow || 0);
   const dailyOut = Math.round(volumeInfo?.daily_outflow || 0);
-  const monthlyIn = Math.round(volumeInfo?.weekly_inflow || 0);
-  const monthlyOut = Math.round(volumeInfo?.weekly_outflow || 0);
+  const monthlyIn = Math.round(volumeInfo?.monthly_inflow || 0);
+  const monthlyOut = Math.round(volumeInfo?.monthly_outflow || 0);
 
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
   const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;

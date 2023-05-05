@@ -10,9 +10,21 @@ import { Box, Flex, Stack, Text, Modal,
   IconButton,
   useMediaQuery } from "@chakra-ui/react";
   import { InfoIcon } from "@chakra-ui/icons";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import { getChainFees } from "../calculations/fees";
+import { ChainFeeData } from "../../types";
 
 interface ChainFeeProps {}
+
+function formatCosmosNumber(number: number) {
+  const formattedNumber = Math.floor(number / 1000000);
+  return formattedNumber.toLocaleString('en-US');
+}
+
+function formatEthNumber(number: number) {
+  const formattedNumber = number / (10 ** 18);
+  return formattedNumber.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 export const ChainFee: React.FC<ChainFeeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -21,6 +33,20 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     x: 0,
     y: 0,
   });
+
+  const [chainFeesData, setChainFeesData] = useState<ChainFeeData[]>([]);
+
+  useEffect(() => {
+    getChainFees().then((result) => {
+      setChainFeesData(result);
+    });
+  }, []);
+  
+  const getTotalChainFees = (denom: string) => {
+    const entry = chainFeesData.find((item) => item.denom === denom);
+    return entry ? entry.totalChainFees : 0;
+  };
+  
 
   const handleClick = (event: React.MouseEvent) => {
     // Store the click position
@@ -97,7 +123,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             fontSize="26px"
             color="#FFFFFF"
           >
-            15k
+            {formatCosmosNumber(getTotalChainFees("USDC"))}
           </Text>
           <Text
             fontFamily="futura"
@@ -139,7 +165,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             fontSize="26px"
             color="#FFFFFF"
           >
-            32
+            {formatEthNumber(getTotalChainFees("WETH"))}
           </Text>
           <Text
             fontFamily="futura"
