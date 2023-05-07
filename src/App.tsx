@@ -5,9 +5,11 @@ import theme from "./components/theme/theme";
 import { Header } from "./components/Header";
 import { Background } from "./components/theme/Background";
 import { Flares } from "./components/theme/flares";
+import { Fonts } from "./components/theme/theme";
 
 export const App: React.FC = () => (
   <ChakraProvider theme={theme}>
+    <Fonts />
     <Background
       position="absolute"
       top={0}
