@@ -71,9 +71,8 @@ export const Pmtr = () => {
     }}
       p={{ base: "14px", md: "25px" }}
       borderRadius="6px"
-      maxWidth="682px"
-      width="99.3%"
-      marginLeft="6px"
+      maxWidth="680"
+      width="680px"
       bg="rgba(0, 18, 183, 0.5)"
     >
       <Box 
@@ -105,7 +104,7 @@ export const Pmtr = () => {
       >
         <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -136,7 +135,7 @@ export const Pmtr = () => {
         </Box>
         <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -167,7 +166,7 @@ export const Pmtr = () => {
         </Box>
         <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -198,7 +197,7 @@ export const Pmtr = () => {
         </Box>
         <Box width={{ base: "100%", md: "auto" }}>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="  light"
             fontSize="20px"

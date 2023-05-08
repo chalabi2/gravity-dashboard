@@ -77,12 +77,12 @@ export const Assets: React.FC = () => {
     background="rgba(0, 18, 183, 0.5)"
     borderRadius="8px"
     width="340px"
-    height="400px"
+    height="sm"
     maxWidth="100%"
-    marginRight="10px"
+
   >
 <Text
-  fontFamily="Futura MD BT"
+  fontFamily="Futura"
   fontWeight="light"
   fontSize="24px"
   color="#FFFFFF"
@@ -103,7 +103,7 @@ export const Assets: React.FC = () => {
 </Text>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -130,7 +130,7 @@ export const Assets: React.FC = () => {
     </Flex>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -174,7 +174,7 @@ export const Assets: React.FC = () => {
       </Box>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -202,7 +202,7 @@ export const Assets: React.FC = () => {
     </Flex>
     <Flex direction="column">
     <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -246,7 +246,7 @@ export const Assets: React.FC = () => {
         />
       </Box>
   <Text
-    fontFamily="Futura MD BT"
+    fontFamily="Futura"
     mr="35px"
     align="center"
     fontWeight="light"

@@ -22,12 +22,14 @@ import {
   Menu,
   MenuList,
   MenuItem,
+  Wrap
 } from "@chakra-ui/react";
 import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
 import { useMenu } from "@chakra-ui/react";
+import { getCombinedFeeData } from "../calculations/oracle";
 
 interface ChainFeeProps {}
 
@@ -44,9 +46,14 @@ function formatEthNumber(number: number) {
   });
 }
 
+function numberWithCommas(x: any) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export const ChainFee: React.FC<ChainFeeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const modalBgText = useColorModeValue("white", "black");
+  const modalBg = useColorModeValue("white", "black");
+  const modalBgText = useColorModeValue("black", "white");
   const [clickPosition, setClickPosition] = React.useState({
     x: 0,
     y: 0,
@@ -78,42 +85,79 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     return entry ? entry.totalBridgeFees : 0;
   };
 
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClickMenu = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onMenuOpen();
+  };
+  
+  const [prices, setPrices] = useState({
+    chainFeeTotalUSD: 0,
+    bridgeFeeTotalUSD: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const feeData = await getCombinedFeeData();
+      setPrices(feeData);
+    };
+
+    fetchData();
+  }, []);
+  
+
+  const handleClickInfo = (event: React.MouseEvent) => {
     // Store the click position
     setClickPosition({
       x: event.clientX,
       y: event.clientY,
     });
     onOpen();
+    event.stopPropagation();
   };
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
-  const { isOpen: isMenuOpen } = useMenu();
+  const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [selectedMenuItem, setSelectedMenuItem] = useState("Fees");
 
   return (
     <Box
       onMouseEnter={() => setShowInfoIcon(true)}
       onMouseLeave={() => {
-        if (!isOpen && !isMenuOpen) {
-          setShowInfoIcon(false);
-        }
+        setShowInfoIcon(false);
+        onClose();
+        onMenuClose();
       }}
       position="relative"
     >
+       <IconButton
+      aria-label="Info"
+      icon={<InfoIcon />}
+      position="absolute"
+      top={1}
+      left={2}
+      size="xs"
+      variant="ghost"
+      color="white"
+      onClick={handleClickInfo}
+      zIndex={1}
+      style={{
+        opacity: showInfoIcon ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out', 
+      }}
+    />
       <Menu>
         <MenuButton
           color="white"
           as={Button}
           boxShadow="none"
-          rightIcon={<ChevronDownIcon />}
+          rightIcon={<ChevronDownIcon boxSize="25px" />}
           aria-label="More"
           position="absolute"
-          top={1}
+          top={-1}
           right={0}
           size="md"
           variant="ghost"
-          onClick={handleClick}
+          onClick={handleClickMenu}
           zIndex={1}
           style={{
             opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
@@ -133,9 +177,9 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
           }}
         />
         <MenuList
-          width="25px"
-          height="160px"
-          bg="rgba(0, 0, 0, 0.5)"
+        p={0} minW="0" w={'75px'}
+          height="120px"
+          bg="rgba(0, 0, 0, 0.8)"
           color="white"
         >
           <MenuItem
@@ -157,22 +201,13 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             Totals
           </MenuItem>
           <MenuItem
-            onClick={() => setSelectedMenuItem("All Tokens")}
+            onClick={() => setSelectedMenuItem("Tokens")}
             _hover={{
               textDecoration: "underline",
             }}
             bg="rgba(0, 18, 183, 0.0)"
           >
-            All Tokens
-          </MenuItem>
-          <MenuItem
-            onClick={() => setSelectedMenuItem("Data Info")}
-            _hover={{
-              textDecoration: "underline",
-            }}
-            bg="rgba(0, 18, 183, 0.0)"
-          >
-            Data Info
+            Tokens
           </MenuItem>
         </MenuList>
       </Menu>
@@ -183,7 +218,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             justifyContent="space-between"
             align="center"
             spacing="0px"
-            width="xl"
+            width="680px"
             height="sm"
             maxWidth="100%"
             bg="rgba(0, 18, 183, 0.5)"
@@ -191,7 +226,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
           >
             <Text
             pt={2}
-              fontFamily="Futura MD BT"
+              fontFamily="Futura"
               lineHeight="1.17"
               fontWeight="light"
               fontSize="24px"
@@ -218,7 +253,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                 height="100%"
               >
                 <Text
-                  fontFamily="Futura MD BT"
+                  fontFamily="Futura"
                   fontWeight="light"
                   fontSize="20px"
                   textTransform="capitalize"
@@ -336,7 +371,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                 height="100%"
               >
                 <Text
-                  fontFamily="Futura MD BT"
+                  fontFamily="Futura"
                   fontWeight="light"
                   fontSize="20px"
                   textTransform="capitalize"
@@ -455,7 +490,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             justifyContent="space-between"
             align="center"
             spacing="0px"
-            width="xl"
+            width="680px"
             height="sm"
             maxWidth="100%"
             bg="rgba(0, 18, 183, 0.5)"
@@ -463,7 +498,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
           >
             <Text
             pt={2}
-              fontFamily="Futura MD BT"
+              fontFamily="Futura"
               lineHeight="1.17"
               fontWeight="light"
               fontSize="24px"
@@ -489,7 +524,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                 height="100%"
               >
                 <Text
-                  fontFamily="Futura MD BT"
+                  fontFamily="Futura"
                   fontWeight="light"
                   fontSize="20px"
                   textTransform="capitalize"
@@ -506,7 +541,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                   />
                 </Text>
                 <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -517,18 +552,18 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
 
           </Text>
           <Text
-          pb={4}
-            fontFamily="futura"
-            lineHeight="1.4"
-            fontWeight="light"
-            fontSize="20px"
-            textTransform="capitalize"
-            color="#FFFFFF"
-          >
-            $10
-          </Text>
+  pb={4}
+  fontFamily="futura"
+  lineHeight="1.4"
+  fontWeight="light"
+  fontSize="20px"
+  textTransform="capitalize"
+  color="#FFFFFF"
+>
+  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(prices.chainFeeTotalUSD.toFixed(0))}
+</Text>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -550,7 +585,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             $1
           </Text>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -579,7 +614,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                 height="100%"
               >
                 <Text
-                  fontFamily="Futura MD BT"
+                  fontFamily="Futura"
                   fontWeight="light"
                   fontSize="20px"
                   textTransform="capitalize"
@@ -596,7 +631,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                   />
                 </Text>
                 <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -607,18 +642,18 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
 
           </Text>
           <Text
-          pb={4}
-            fontFamily="futura"
-            lineHeight="1.4"
-            fontWeight="light"
-            fontSize="20px"
-            textTransform="capitalize"
-            color="#FFFFFF"
-          >
-            $10
-          </Text>
+  pb={4}
+  fontFamily="futura"
+  lineHeight="1.4"
+  fontWeight="light"
+  fontSize="20px"
+  textTransform="capitalize"
+  color="#FFFFFF"
+>
+  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(prices.bridgeFeeTotalUSD.toFixed(0))}
+</Text>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -640,7 +675,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             $40
           </Text>
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             lineHeight="1.4"
             fontWeight="light"
             fontSize="20px"
@@ -664,13 +699,13 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             </Flex>
           </Stack>
         )}
-        {selectedMenuItem === "All Tokens" && (
+        {selectedMenuItem === "Tokens" && (
            <Stack
            justify="flex-start"
            justifyContent="space-between"
            align="center"
            spacing="0px"
-           width="xl"
+           width="680px"
            height="sm"
            maxWidth="100%"
            bg="rgba(0, 18, 183, 0.5)"
@@ -678,7 +713,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
          >
            <Text
            pt={2}
-             fontFamily="Futura MD BT"
+             fontFamily="Futura"
              lineHeight="1.17"
              fontWeight="light"
              fontSize="24px"
@@ -686,8 +721,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
              color="#FFFFFF"
              textAlign="center"
            >
-             All Tokens
-             <Box
+Tokens             <Box
                width={{ md: "150%", base: "15%" }}
                ml={{ md: "-26px", base: "128px" }}
                height="1px"
@@ -706,7 +740,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                width="50%"
              >
                <Text
-                 fontFamily="Futura MD BT"
+                 fontFamily="Futura"
                  fontWeight="light"
                  fontSize="20px"
                  textTransform="capitalize"
@@ -727,15 +761,16 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
         height="250px"
         overflowY="scroll"
         overflowX="hidden"
+        color="#FFFFFF"
         css={{
           '&::-webkit-scrollbar': {
             width: '1px',
           },
           '&::-webkit-scrollbar-track': {
-            background: '#f1f1f1',
+            background: '#888',
           },
           '&::-webkit-scrollbar-thumb': {
-            background: '#888',
+            background: '#f1f1f1',
           },
         }}
       >
@@ -756,7 +791,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                align="start"
              >
                <Text
-                 fontFamily="Futura MD BT"
+                 fontFamily="Futura"
                  fontWeight="light"
                  fontSize="20px"
                  textTransform="capitalize"
@@ -777,15 +812,16 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
         height="250px"
         overflowY="scroll"
         overflowX="hidden"
+        color="#FFFFFF"
         css={{
           '&::-webkit-scrollbar': {
             width: '1px',
           },
           '&::-webkit-scrollbar-track': {
-            background: '#f1f1f1',
+            background: '#888',
           },
           '&::-webkit-scrollbar-thumb': {
-            background: '#888',
+            background: '#f1f1f1',
           },
         }}
       >
@@ -799,47 +835,37 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
            </Flex>
          </Stack>
         )}
-        {selectedMenuItem === "Data Info" && (
-                    <Stack
-                    justify="flex-start"
-                    justifyContent="space-between"
-                    align="center"
-                    spacing="0px"
-                    width="xl"
-                    height="sm"
-                    maxWidth="100%"
-                    bg="rgba(0, 18, 183, 0.5)"
-                    borderRadius="6px"
-                  >
-                    <Text
-                    pt={2}
-                      fontFamily="Futura MD BT"
-                      lineHeight="1.17"
-                      fontWeight="light"
-                      fontSize="24px"
-                      textTransform="capitalize"
-                      color="#FFFFFF"
-                      textAlign="center"
-                    >
-                    Data Info
-                      <Box
-                        width={{ md: "150%", base: "15%" }}
-                        ml={{ md: "-26px", base: "128px" }}
-                        height="1px"
-                        bgColor="rgb(255,255,255, 0.5)"
-                        position={{ md: "relative", base: "sticky" }}
-                        bottom="1px"
-                      />
-                    </Text>
-                    <VStack pt={4} width="75%" height="100%">
-                    <Text>In Gravity Bridge there are two fees you must pay in orde to bridge your assets from the Gravity Bridge chain to Ethereum.</Text>
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+       
+  <ModalContent
+    top={isMobile ? 0 : clickPosition.y - 30}
+    left={isMobile ? 0 : clickPosition.x - 175}
+    position={isMobile ? "initial" : "fixed"}
+    bgColor={modalBg}
+    minH="200px" // Add minH property to set a minimum height
+    maxH={isMobile ? "100vh" : "93%"}
+    maxW="1000px"
+  >
+          <ModalHeader fontFamily="Futura">Fee Data</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody width="1000px" fontFamily="Futura" fontSize="20px">
+          <VStack pt={4} width="100%" height="100%">
+                      <Wrap
+                      color={modalBgText}
+                      >
+                    <Text>In Gravity Bridge there are two fees you must pay in order to bridge your assets from the Gravity Bridge chain to Ethereum.</Text>
                     <Text>A chain fee is 0.002% or 2 basis points in the denom of the total amount you are bridging. This fee is paid directly to the stakers of the graviton token.</Text>
                     <Text>A bridge fee is the fee you pay to have your tokens relayed between the two bridges. This fee covers the gas cost on the Eth side.</Text>
                     <Text>The data shown in this panel represents the total amount of chain fees and bridge fees paid by bridgers in their respective denoms.</Text>
+                    </Wrap>
                     </VStack>
-                  </Stack>
-        )}
-      </Box>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

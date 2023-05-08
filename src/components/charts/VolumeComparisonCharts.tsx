@@ -29,7 +29,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
         >
           <p
             style={{
-              fontFamily: "Futura MD BT",
+              fontFamily: "Futura",
               fontWeight: "light",
               fontSize: "16px",
               color: "white",
@@ -41,7 +41,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
             <p
               key={index}
               style={{
-                fontFamily: "Futura MD BT",
+                fontFamily: "Futura",
                 fontWeight: "light",
                 fontSize: "16px",
                 color: item.color,
@@ -85,7 +85,7 @@ const chartMargins = useBreakpointValue({ base: 10, md: 10})
           dataKey="x"
           tickMargin={chartMargins}
           tick={{
-            fontFamily: "Futura MD BT",
+            fontFamily: "Futura",
             fontWeight: "light",
             fontSize: "16px",
             fill: "#FFFFFF",
@@ -94,7 +94,7 @@ const chartMargins = useBreakpointValue({ base: 10, md: 10})
         <YAxis
         tickMargin={chartMargins}
   tick={{
-    fontFamily: "Futura MD BT",
+    fontFamily: "Futura",
     fontWeight: "light",
     fontSize: "16px",
     fill: "#FFFFFF",

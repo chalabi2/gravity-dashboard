@@ -19,7 +19,7 @@ export const Fonts = () => (
       }
       /* latin */
       @font-face {
-        font-family: 'Futura MD BT';
+        font-family: 'Futura';
         src: url('./fonts/futura\ medium\ bt.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
@@ -33,7 +33,7 @@ const theme = extendTheme({
   config,
   fonts: {
     body: 'Futura',
-    heading: 'Futura MD BT',
+    heading: 'Futura',
   },
   styles: {
     global: (props: { colorMode: string; }) => ({

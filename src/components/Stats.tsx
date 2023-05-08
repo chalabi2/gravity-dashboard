@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, VStack, Flex, Text, useBreakpointValue, Link, useColorModeValue, Container } from "@chakra-ui/react";
+import { Box, VStack, Flex, Text, useBreakpointValue, Link, useColorModeValue, Container, HStack } from "@chakra-ui/react";
 import { Pmtr } from "./grid/Pmtr";
 import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
@@ -12,15 +12,23 @@ export const Stats: React.FC = () => {
   const BottomTextColor = useColorModeValue("black", "white");
 
   return (
- <Container maxW="8xl" centerContent>
+ <Container py={18} maxW="8xl" centerContent>
   <Box
   maxWidth="8xl"
   width="100%"
   >
   </Box>
-  <Box>
+  <VStack
+  spacing={2}
+  >
+    <Pmtr />
+    <HStack>
+      <BridgeVolume />
+      <Assets />
+    </HStack>
     <ChainFee />
-  </Box>
+    <VolumeComparison />
+  </VStack>
   </Container>
   );
 };

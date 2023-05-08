@@ -100,8 +100,9 @@ export const VolumeComparison = () => {
     justify="flex-start"
     align="flex-start"
     spacing="10px"
-    height="465px"
-    width={{md: "99.3%", base: "100%"}}
+    height="460px"
+    py={-2}
+    width={{md: "680px", base: "100%"}}
     background="rgba(0, 18, 183, 0.5)"
   >
     <Stack
@@ -112,7 +113,7 @@ export const VolumeComparison = () => {
       ml={{base: "-14px", md: "0"}}
     >
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="26px"
         color="#FFFFFF"
