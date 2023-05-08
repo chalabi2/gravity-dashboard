@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, useDisclosure, Modal,
   ModalOverlay,
   ModalContent,
@@ -11,6 +11,7 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
 import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6 } from '../calculations/Assets';
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
+import { getIbcAssets } from "../calculations/ibc";
 
 
 export const Assets: React.FC = () => {
@@ -42,6 +43,17 @@ export const Assets: React.FC = () => {
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
+
+  useEffect(() => {
+  getIbcAssets()
+    .then(({ inAssets, outAssets }) => {
+        console.log("In Assets:", Array.from(inAssets.entries()));
+        console.log("Out Assets:", Array.from(outAssets.entries()));
+    })
+    .catch((error) => {
+        console.error("Error fetching IBC assets:", error);
+    });
+  }, []);
 
   return (
     <Box 

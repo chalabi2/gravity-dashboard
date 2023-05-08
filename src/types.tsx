@@ -164,6 +164,11 @@ export type ChainFee = {
     denom: string,
 }
 
+export type Token = {
+    amount: string,
+    denom: string,
+}
+
 export type BridgeFee = {
     amount: string,
     denom: string,
