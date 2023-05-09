@@ -44,16 +44,8 @@ export const Assets: React.FC = () => {
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
 
-  useEffect(() => {
-  getIbcAssets()
-    .then(({ inAssets, outAssets }) => {
-        console.log("In Assets:", Array.from(inAssets.entries()));
-        console.log("Out Assets:", Array.from(outAssets.entries()));
-    })
-    .catch((error) => {
-        console.error("Error fetching IBC assets:", error);
-    });
-  }, []);
+  const [inAssetsData, setInAssetsData] = useState(new Map());
+  const [outAssetsData, setOutAssetsData] = useState(new Map());
 
   return (
     <Box 
@@ -103,7 +95,7 @@ export const Assets: React.FC = () => {
   gridColumn="1 / 3"
   position="relative"
 >
-  IBC & Eth Assets
+  Eth Assets
   <Box
     width="63%"
     height="1px"

@@ -46,6 +46,14 @@ function formatEthNumber(number: number) {
   });
 }
 
+function formatBtcNumber(number: number) {
+  const formattedNumber = number / 10 ** 18;
+  return formattedNumber.toLocaleString("en-US", {
+    minimumFractionDigits: 4,
+    maximumFractionDigits: 4,
+  });
+}
+
 function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -476,7 +484,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WBTC: {formatCosmosNumber(getTotalBridgeFees("WBTC"))}
+                      WBTC: {formatBtcNumber(getTotalBridgeFees("WBTC"))}
                     </Text>
                   </HStack>
                 </VStack>

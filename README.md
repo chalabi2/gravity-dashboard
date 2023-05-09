@@ -5,15 +5,9 @@ This is a dashboard to view various Gravity Bridge statistics. It uses the [Grav
 Simply fork the repository, enable github pages, and a github pages action will automatically run and deploy the application
 
 ### To do list
-Add a percentage value to the biggest mover token to show how much of the total movement that token is responsible for 
-* Format the text better (Use various fonts)
-* Find the data thats unavailable in the app
-* Data Added:
-    * Daily & Weekly Bridge Volume (@BridgeVolume Grid Item)
-    * Daily In & Daily Out | Monthly In & Monthly Out using weekly (@Assets Grid Item)
-    * Price, Market Cap, Trading Volume, Coingecko Rank (@Pmtr Grid Item)
-* Data Missing:
-    * IBC In & Out | Biggest Movers (@Assets Grid Item)
-    * All Time Volume (@BridgeVolume Grid Item)
-    * Chain fees (@ChainFees Grid Item)
-    * All Time Bridge Data Compare (@BridgeVolumeComparison Grid Item)
+Data Missing:
+* Biggest movers - use send to eth messages to find the highest USD value from the tokens that are bridged and order them from 1st to 6th
+* Average Chain & Bridge Fee - take the total amounts from each denom then divide it by the amount of transactions for that denom then add all the USD values from each divided denom together then divide by total amount of denoms
+* Common Chain & Bridge Fee - Whichever token has the highest average usd in each chain and bridge category
+* Total Bridge Volume & TVL - take the logic from gravity info api for volume, make it recursive, make it save to a data base every months average ala transactions. implement the exact same logic from volume afterwards but instead of erc20 transfer events for the bridge look at locked events
+* Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly. 
