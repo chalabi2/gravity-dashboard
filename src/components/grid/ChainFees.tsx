@@ -210,6 +210,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
           color="white"
         >
           <MenuItem
+          fontFamily="Futura"
             onClick={() => setSelectedMenuItem("Fees")}
             _hover={{
               textDecoration: "underline",
@@ -219,6 +220,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             Fees
           </MenuItem>
           <MenuItem
+          fontFamily="Futura"
             onClick={() => setSelectedMenuItem("Totals")}
             _hover={{
               textDecoration: "underline",
@@ -228,6 +230,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             Totals
           </MenuItem>
           <MenuItem
+          fontFamily="Futura"
             onClick={() => setSelectedMenuItem("Tokens")}
             _hover={{
               textDecoration: "underline",

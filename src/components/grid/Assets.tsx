@@ -21,6 +21,11 @@ interface DenomData {
   totalValue: number;
 }
 
+function formatTotalAmount(amount: number, decimals: number): string {
+  const formattedAmount = amount / Math.pow(10, decimals);
+  return formattedAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
 
 export const Assets: React.FC = () => {
   const volumeInfo = useVolumeInfo();
@@ -38,6 +43,7 @@ export const Assets: React.FC = () => {
     x: 0,
     y: 0,
   });
+  
 
   const handleClick = (event: React.MouseEvent) => {
     // Store the click position
@@ -55,7 +61,7 @@ export const Assets: React.FC = () => {
   const [inAssetsData, setInAssetsData] = useState(new Map());
   const [outAssetsData, setOutAssetsData] = useState(new Map());
 
-  const [topDenoms, setTopDenoms] = useState<{ denom: string; totalAmounts: number; price: number; totalValue: number; }[]>([]);
+  const [topDenoms, setTopDenoms] = useState<{ denom: string; totalAmounts: string; price: string; totalValue: number; }[]>([]);
   const [lastFetched, setLastFetched] = useState<number | null>(null);
 
 
@@ -182,7 +188,7 @@ export const Assets: React.FC = () => {
   />
       </Text>
       <Text
-        fontFamily="futura"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="18px"
         color="#FFFFFF"
@@ -312,12 +318,16 @@ export const Assets: React.FC = () => {
       color="#FFFFFF"
     >
   <ListItem>
-    <Tooltip 
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[0]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[0]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[0]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[1]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
@@ -328,12 +338,16 @@ export const Assets: React.FC = () => {
     </Tooltip>
   </ListItem>
   <ListItem>
-    <Tooltip 
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[1]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[1]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[1]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[1]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
@@ -344,12 +358,16 @@ export const Assets: React.FC = () => {
     </Tooltip>
   </ListItem>
   <ListItem>
-    <Tooltip 
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[2]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[2]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[2]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[2]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
@@ -371,12 +389,16 @@ export const Assets: React.FC = () => {
       color="#FFFFFF"
     >
   <ListItem>
-    <Tooltip 
+    <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[3]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[3]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[3]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[3]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
@@ -387,12 +409,16 @@ export const Assets: React.FC = () => {
     </Tooltip>
   </ListItem>
   <ListItem>
-    <Tooltip 
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[4]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[4]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[4]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[4]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
@@ -403,12 +429,16 @@ export const Assets: React.FC = () => {
     </Tooltip>
   </ListItem>
   <ListItem>
-    <Tooltip 
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
   label={
-    <Box>
+    <Box
+    fontFamily="Futura"
+    >
       <Text>Price: ${topDenoms[5]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[5]?.totalAmounts}</Text>
-      <Text>Total Value: ${topDenoms[5]?.totalValue}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[5]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"

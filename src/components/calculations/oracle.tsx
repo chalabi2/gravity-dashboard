@@ -69,9 +69,9 @@ const formatAmount = (amount: number, decimals: number) => {
   export async function getCombinedFeeData() {
     try {
       const chainFeeTotals = await getChainFeeTotals();
-      console.log('chainFeeTotals:', chainFeeTotals);
+
       const bridgeFeeTotals = await getBridgeFeeTotals();
-      console.log('bridgeFeeTotals:', bridgeFeeTotals);
+
   
       let chainFeeTotalUSD = 0;
       let bridgeFeeTotalUSD = 0;
@@ -249,7 +249,7 @@ export async function getAverageFees() {
 
     // Calculate total USD value
     for (const denom in chainFeeGroups) {
-      console.log('Processing denom:', denom);
+
       const tokenPriceData = await fetchTokenPriceData(denom);
       const tokenPrice = tokenPriceData.price;
       const decimals = tokenDecimalsMap[denom];
@@ -260,15 +260,15 @@ export async function getAverageFees() {
       }
 
       const tokenAmount = formatAmount(chainFeeGroups[denom], decimals);
-      console.log('tokenAmount:', tokenAmount);
+
       const usdValue = tokenAmount * tokenPrice;
       totalChainFeeUSD += usdValue;
     }
 
     for (const denom in bridgeFeeGroups) {
-      console.log('Processing denom:', denom);
+
       const tokenPriceData = await fetchTokenPriceData(denom);
-      console.log('tokenPriceData:', tokenPriceData);  
+
       const tokenPrice = tokenPriceData.price;
       const decimals = tokenDecimalsMap[denom];
 

@@ -11,16 +11,16 @@ export const Fonts = () => (
     styles={`
       /* latin */
       @font-face {
-        font-family: 'Futura';
-        src: url('/fonts/futura-light-bt.woff2') format('woff2');
+        font-family: 'Futura-Light';
+        src: url('public/fonts/futura-light-bt.woff2') format('woff2');
         font-weight: 300;
         font-style: normal;
         font-display: swap;
       }
       /* latin */
       @font-face {
-        font-family: 'Futura';
-        src: url('/fonts/futura-medium-bt.woff2') format('woff2');
+        font-family: 'Futura-MD-BT';
+        src: url('public/fonts/futura-medium-bt.woff2') format('woff2');
         font-weight: 500;
         font-style: normal;
         font-display: swap;
@@ -32,8 +32,8 @@ export const Fonts = () => (
 const theme = extendTheme({
   config,
   fonts: {
-    body: 'Futura',
-    heading: 'Futura',
+    body: 'Futura-MD-BT',
+    heading: 'Futura-Light',
   },
   styles: {
     global: (props: { colorMode: string; }) => ({

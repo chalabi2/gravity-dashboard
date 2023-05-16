@@ -7,6 +7,11 @@ const formatAmount = (amount: number, decimals: number) => {
     return amount / Math.pow(10, decimals);
   };
 
+  function formatTotalAmount(amount: number, decimals: number): string {
+    const formattedAmount = amount / Math.pow(10, decimals);
+    return formattedAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
 const tokenDecimalsMap: { [key: string]: number } = {
     DAI: 18,
     USDT: 6,
@@ -73,9 +78,9 @@ const tokenDecimalsMap: { [key: string]: number } = {
                     const totalValue = formattedAmount * tokenPrice;
                     return {
                         denom,
-                        totalAmounts: tokensByDenom[denom],
-                        price: tokenPrice,
-                        totalValue,
+                        totalAmounts: formatTotalAmount(tokensByDenom[denom], decimals),
+                        price: formatTotalAmount(tokenPrice, 0),
+                        totalValue: totalValue
                     };
                 } catch (error) {
                     return null;
@@ -85,10 +90,10 @@ const tokenDecimalsMap: { [key: string]: number } = {
             let result = await Promise.all(resultPromises);
 
             // Filter out null or undefined results
-            result = result.filter((item): item is { denom: string; totalAmounts: number; price: number; totalValue: number } => item !== null);
+            result = result.filter((item): item is { denom: string; totalAmounts: string; price: string; totalValue: number } => item !== null);
             
             // Explicitly define the type for the array with a type assertion
-            const sortedResult = result as { denom: string; totalAmounts: number; price: number; totalValue: number }[];
+            const sortedResult = result as { denom: string; totalAmounts: string; price: string; totalValue: number }[];
             
             // Sort by total value
             sortedResult.sort((a, b) => b.totalValue - a.totalValue);

@@ -71,6 +71,7 @@ export const Pmtr = () => {
     }}
       p={{ base: "14px", md: "25px" }}
       borderRadius="6px"
+      maxH="90px"
       maxWidth="680"
       width="680px"
       bg="rgba(0, 18, 183, 0.5)"
@@ -96,6 +97,7 @@ export const Pmtr = () => {
       />
       </Box>
       <Flex
+      mt="-8px"
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
         alignItems={{ base: "center", md: "flex-start" }}
@@ -234,7 +236,9 @@ export const Pmtr = () => {
           position={isMobile ? "initial" : "fixed"}
           bgColor={modalBgText}
           maxH={isMobile ? "100vh" : undefined}>
-          <ModalHeader>Price Data</ModalHeader>
+          <ModalHeader
+          fontFamily="Futura"
+          >Price Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">
             This grid item shows the price, market cap, trading volume, and rank of the Graviton token according to CoinGecko.
