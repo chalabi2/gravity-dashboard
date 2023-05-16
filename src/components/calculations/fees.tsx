@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { gravityDenomToStringMap, ChainFee, BridgeFee } from "../../types";
+import { gravityDenomToStringMap, ChainFee, BridgeFee, Amount } from "../../types";
 
 export async function getChainFeeTotals() {
   try {
@@ -61,6 +61,40 @@ export async function getBridgeFeeTotals() {
     const result = Object.keys(feesByDenom).map((denom) => ({
       denom,
       totalBridgeFees: feesByDenom[denom],
+    }));
+
+    return result;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+
+export async function getTokenAmountTotals() {
+  try {
+    const response = await axios.get("https://info.gravitychain.io:9000/transactions/send_to_eth");
+    const data = response.data;
+
+    const tokensByDenom: Record<string, number> = {};
+
+    data.forEach((entry: { data: { amount: Amount[]; }; }) => {
+      if (entry.data.amount.length > 0) {
+        const tokens = entry.data.amount[0];
+        const denom = tokens.denom;
+        const amount = parseInt(tokens.amount, 10);
+
+        const readableDenom = gravityDenomToStringMap[denom] || denom;
+        if (tokensByDenom[readableDenom]) {
+          tokensByDenom[readableDenom] += amount;
+        } else {
+          tokensByDenom[readableDenom] = amount;
+        }
+      }
+    });
+
+    const result = Object.keys(tokensByDenom).map((denom) => ({
+      denom,
+      totalAmounts: tokensByDenom[denom],
     }));
 
     return result;

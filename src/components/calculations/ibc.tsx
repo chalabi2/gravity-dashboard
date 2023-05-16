@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Token, gravityDenomToStringMap } from "../../types";
-import { DenomTrace } from "../../codegen/ibc/applications/transfer/v1/transfer";
+//import { DenomTrace } from "../../codegen/ibc/applications/transfer/v1/transfer";
 
 function formatTokenAmount(amount: string, decimals: number): number {
     const amountFloat = parseFloat(amount);

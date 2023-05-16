@@ -30,6 +30,7 @@ import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
 import { useMenu } from "@chakra-ui/react";
 import { getCombinedFeeData } from "../calculations/oracle";
+import { getAverageFees } from "../calculations/oracle";
 
 interface ChainFeeProps {}
 
@@ -101,6 +102,8 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   const [prices, setPrices] = useState({
     chainFeeTotalUSD: 0,
     bridgeFeeTotalUSD: 0,
+    averageChainFee: 0,
+    averageBridgeFee: 0,
   });
 
   useEffect(() => {
@@ -126,6 +129,22 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [selectedMenuItem, setSelectedMenuItem] = useState("Fees");
+
+  const [averageFees, setAverageFees] = useState({
+    totalChainFeeUSD: 0,
+    totalBridgeFeeUSD: 0,
+    averageChainFee: 0,
+    averageBridgeFee: 0,
+  });
+
+  useEffect(() => {
+    const fetchFees = async () => {
+      const fees = await getAverageFees();
+      setAverageFees(fees);
+    };
+
+    fetchFees();
+  }, []);
 
   return (
     <Box
@@ -582,16 +601,16 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
 
           </Text>
           <Text
-          pb={4}
-            fontFamily="futura"
-            lineHeight="1.4"
-            fontWeight="light"
-            fontSize="20px"
-            textTransform="capitalize"
-            color="#FFFFFF"
-          >
-            $1
-          </Text>
+      pb={4}
+      fontFamily="futura"
+      lineHeight="1.4"
+      fontWeight="light"
+      fontSize="20px"
+      textTransform="capitalize"
+      color="#FFFFFF"
+    >
+      ${averageFees.averageChainFee.toFixed(0)}
+    </Text>
           <Text
             fontFamily="Futura"
             lineHeight="1.4"
@@ -672,16 +691,16 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
 
           </Text>
           <Text
-          pb={4}
-            fontFamily="futura"
-            lineHeight="1.4"
-            fontWeight="light"
-            fontSize="20px"
-            textTransform="capitalize"
-            color="#FFFFFF"
-          >
-            $40
-          </Text>
+      pb={4}
+      fontFamily="futura"
+      lineHeight="1.4"
+      fontWeight="light"
+      fontSize="20px"
+      textTransform="capitalize"
+      color="#FFFFFF"
+    >
+      ${averageFees.averageBridgeFee.toFixed(0)}
+    </Text>
           <Text
             fontFamily="Futura"
             lineHeight="1.4"

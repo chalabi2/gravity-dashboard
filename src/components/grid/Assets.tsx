@@ -7,11 +7,19 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
   useColorModeValue,
   ModalBody,
   ModalFooter,
-  useMediaQuery } from '@chakra-ui/react';
-import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6 } from '../calculations/Assets';
+  useMediaQuery,
+Tooltip } from '@chakra-ui/react';
+import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
-import { getIbcAssets } from "../calculations/ibc";
+
+
+interface DenomData {
+  denom: string;
+  totalAmounts: string;
+  price: number;
+  totalValue: number;
+}
 
 
 export const Assets: React.FC = () => {
@@ -46,6 +54,29 @@ export const Assets: React.FC = () => {
 
   const [inAssetsData, setInAssetsData] = useState(new Map());
   const [outAssetsData, setOutAssetsData] = useState(new Map());
+
+  const [topDenoms, setTopDenoms] = useState<{ denom: string; totalAmounts: number; price: number; totalValue: number; }[]>([]);
+  const [lastFetched, setLastFetched] = useState<number | null>(null);
+
+
+  const fetchData = async () => {
+    const now = Date.now();
+    const cacheTimeout = 15 * 60 * 1000; // 15 minutes in milliseconds
+  
+    // If data is already fetched and cached within the valid time window, do not fetch again
+    if (lastFetched && now - lastFetched < cacheTimeout) {
+      return;
+    }
+  
+    const data = await getTokenAmountTotals();
+    setTopDenoms(data);
+    setLastFetched(now); // Update the timestamp of the last fetched data
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
 
   return (
     <Box 
@@ -280,9 +311,54 @@ export const Assets: React.FC = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>1. {biggestMover1.toLocaleString()}</ListItem>
-      <ListItem>2. {biggestMover2.toLocaleString()}</ListItem>
-      <ListItem>3. {biggestMover3.toLocaleString()}</ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[0]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[0]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[0]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        1. {topDenoms[0]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[1]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[1]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[1]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        2. {topDenoms[1]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[2]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[2]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[2]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        3. {topDenoms[2]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
     </UnorderedList>
     <UnorderedList
       listStyleType="none"
@@ -294,9 +370,54 @@ export const Assets: React.FC = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>4. {biggestMover4.toLocaleString()}</ListItem>
-      <ListItem>5. {biggestMover5.toLocaleString()}</ListItem>
-      <ListItem>6. {biggestMover6.toLocaleString()}</ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[3]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[3]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[3]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        4. {topDenoms[3]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[4]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[4]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[4]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        5. {topDenoms[4]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+    <Tooltip 
+  label={
+    <Box>
+      <Text>Price: ${topDenoms[5]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[5]?.totalAmounts}</Text>
+      <Text>Total Value: ${topDenoms[5]?.totalValue}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        6. {topDenoms[5]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
     </UnorderedList>
   </HStack>
   </Grid>

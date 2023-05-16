@@ -250,3 +250,8 @@ export type gravityDenomToString = {
     denom: string;
     totalBridgeFees: number;
   }
+
+  export interface Amount {
+    denom: string;
+    amount: string;
+  }

@@ -12,16 +12,16 @@ export const Fonts = () => (
       /* latin */
       @font-face {
         font-family: 'Futura';
-        src: url('./fonts/futura\ light\ bt.ttf') format('truetype');
-        font-weight: normal;
+        src: url('/fonts/futura-light-bt.woff2') format('woff2');
+        font-weight: 300;
         font-style: normal;
         font-display: swap;
       }
       /* latin */
       @font-face {
         font-family: 'Futura';
-        src: url('./fonts/futura\ medium\ bt.ttf') format('truetype');
-        font-weight: normal;
+        src: url('/fonts/futura-medium-bt.woff2') format('woff2');
+        font-weight: 500;
         font-style: normal;
         font-display: swap;
       }
