@@ -6,7 +6,6 @@ Simply fork the repository, enable github pages, and a github pages action will 
 
 ### To do list
 Data Missing:
-* Biggest movers - use send to eth messages to find the highest USD value from the tokens that are bridged and order them from 1st to 6th
 * Average Chain & Bridge Fee - take the total amounts from each denom then divide it by the amount of transactions for that denom then add all the USD values from each divided denom together then divide by total amount of denoms
 * Common Chain & Bridge Fee - Whichever token has the highest average usd in each chain and bridge category
 * Total Bridge Volume & TVL - take the logic from gravity info api for volume, make it recursive, make it save to a data base every months average ala transactions. implement the exact same logic from volume afterwards but instead of erc20 transfer events for the bridge look at locked events
