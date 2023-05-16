@@ -35,7 +35,7 @@ const tokenDecimalsMap: { [key: string]: number } = {
     USD: 6,
     PLANQ: 6,
     STARS: 6,
-    CHEQ: 18,
+    CHEQ: 9,
     HUAHUA: 6,
     NYM: 6,
     FUND: 6

@@ -66,6 +66,7 @@ const formatAmount = (amount: number, decimals: number) => {
     return amount / Math.pow(10, decimals);
   };
   
+
   export async function getCombinedFeeData() {
     try {
       const chainFeeTotals = await getChainFeeTotals();
@@ -103,7 +104,7 @@ const formatAmount = (amount: number, decimals: number) => {
         USD: 6,
         PLANQ: 6,
         STARS: 6,
-        CHEQ: 18,
+        CHEQ: 9,
         HUAHUA: 6,
         NYM: 6,
         FUND: 6
@@ -198,11 +199,6 @@ export async function getAverageFees() {
     const chainFeeTotals = await getChainFeeTotals();
     const bridgeFeeTotals = await getBridgeFeeTotals();
 
-    let totalChainTransactions = 0;
-    let totalBridgeTransactions = 0;
-    let totalChainFeeUSD = 0;
-    let totalBridgeFeeUSD = 0;
-
     const tokenDecimalsMap: { [key: string]: number } = {
       DAI: 18,
       USDT: 6,
@@ -226,79 +222,75 @@ export async function getAverageFees() {
       USD: 6,
       PLANQ: 6,
       STARS: 6,
-      CHEQ: 18,
+      CHEQ: 9,
       HUAHUA: 6,
       NYM: 6,
       FUND: 6
 
     };
 
-    const chainFeeGroups: { [key: string]: number } = {};
-    const bridgeFeeGroups: { [key: string]: number } = {};
+    let denomCount = 0;
+    let sumOfAverageChainFees = 0;
+    let sumOfAverageBridgeFees = 0;
+    let totalEntries = 0;
 
-    // Group by denom
-    for (const chainFee of chainFeeTotals) {
-      chainFeeGroups[chainFee.denom] = (chainFeeGroups[chainFee.denom] || 0) + chainFee.totalChainFees;
-      totalChainTransactions += chainFee.totalChainFees;
-    }
 
-    for (const bridgeFee of bridgeFeeTotals) {
-      bridgeFeeGroups[bridgeFee.denom] = (bridgeFeeGroups[bridgeFee.denom] || 0) + bridgeFee.totalBridgeFees;
-      totalBridgeTransactions += bridgeFee.totalBridgeFees;
-    }
+    const denoms = new Set([
+      ...chainFeeTotals.map((fee) => fee.denom),
+      ...bridgeFeeTotals.map((fee) => fee.denom),
+    ]);
+    for (const denom of Array.from(denoms)) {
+      try {
+        const tokenPriceData = await fetchTokenPriceData(denom);
+        const tokenPrice = tokenPriceData.price;
+        const decimals = tokenDecimalsMap[denom];
 
-    // Calculate total USD value
-    for (const denom in chainFeeGroups) {
+        if (decimals === undefined || isNaN(tokenPrice)) {
+          console.error(`Token decimals not found in tokenDecimalsMap or tokenPrice is NaN for denom: ${denom}`);
+          continue;
+        }
 
-      const tokenPriceData = await fetchTokenPriceData(denom);
-      const tokenPrice = tokenPriceData.price;
-      const decimals = tokenDecimalsMap[denom];
 
-      if (decimals === undefined) {
-        console.error(`Token decimals not found in tokenDecimalsMap for denom: ${denom}`);
-        continue;
+        const chainFeesForDenom = chainFeeTotals.filter((fee) => fee.denom === denom);
+        const bridgeFeesForDenom = bridgeFeeTotals.filter((fee) => fee.denom === denom);
+
+        let totalChainFeesInUSD = 0;
+        let totalBridgeFeesInUSD = 0;
+
+        for (let fee of chainFeesForDenom) {
+          totalChainFeesInUSD += formatAmount(fee.totalChainFees, decimals) * tokenPrice;
+
+        }
+
+        for (let fee of bridgeFeesForDenom) {
+          totalBridgeFeesInUSD += formatAmount(fee.totalBridgeFees, decimals) * tokenPrice;
+          totalEntries++;
+        }
+
+        const averageChainFeeForDenom = totalChainFeesInUSD / chainFeesForDenom.length;
+        const averageBridgeFeeForDenom = totalBridgeFeesInUSD / bridgeFeesForDenom.length;
+
+        sumOfAverageChainFees += averageChainFeeForDenom;
+        sumOfAverageBridgeFees += averageBridgeFeeForDenom;
+
+        denomCount++;
+      } catch (error) {
+        console.error(`Error processing fees for denom: ${denom}`, error);
       }
-
-      const tokenAmount = formatAmount(chainFeeGroups[denom], decimals);
-
-      const usdValue = tokenAmount * tokenPrice;
-      totalChainFeeUSD += usdValue;
     }
 
-    for (const denom in bridgeFeeGroups) {
-
-      const tokenPriceData = await fetchTokenPriceData(denom);
-
-      const tokenPrice = tokenPriceData.price;
-      const decimals = tokenDecimalsMap[denom];
-
-      if (decimals === undefined) {
-        console.error(`Token decimals not found in tokenDecimalsMap for denom: ${denom}`);
-        continue;
-      }
-
-      const tokenAmount = formatAmount(bridgeFeeGroups[denom], decimals);
-      const usdValue = tokenAmount * tokenPrice;
-      totalBridgeFeeUSD += usdValue;
-    }
-
-    // Calculate average USD value
-    const averageChainFee = totalChainFeeUSD / totalChainTransactions;
-    const averageBridgeFee = totalBridgeFeeUSD / totalBridgeTransactions;
+    const averageChainFee = ((sumOfAverageChainFees / denomCount) / 16152).toFixed(2);
+    const averageBridgeFee = ((sumOfAverageBridgeFees / denomCount) / 16152).toFixed(2);
 
     return {
-      totalChainFeeUSD,
-      totalBridgeFeeUSD,
       averageChainFee,
       averageBridgeFee,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
-      totalChainFeeUSD: 0,
-      totalBridgeFeeUSD: 0,
-      averageChainFee: 0,
-      averageBridgeFee: 0,
+      averageChainFee: "0.00",
+      averageBridgeFee: "0.00",
     };
   }
 }

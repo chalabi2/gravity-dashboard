@@ -114,6 +114,20 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
 
     fetchData();
   }, []);
+
+  const [feePrices, setFeePrices] = useState({
+    averageChainFee: "0.00",
+    averageBridgeFee: "0.00",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const feeData = await getAverageFees();
+      setFeePrices(feeData);
+    };
+
+    fetchData();
+  }, []);
   
 
   const handleClickInfo = (event: React.MouseEvent) => {
@@ -130,21 +144,6 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [selectedMenuItem, setSelectedMenuItem] = useState("Fees");
 
-  const [averageFees, setAverageFees] = useState({
-    totalChainFeeUSD: 0,
-    totalBridgeFeeUSD: 0,
-    averageChainFee: 0,
-    averageBridgeFee: 0,
-  });
-
-  useEffect(() => {
-    const fetchFees = async () => {
-      const fees = await getAverageFees();
-      setAverageFees(fees);
-    };
-
-    fetchFees();
-  }, []);
 
   return (
     <Box
@@ -612,7 +611,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${averageFees.averageChainFee.toFixed(0)}
+      ${feePrices.averageChainFee}
     </Text>
           <Text
             fontFamily="Futura"
@@ -702,7 +701,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${averageFees.averageBridgeFee.toFixed(0)}
+      ${feePrices.averageBridgeFee}
     </Text>
           <Text
             fontFamily="Futura"
