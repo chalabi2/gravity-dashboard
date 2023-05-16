@@ -327,7 +327,7 @@ export const Assets: React.FC = () => {
     >
       <Text>Price: ${topDenoms[0]?.price}</Text>
       <Text>Total Token Amount: {topDenoms[0]?.totalAmounts}</Text>
-      <Text>Total Value: ${formatTotalAmount(topDenoms[1]?.totalValue, 0)}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[0]?.totalValue, 0)}</Text>
     </Box>
   }
       aria-label="More information"
