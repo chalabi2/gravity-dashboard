@@ -66,18 +66,6 @@ export const BridgeVolume = () => {
       }
     }}
     position="relative">
-            <Box
-  position="absolute"
-  top={0}
-  right={0}
-  bottom={0}
-  left={0}
-  zIndex={2}
-  display="flex"
-  justifyContent="center"
-  alignItems="center"
-  bg="rgba(0, 0, 0, 0.9)"
->
   <Text textAlign="center" fontFamily="Futura" color="red" fontSize="xl" fontWeight="bold">
     This elements data is innacurate and will be updated soon.
   </Text>
