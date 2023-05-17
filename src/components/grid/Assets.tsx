@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, useDisclosure, Modal,
   ModalOverlay,
   ModalContent,
@@ -7,18 +7,24 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
   useColorModeValue,
   ModalBody,
   ModalFooter,
-  useMediaQuery } from '@chakra-ui/react';
-import { biggestMover1, biggestMover2, biggestMover3, biggestMover4, biggestMover5, biggestMover6 } from '../calculations/Assets';
+  useMediaQuery,
+Tooltip } from '@chakra-ui/react';
+import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
+
+function formatTotalAmount(amount: number, decimals: number): string {
+  const formattedAmount = amount / Math.pow(10, decimals);
+  return formattedAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
 
 
 export const Assets: React.FC = () => {
   const volumeInfo = useVolumeInfo();
   const dailyIn = Math.round(volumeInfo?.daily_inflow || 0);
   const dailyOut = Math.round(volumeInfo?.daily_outflow || 0);
-  const monthlyIn = Math.round(volumeInfo?.weekly_inflow || 0);
-  const monthlyOut = Math.round(volumeInfo?.weekly_outflow || 0);
+  const monthlyIn = Math.round(volumeInfo?.monthly_inflow || 0);
+  const monthlyOut = Math.round(volumeInfo?.monthly_outflow || 0);
 
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
   const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;
@@ -29,6 +35,7 @@ export const Assets: React.FC = () => {
     x: 0,
     y: 0,
   });
+  
 
   const handleClick = (event: React.MouseEvent) => {
     // Store the click position
@@ -42,6 +49,28 @@ export const Assets: React.FC = () => {
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
+  const [topDenoms, setTopDenoms] = useState<{ denom: string; totalAmounts: string; price: string; totalValue: number; }[]>([]);
+  const [lastFetched, setLastFetched] = useState<number | null>(null);
+
+
+  const fetchData = async () => {
+    const now = Date.now();
+    const cacheTimeout = 15 * 60 * 1000; // 15 minutes in milliseconds
+  
+    // If data is already fetched and cached within the valid time window, do not fetch again
+    if (lastFetched && now - lastFetched < cacheTimeout) {
+      return;
+    }
+  
+    const data = await getTokenAmountTotals();
+    setTopDenoms(data);
+    setLastFetched(now); // Update the timestamp of the last fetched data
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
 
   return (
     <Box 
@@ -77,12 +106,12 @@ export const Assets: React.FC = () => {
     background="rgba(0, 18, 183, 0.5)"
     borderRadius="8px"
     width="340px"
-    height="400px"
+    height="sm"
     maxWidth="100%"
-    marginRight="10px"
+
   >
 <Text
-  fontFamily="Futura MD BT"
+  fontFamily="Futura"
   fontWeight="light"
   fontSize="24px"
   color="#FFFFFF"
@@ -91,7 +120,7 @@ export const Assets: React.FC = () => {
   gridColumn="1 / 3"
   position="relative"
 >
-  IBC & Eth Assets
+  Eth Assets
   <Box
     width="63%"
     height="1px"
@@ -103,7 +132,7 @@ export const Assets: React.FC = () => {
 </Text>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -130,7 +159,7 @@ export const Assets: React.FC = () => {
     </Flex>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -147,7 +176,7 @@ export const Assets: React.FC = () => {
   />
       </Text>
       <Text
-        fontFamily="futura"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="18px"
         color="#FFFFFF"
@@ -174,7 +203,7 @@ export const Assets: React.FC = () => {
       </Box>
     <Flex direction="column">
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -202,7 +231,7 @@ export const Assets: React.FC = () => {
     </Flex>
     <Flex direction="column">
     <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="20px"
         textTransform="capitalize"
@@ -246,7 +275,7 @@ export const Assets: React.FC = () => {
         />
       </Box>
   <Text
-    fontFamily="Futura MD BT"
+    fontFamily="Futura"
     mr="35px"
     align="center"
     fontWeight="light"
@@ -276,9 +305,66 @@ export const Assets: React.FC = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>1. {biggestMover1.toLocaleString()}</ListItem>
-      <ListItem>2. {biggestMover2.toLocaleString()}</ListItem>
-      <ListItem>3. {biggestMover3.toLocaleString()}</ListItem>
+  <ListItem>
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[0]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[0]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[0]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        1. {topDenoms[0]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[1]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[1]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[1]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        2. {topDenoms[1]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[2]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[2]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[2]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        3. {topDenoms[2]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
     </UnorderedList>
     <UnorderedList
       listStyleType="none"
@@ -290,9 +376,66 @@ export const Assets: React.FC = () => {
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      <ListItem>4. {biggestMover4.toLocaleString()}</ListItem>
-      <ListItem>5. {biggestMover5.toLocaleString()}</ListItem>
-      <ListItem>6. {biggestMover6.toLocaleString()}</ListItem>
+  <ListItem>
+    <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[3]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[3]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[3]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        4. {topDenoms[3]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[4]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[4]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[4]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        5. {topDenoms[4]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
+  <ListItem>
+  <Tooltip
+    bgColor="rgba(0, 0, 0, 0.8)"
+    color="white"
+  label={
+    <Box
+    fontFamily="Futura"
+    >
+      <Text>Price: ${topDenoms[5]?.price}</Text>
+      <Text>Total Token Amount: {topDenoms[5]?.totalAmounts}</Text>
+      <Text>Total Value: ${formatTotalAmount(topDenoms[5]?.totalValue, 0)}</Text>
+    </Box>
+  }
+      aria-label="More information"
+    >
+      <div>
+        6. {topDenoms[5]?.denom}
+      </div>
+    </Tooltip>
+  </ListItem>
     </UnorderedList>
   </HStack>
   </Grid>

@@ -5,15 +5,7 @@ This is a dashboard to view various Gravity Bridge statistics. It uses the [Grav
 Simply fork the repository, enable github pages, and a github pages action will automatically run and deploy the application
 
 ### To do list
-Add a percentage value to the biggest mover token to show how much of the total movement that token is responsible for 
-* Format the text better (Use various fonts)
-* Find the data thats unavailable in the app
-* Data Added:
-    * Daily & Weekly Bridge Volume (@BridgeVolume Grid Item)
-    * Daily In & Daily Out | Monthly In & Monthly Out using weekly (@Assets Grid Item)
-    * Price, Market Cap, Trading Volume, Coingecko Rank (@Pmtr Grid Item)
-* Data Missing:
-    * IBC In & Out | Biggest Movers (@Assets Grid Item)
-    * All Time Volume (@BridgeVolume Grid Item)
-    * Chain fees (@ChainFees Grid Item)
-    * All Time Bridge Data Compare (@BridgeVolumeComparison Grid Item)
+Data Missing:
+* Bandage with free dune tier, add dune info to chandra api and fetch every 24 hrs, stretch.
+* Total Bridge Volume & TVL - take the logic from gravity info api for volume, make it recursive, make it save to a data base every months average ala transactions. implement the exact same logic from volume afterwards but instead of erc20 transfer events for the bridge look at locked events
+* Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly.

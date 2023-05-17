@@ -86,9 +86,9 @@ export const Header = () => {
         fontFamily="Futura"
         fontWeight="light"
         fontSize="18px"
-        color={headerTextColor}
+        color="white"
       >
-        Launch App
+        Bridge App
       </Text>
       </Box>
       </Link>
@@ -148,9 +148,9 @@ export const Header = () => {
         fontFamily="Futura"
         fontWeight="light"
         fontSize="18px"
-        color={headerTextColor}
+        color="white"
       >
-        Launch App
+        Bridge App
       </Text>
       </Box>
       </Link>
@@ -172,7 +172,7 @@ export const Header = () => {
         <Logo marginBottom="-10px" height={logoSize} width={logoSize} />
         <Heading
           as="h1"
-          fontFamily="Futura MD BT"
+          fontFamily="Futura"
           lineHeight="1.36"
           fontWeight="medium"
           letterSpacing="0.1em"

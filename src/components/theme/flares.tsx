@@ -1,16 +1,29 @@
 import * as React from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 
-const FlareAnimation = () => {
+interface FlareAnimationProps {
+  raveMode: boolean;
+}
+
+
+const FlareAnimation: React.FC<FlareAnimationProps> = ({ raveMode }) => {
+  const normalBackground = useColorModeValue("black", "white");
+  const background = raveMode
+    ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
+    : normalBackground;
   const flareStyle = {
     position: "absolute",
     width: "4px",
-    height: "4px",
+    height: raveMode ? "40px" : "4px",
     borderRadius: "100%",
-    background: useColorModeValue("black", "white"),
-    animation: "flareAnimation var(--flare-duration, 30s) linear infinite",
+    background: raveMode
+      ? background
+      : normalBackground,
+    animation: `flareAnimation var(--flare-duration, ${
+      raveMode ? "15" : "30"
+    }s) linear infinite`,
   };
-  
+
   const flareAnimation = `
     0%, 100% {
       opacity: 0;
@@ -46,30 +59,52 @@ const FlareAnimation = () => {
   );
 };
 
-export const Flares = () => (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      zIndex: -2,
-    }}
-  >
+export const Flares = () => {
+  const [raveMode, setRaveMode] = React.useState(false);
+
+  const toggleRaveMode = () => {
+    setRaveMode(!raveMode);
+  };
+
+  return (
     <div
       style={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundImage: "url(./background.svg)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        filter: "brightness(0.7)",
+        zIndex: -2,
       }}
-    />
-    <FlareAnimation />
-  </div>
-);
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: "url(./background.svg)",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          filter: "brightness(0.7)",
+        }}
+      />
+      <FlareAnimation raveMode={raveMode} />
+      <button
+        onClick={toggleRaveMode}
+        style={{
+          border: "5px",
+          color: "pink",
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          width: "50px",
+          height: "50px",
+          opacity: 0.5,
+          cursor: "pointer",
+        }}
+      ></button>
+    </div>
+  );
+};

@@ -39,7 +39,7 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
       fontWeight="light"
       fontSize="16px"
       letterSpacing="0.32px"
-      color="#D9D9D9"
+      color="white"
     >
       {children}
     </Text>
@@ -77,6 +77,22 @@ export const VolumeComparison = () => {
       }
     }}
     position="relative">
+      <Box
+  position="absolute"
+  top={0}
+  right={0}
+  bottom={0}
+  left={0}
+  zIndex={2}
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+  bg="rgba(0, 0, 0, 0.9)"
+>
+  <Text fontFamily="Futura" color="red" fontSize="xl" fontWeight="bold">
+    This elements data is innacurate and will be updated soon.
+  </Text>
+</Box>
     <IconButton
       aria-label="Info"
       icon={<InfoIcon />}
@@ -100,8 +116,9 @@ export const VolumeComparison = () => {
     justify="flex-start"
     align="flex-start"
     spacing="10px"
-    height="465px"
-    width={{md: "99.3%", base: "100%"}}
+    height="460px"
+    py={-2}
+    width={{md: "680px", base: "100%"}}
     background="rgba(0, 18, 183, 0.5)"
   >
     <Stack
@@ -112,7 +129,7 @@ export const VolumeComparison = () => {
       ml={{base: "-14px", md: "0"}}
     >
       <Text
-        fontFamily="Futura MD BT"
+        fontFamily="Futura"
         fontWeight="light"
         fontSize="26px"
         color="#FFFFFF"

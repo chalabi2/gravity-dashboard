@@ -25,7 +25,7 @@ export const ColorModeSwitcher: React.FC<ColorModeSwitcherProps> = (props) => {
       icon={<SwitchIcon />}
       aria-label={`Switch to ${text} mode`}
       _hover={{
-        background: "blue",
+        background: "rgba(0, 0, 255, 0.55)",
         textDecoration: "none",
       }}
       {...props}

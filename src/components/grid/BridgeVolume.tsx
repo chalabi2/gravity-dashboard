@@ -14,11 +14,14 @@ import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
 import React, {useState} from 'react';
 
+import getDuneData from '../calculations/DuneApi';
+
 
 export const BridgeVolume = () => {
   const volumeInfo = useVolumeInfo();
   const monthlyVolume = volumeInfo?.weekly_volume || 0;
   const dailyVolume = volumeInfo?.daily_volume || 0;
+  const monthly_volume = volumeInfo?.monthly_volume || 0;
   
   const formatNumber = (number: number) => {
     if (number >= 1e9) {
@@ -31,6 +34,8 @@ export const BridgeVolume = () => {
       return `$${number.toFixed(1)}`;
     }
   };
+
+  const duneData = getDuneData();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -61,21 +66,37 @@ export const BridgeVolume = () => {
       }
     }}
     position="relative">
-      <IconButton
-        aria-label="Info"
-        icon={<InfoIcon />}
-        position="absolute"
-        top={2}
-        left={2}
-        size="xs"
-        variant="ghost"
-        color="white"
-        onClick={handleClick}
-        zIndex={1}
-        style={{
-          opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
-          transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
-        }}
+            <Box
+  position="absolute"
+  top={0}
+  right={0}
+  bottom={0}
+  left={0}
+  zIndex={2}
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+  bg="rgba(0, 0, 0, 0.9)"
+>
+  <Text textAlign="center" fontFamily="Futura" color="red" fontSize="xl" fontWeight="bold">
+    This elements data is innacurate and will be updated soon.
+  </Text>
+</Box>
+     <IconButton
+      aria-label="Info"
+      icon={<InfoIcon />}
+      position="absolute"
+      top={1}
+      left={2}
+      size="xs"
+      variant="ghost"
+      color="white"
+      onClick={handleClick}
+      zIndex={1}
+      style={{
+        opacity: showInfoIcon ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out', 
+      }}
       />
       <Stack
         paddingY="24px"
@@ -86,12 +107,13 @@ export const BridgeVolume = () => {
         spacing="24px"
         width="330px"
         maxWidth="100%"
+        height="sm"
         background="rgba(0, 18, 183, 0.5)"
       >
     <Stack paddingX="40px" justify="center" align="flex-start" alignSelf="stretch">
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Text
-          fontFamily="Futura MD BT"
+          fontFamily="Futura"
           lineHeight="1.17"
           fontWeight="light"
           fontSize="24px"
@@ -118,7 +140,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            $800m
+            $1.14B
           </Text>
         </Flex>
         <BridgeVolumeChart data={BridgeVolumeChartData}/>
@@ -140,7 +162,7 @@ export const BridgeVolume = () => {
           alignSelf="stretch"
         >
           <Text
-            fontFamily="Futura MD BT"
+            fontFamily="Futura"
             fontWeight="light"
             fontSize="20px"
             textTransform="capitalize"
@@ -182,6 +204,40 @@ export const BridgeVolume = () => {
           </Flex>
         </Flex>
       ))}
+      <Flex pt={4} justify="space-between" align="center" alignSelf="stretch">
+        <Text
+          fontFamily="Futura"
+          lineHeight="1.17"
+          fontWeight="light"
+          fontSize="24px"
+          textTransform="capitalize"
+          color="#FFFFFF"
+        >
+          TVL
+          <Box
+    width="100%"
+    height="1px"
+    bgColor="rgb(255,255,255, 0.5)"
+    position="relative"
+
+    bottom="-1px"
+  />
+        </Text>
+      </Flex>
+      <HStack>
+      <Flex justify="space-between" align="center" alignSelf="stretch">
+        <Flex align="baseline">
+          <Text
+            fontFamily="futura"
+            fontWeight="light"
+            fontSize="32px"
+            color="#FFFFFF"
+          >
+            $92.17M
+          </Text>
+        </Flex>
+      </Flex>
+      </HStack>
     </Stack>
     </Stack>
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -194,7 +250,8 @@ export const BridgeVolume = () => {
           <ModalHeader fontFamily="Futura">Volume Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">
-            This grid item shows the the total volume transfered between Gravity Bridge & Ethereum including the daily and weekly amounts.
+            This grid item shows the the total volume transfered between Gravity Bridge & Ethereum including the daily and weekly total amounts.
+            TVL is the total value locked in the Gravity Bridge contracts.
           </ModalBody>
           <ModalFooter>
           </ModalFooter>

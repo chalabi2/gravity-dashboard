@@ -1,32 +1,19 @@
-import { useState, useEffect } from 'react';
+import axios from "axios";
 
-const API_KEY = 'YOUR_API_KEY';
-const DUNE_API_URL = 'https://api.dune.com/api/v1/query/1855393/execute';
-const UPDATE_TIME = 5000;
+export default async function getDuneData() {
+  const headers = {
+    "x-dune-api-key": "sZehxljPPvH3E2wh4bbEI8LHhDse7SrY"
+  };
 
-export const useDuneData = () => {
-  const [duneData, setDuneData] = useState(null);
+  // Call the Dune API
+  try {
+    const response = await axios.post('https://api.dune.com/api/v1/query/1855393/results?', {}, {
+      headers: headers
+    });
 
-  useEffect(() => {
-    const fetchDuneData = async () => {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'x-dune-api-key': API_KEY,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const response = await fetch(DUNE_API_URL, requestOptions);
-      const json = await response.json();
-      setDuneData(json);
-    };
-
-    fetchDuneData();
-    const interval = setInterval(fetchDuneData, UPDATE_TIME);
-    return () => clearInterval(interval);
-  }, []);
-
-  return duneData;
-};
+    // Log the returned response
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
