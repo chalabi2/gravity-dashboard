@@ -39,7 +39,7 @@ const Label: React.FC<LabelProps> = ({ children, color }) => (
       fontWeight="light"
       fontSize="16px"
       letterSpacing="0.32px"
-      color="#D9D9D9"
+      color="white"
     >
       {children}
     </Text>

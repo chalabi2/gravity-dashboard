@@ -282,15 +282,48 @@ export async function getAverageFees() {
     const averageChainFee = ((sumOfAverageChainFees / denomCount) / 16152).toFixed(2);
     const averageBridgeFee = ((sumOfAverageBridgeFees / denomCount) / 16152).toFixed(2);
 
+    const mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals) || "";
+    const mostCommonBridgeFeeDenom = getMostCommonDenom(bridgeFeeTotals) || "";
+
+console.log("mostCommonChainFeeDenom", mostCommonChainFeeDenom)
+
     return {
       averageChainFee,
       averageBridgeFee,
+      mostCommonChainFeeDenom,
+      mostCommonBridgeFeeDenom,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
       averageChainFee: "0.00",
       averageBridgeFee: "0.00",
+      mostCommonChainFeeDenom: "",
+      mostCommonBridgeFeeDenom: "",
     };
   }
+}
+
+function getMostCommonDenom(feeTotals: { denom: string }[]) {
+  const denomCountMap: { [denom: string]: number } = {};
+
+  for (let fee of feeTotals) {
+      if (!denomCountMap[fee.denom]) {
+          denomCountMap[fee.denom] = 0;
+      }
+
+      denomCountMap[fee.denom]++;
+  }
+
+  let mostCommonDenom = null;
+  let maxCount = 0;
+
+  for (let denom in denomCountMap) {
+      if (denomCountMap[denom] > maxCount) {
+          mostCommonDenom = denom;
+          maxCount = denomCountMap[denom];
+      }
+  }
+
+  return mostCommonDenom;
 }

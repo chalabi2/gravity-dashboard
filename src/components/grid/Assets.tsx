@@ -13,14 +13,6 @@ import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
 
-
-interface DenomData {
-  denom: string;
-  totalAmounts: string;
-  price: number;
-  totalValue: number;
-}
-
 function formatTotalAmount(amount: number, decimals: number): string {
   const formattedAmount = amount / Math.pow(10, decimals);
   return formattedAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -57,10 +49,6 @@ export const Assets: React.FC = () => {
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
-
-  const [inAssetsData, setInAssetsData] = useState(new Map());
-  const [outAssetsData, setOutAssetsData] = useState(new Map());
-
   const [topDenoms, setTopDenoms] = useState<{ denom: string; totalAmounts: string; price: string; totalValue: number; }[]>([]);
   const [lastFetched, setLastFetched] = useState<number | null>(null);
 

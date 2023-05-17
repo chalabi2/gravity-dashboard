@@ -44,7 +44,7 @@ const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label })
                 fontFamily: "Futura",
                 fontWeight: "light",
                 fontSize: "16px",
-                color: item.color,
+                color: "white",
               }}
             >
               {`${labels[index]}: $${item.value}M`}
@@ -65,7 +65,7 @@ const chartMargins = useBreakpointValue({ base: 10, md: 10})
   return (
     <Box p={{md: "4", base: "0px"}} pb={{md: "-4", base: "0px"}} borderRadius="8px" backgroundColor="" mt={{base: "-20px", md: "-30px"}} width={{ base: "300px", md: "600px" }}>
     <ResponsiveContainer width={containerWidth} height={310}>
-      <LineChart data={data} margin={{ top: 5, right: 20, bottom: 0, left: 0 }}>
+      <LineChart data={data} margin={{ top: 5, right: 20, bottom: 0, left: 10 }}>
       <defs>
             <linearGradient id="Gravity" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#0053FF" />

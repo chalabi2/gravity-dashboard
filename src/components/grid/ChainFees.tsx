@@ -118,6 +118,8 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   const [feePrices, setFeePrices] = useState({
     averageChainFee: "0.00",
     averageBridgeFee: "0.00",
+    mostCommonChainFeeDenom: "",
+    mostCommonBridgeFeeDenom: "",
   });
 
   useEffect(() => {
@@ -632,7 +634,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            ETH: 8k
+            {feePrices.mostCommonChainFeeDenom}
           </Text>
               </VStack>
 
@@ -722,7 +724,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            ETH: 120k
+         {feePrices.mostCommonBridgeFeeDenom}
           </Text>
               </VStack>
             </Flex>
@@ -804,7 +806,9 @@ Tokens             <Box
         }}
       >
         {chainFeesData.map((item) => (
-          <Text key={item.denom}>
+          <Text
+          fontFamily="Futura"
+          key={item.denom}>
             {item.denom}: {item.totalChainFees}
           </Text>
         ))}
@@ -855,7 +859,9 @@ Tokens             <Box
         }}
       >
         {bridgeFeesData.map((item) => (
-          <Text key={item.denom}>
+          <Text
+          fontFamily="Futura"
+          key={item.denom}>
             {item.denom}: {item.totalBridgeFees}
           </Text>
         ))}

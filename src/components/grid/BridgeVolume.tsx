@@ -14,6 +14,8 @@ import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
 import React, {useState} from 'react';
 
+import getDuneData from '../calculations/DuneApi';
+
 
 export const BridgeVolume = () => {
   const volumeInfo = useVolumeInfo();
@@ -32,6 +34,8 @@ export const BridgeVolume = () => {
       return `$${number.toFixed(1)}`;
     }
   };
+
+  const duneData = getDuneData();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
