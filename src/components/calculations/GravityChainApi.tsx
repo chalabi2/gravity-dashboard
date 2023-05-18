@@ -121,6 +121,9 @@ export const useErc20Metadata = () => {
 
 export const useVolumeInfo = () => {
   const [volumeInfo, setVolumeInfo] = useState<VolumeInfo | null>(null);
+  const [yesterdayVolumeInfo, setYesterdayVolumeInfo] = useState<VolumeInfo | null>(null);
+  
+  const ONE_DAY = 1000 * 60 * 60 * 24; // Milliseconds in a day
 
   useEffect(() => {
     const fetchVolumeInfo = async () => {
@@ -135,13 +138,16 @@ export const useVolumeInfo = () => {
     
         const result = await fetch(request_url, requestOptions);
         const json = await result.json();
-      setVolumeInfo(json);
+
+        // Set yesterday's info to the last fetched info before updating the current info
+        setYesterdayVolumeInfo(volumeInfo);
+        setVolumeInfo(json);
     };
 
     fetchVolumeInfo();
-    const interval = setInterval(fetchVolumeInfo, UPDATE_TIME);
+    const interval = setInterval(fetchVolumeInfo, ONE_DAY); // Update to use 24 hour interval
     return () => clearInterval(interval);
-  }, []);
+  }, [volumeInfo]);
 
-  return volumeInfo;
+  return { today: volumeInfo, yesterday: yesterdayVolumeInfo };
 };

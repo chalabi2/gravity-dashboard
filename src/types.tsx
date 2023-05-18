@@ -255,3 +255,8 @@ export type gravityDenomToString = {
     denom: string;
     amount: string;
   }
+
+  export interface DuneData {
+    tvl: string;
+    vol: string;
+  }
