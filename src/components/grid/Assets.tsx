@@ -20,7 +20,7 @@ function formatTotalAmount(amount: number, decimals: number): string {
 
 
 export const Assets: React.FC = () => {
-  const volumeInfo = useVolumeInfo();
+  const { today: volumeInfo, yesterday: yesterdayVolumeInfo } = useVolumeInfo();
   const dailyIn = Math.round(volumeInfo?.daily_inflow || 0);
   const dailyOut = Math.round(volumeInfo?.daily_outflow || 0);
   const monthlyIn = Math.round(volumeInfo?.monthly_inflow || 0);

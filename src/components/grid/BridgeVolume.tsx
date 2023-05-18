@@ -12,17 +12,23 @@ import BridgeVolumeChart from '../charts/BridgeVolumeChart';
 import { BridgeVolumeChartData } from '../calculations/BridgeVolume';
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
-import React, {useState} from 'react';
-
-import getDuneData from '../calculations/DuneApi';
-
+import React, {useEffect, useState} from 'react';
+import { getBridgeTvl } from '../calculations/chandraApi';
+import { DuneData } from '../../types'
 
 export const BridgeVolume = () => {
-  const volumeInfo = useVolumeInfo();
-  const monthlyVolume = volumeInfo?.weekly_volume || 0;
+  const { today: volumeInfo, yesterday: yesterdayVolumeInfo } = useVolumeInfo();
   const dailyVolume = volumeInfo?.daily_volume || 0;
-  const monthly_volume = volumeInfo?.monthly_volume || 0;
-  
+  const weeklyVolume = volumeInfo?.weekly_volume || 0;
+  const yesterdayDailyVolume = yesterdayVolumeInfo?.daily_volume || 0;
+  const yesterdayWeeklyVolume = yesterdayVolumeInfo?.weekly_volume || 0;
+
+  const dailyVolumeChange = yesterdayDailyVolume !== 0 ? ((dailyVolume - yesterdayDailyVolume) / yesterdayDailyVolume) * 100 : 0;
+  const weeklyVolumeChange = yesterdayWeeklyVolume !== 0 ? ((weeklyVolume - yesterdayWeeklyVolume) / yesterdayWeeklyVolume) * 100 : 0;
+
+  const [dailyColor, setDailyColor] = useState('#32CD32');
+  const [weeklyColor, setWeeklyColor] = useState('#32CD32');
+
   const formatNumber = (number: number) => {
     if (number >= 1e9) {
       return `$${(number / 1e9).toFixed(1)}B`;
@@ -34,8 +40,6 @@ export const BridgeVolume = () => {
       return `$${number.toFixed(1)}`;
     }
   };
-
-  const duneData = getDuneData();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,6 +61,44 @@ export const BridgeVolume = () => {
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   const [isMobile] = useMediaQuery("(max-width: 480px)");
 
+  const [bridgeInfo, setBridgeInfo] = useState<DuneData>();
+
+  useEffect(() => {
+    getBridgeTvl().then((data) => {
+      setBridgeInfo(data);
+    });
+  }, []);
+
+  const [dailyPercentageChange, setDailyPercentageChange] = useState(0);
+  const [weeklyPercentageChange, setWeeklyPercentageChange] = useState(0);
+
+  useEffect(() => {
+    setDailyPercentageChange(dailyVolumeChange);
+    setWeeklyPercentageChange(weeklyVolumeChange);
+  }, [dailyVolumeChange, weeklyVolumeChange]);
+
+  useEffect(() => {
+    setDailyPercentageChange(dailyVolumeChange);
+    if (dailyVolumeChange > 0) {
+      setDailyColor('#32CD32');  // green for increase
+    } else if (dailyVolumeChange < 0) {
+      setDailyColor('#FF4500');  // red for decrease
+    } else {
+      setDailyColor('rgba(169,169,169,0.6)');  // grey for no change
+    }
+  }, [dailyVolumeChange]);
+  
+  useEffect(() => {
+    setWeeklyPercentageChange(weeklyVolumeChange);
+    if (weeklyVolumeChange > 0) {
+      setWeeklyColor('#32CD32');  // green for increase
+    } else if (weeklyVolumeChange < 0) {
+      setWeeklyColor('#FF4500');  // red for decrease
+    } else {
+      setWeeklyColor('rgba(169,169,169,0.6)');  // grey for no change
+    }
+  }, [weeklyVolumeChange]);
+
   return (
     <Box 
     onMouseEnter={() => setShowInfoIcon(true)}
@@ -66,22 +108,6 @@ export const BridgeVolume = () => {
       }
     }}
     position="relative">
-            <Box
-  position="absolute"
-  top={0}
-  right={0}
-  bottom={0}
-  left={0}
-  zIndex={2}
-  display="flex"
-  justifyContent="center"
-  alignItems="center"
-  bg="rgba(0, 0, 0, 0.9)"
->
-  <Text textAlign="center" fontFamily="Futura" color="red" fontSize="xl" fontWeight="bold">
-    This elements data is innacurate and will be updated soon.
-  </Text>
-</Box>
      <IconButton
       aria-label="Info"
       icon={<InfoIcon />}
@@ -140,7 +166,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            $1.14B
+           ${bridgeInfo?.vol}
           </Text>
         </Flex>
         <BridgeVolumeChart data={BridgeVolumeChartData}/>
@@ -179,7 +205,7 @@ export const BridgeVolume = () => {
                 textTransform="capitalize"
                 color="#FFFFFF"
               >
-                {index === 0 ? formatNumber(dailyVolume) : formatNumber(monthlyVolume)}
+              {index === 0 ? formatNumber(dailyVolume) : formatNumber(weeklyVolume)}
               </Text>
             </Flex>
             <Flex
@@ -188,7 +214,7 @@ export const BridgeVolume = () => {
               borderRadius="64px"
               ml="5px"
               align="center"
-              background={index === 0 ? '#32CD32' : '#FF4500'}
+              background={index === 0 ? dailyColor : weeklyColor}
             >
                <Text
                 fontFamily="futura"
@@ -198,7 +224,7 @@ export const BridgeVolume = () => {
                 letterSpacing="0.32px"
                 color="white"
               >
-                {index === 0 ? '30%' : '15%'}
+ {index === 0 ? `${dailyPercentageChange}%` : `${weeklyPercentageChange}%`}
               </Text>
             </Flex>
           </Flex>
@@ -233,7 +259,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            $92.17M
+            ${bridgeInfo?.tvl}
           </Text>
         </Flex>
       </Flex>
