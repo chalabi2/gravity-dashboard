@@ -12,7 +12,8 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  useMediaQuery
+  useMediaQuery,
+  SkeletonText
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
@@ -41,7 +42,7 @@ export const Pmtr = () => {
   
     return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
   }, []);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalBgText = useColorModeValue("white", "black");
   const [clickPosition, setClickPosition] = React.useState({
@@ -124,6 +125,11 @@ export const Pmtr = () => {
     bottom="1px"
   />
           </Text>
+          <SkeletonText
+                  isLoaded={!isLoading}
+          noOfLines={1}
+          skeletonHeight="5"
+          >
           <Text
             fontFamily="futura"
             lineHeight="1.4"
@@ -134,6 +140,7 @@ export const Pmtr = () => {
           >
             ${data.price.toFixed(3)}
           </Text>
+          </SkeletonText>
         </Box>
         <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text

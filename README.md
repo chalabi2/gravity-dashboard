@@ -5,11 +5,15 @@ This is a dashboard to view various Gravity Bridge statistics. It uses the [Grav
 Simply fork the repository, enable github pages, and a github pages action will automatically run and deploy the application
 
 ### To do list
+**V1**
 * Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly on chart.
 * Refactor chain & bridge fee queries to use new gravity info endpoints.
 * Add mobile resizing
 * Fix Font
 * Fix line elements
+* Add Skelton Text
+
+**V2**
 * Add wallet connect to show analytics for individual wallets
 * Add IBC transfer data IE which chains are sending or receiving the most tokens to and from gravity.
 * Add profitbale relay info

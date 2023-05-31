@@ -8,6 +8,7 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
   ModalBody,
   ModalFooter,
   useMediaQuery,
+  SkeletonText,
 Tooltip } from '@chakra-ui/react';
 import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
@@ -45,7 +46,7 @@ export const Assets: React.FC = () => {
     });
     onOpen();
   };
-
+  const [isLoading, setIsLoading] = useState(false);
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
@@ -148,6 +149,11 @@ export const Assets: React.FC = () => {
     bottom="1px"
   />
       </Text>
+      <SkeletonText
+                  isLoaded={!isLoading}
+          noOfLines={1}
+          skeletonHeight="5"
+          >
       <Text
         fontFamily="futura"
         fontWeight="light"
@@ -156,6 +162,7 @@ export const Assets: React.FC = () => {
       >
         ${monthlyIn.toLocaleString()}
       </Text>
+      </SkeletonText>
     </Flex>
     <Flex direction="column">
       <Text
