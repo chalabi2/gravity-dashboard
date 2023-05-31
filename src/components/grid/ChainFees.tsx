@@ -158,6 +158,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
       position="relative"
     >
        <IconButton
+         shadow={"dark-sm"}
       aria-label="Info"
       icon={<InfoIcon />}
       position="absolute"
@@ -173,6 +174,63 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
         transition: 'opacity 0.3s ease-in-out', 
       }}
     />
+<HStack
+color="white"
+  shadow={"dark-sm"}
+fontFamily="Futura"
+top={1}
+right={2}
+  p={1}
+  borderRadius={4}
+   position="absolute"
+   spacing={4}
+   bgColor="rgba(0, 18, 183, 0.1)"
+>
+  <Flex
+   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  shadow={"dark-lg"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+>1D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.3)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+>7D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+>1M</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+>All</Text>
+  </Flex>
+</HStack>
       <Menu>
         <MenuButton
           color="white"
@@ -181,8 +239,8 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
           rightIcon={<ChevronDownIcon boxSize="25px" />}
           aria-label="More"
           position="absolute"
-          top={-1}
-          right={0}
+          top={1}
+          right={"240px"}
           size="md"
           variant="ghost"
           onClick={handleClickMenu}
@@ -245,7 +303,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
       <Box>
         {selectedMenuItem === "Fees" && (
           <Stack
-            justify="flex-start"
+            justify="center"
             justifyContent="space-between"
             align="center"
             spacing="0px"
@@ -365,7 +423,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                     <Image
                       boxSize="25px"
                       borderRadius={"full"}
-                      src="https://assets.coingecko.com/coins/images/9519/small/paxg.PNG?1568542565"
+                      src="https://assets.coingecko.com/coins/images/7845/small/DV80FOp.png?1554953278"
                     />
                     <Text
                       fontFamily="futura"
@@ -374,13 +432,13 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      PAXG: {formatEthNumber(getTotalChainFees("PAXG"))}
+                      FUND: {formatEthNumber(getTotalChainFees("FUND"))}
                     </Text>
                   </HStack>
                   <HStack>
                     <Image
                       boxSize="25px"
-                      src="https://assets.coingecko.com/coins/images/20685/small/kuji-200x200.png?1637557201"
+                      src="https://assets.coingecko.com/coins/images/24488/small/NYM_Token.png?1649926353"
                     />
                     <Text
                       fontFamily="futura"
@@ -389,7 +447,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      KUJI: {formatCosmosNumber(getTotalChainFees("KUJI"))}
+                      NYM: {formatCosmosNumber(getTotalChainFees("NYM"))}
                     </Text>
                   </HStack>
                 </VStack>
@@ -467,7 +525,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                   <HStack>
                     <Image
                       boxSize="25px"
-                      src="https://assets.coingecko.com/coins/images/8284/small/01_LunaClassic_color.png?1653547790"
+                      src="https://assets.coingecko.com/coins/images/24488/small/NYM_Token.png?1649926353"
                     />
                     <Text
                       fontFamily="futura"
@@ -476,7 +534,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      LUNC: {formatEthNumber(getTotalBridgeFees("WLUNC"))}
+                      NYM: {formatEthNumber(getTotalBridgeFees("NYM"))}
                     </Text>
                   </HStack>
                   <HStack>
@@ -498,7 +556,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                     <Image
                       boxSize="25px"
                       borderRadius={"full"}
-                      src="https://assets.coingecko.com/coins/images/7598/small/wrapped_bitcoin_wbtc.png?1548822744"
+                      src="https://assets.coingecko.com/coins/images/7845/small/DV80FOp.png?1554953278"
                     />
                     <Text
                       fontFamily="futura"
@@ -507,7 +565,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WBTC: {formatBtcNumber(getTotalBridgeFees("WBTC"))}
+                      FUND: {formatEthNumber(getTotalBridgeFees("FUND"))}
                     </Text>
                   </HStack>
                 </VStack>
@@ -894,6 +952,7 @@ Tokens             <Box
                     <Text>A chain fee is 0.002% or 2 basis points in the denom of the total amount you are bridging. This fee is paid directly to the stakers of the graviton token.</Text>
                     <Text>A bridge fee is the fee you pay to have your tokens relayed between the two bridges. This fee covers the gas cost on the Eth side.</Text>
                     <Text>The data shown in this panel represents the total amount of chain fees and bridge fees paid by bridgers in their respective denoms.</Text>
+                    <Text>On the top right are the time based data selectors. 1D = One day, 7D = Seven Days, 1M = One Month, & All = Since block 491,111</Text>
                     </Wrap>
                     </VStack>
           </ModalBody>

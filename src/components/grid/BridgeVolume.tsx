@@ -277,7 +277,7 @@ export const BridgeVolume = () => {
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">
             This grid item shows the the total volume transfered between Gravity Bridge & Ethereum including the daily and weekly total amounts.
-            TVL is the total value locked in the Gravity Bridge contracts.
+            TVL is the total value locked in the Gravity Bridge contracts. The percentages next to the volume amounts show the change in volume from the previous day or week.
           </ModalBody>
           <ModalFooter>
           </ModalFooter>

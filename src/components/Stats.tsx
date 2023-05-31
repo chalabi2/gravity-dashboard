@@ -23,11 +23,23 @@ export const Stats: React.FC = () => {
     md: "732px !important",
   });
   const BottomTextColor = useColorModeValue("black", "white");
+  const shadowColor = useColorModeValue("rgba(0, 0, 153, 0.3)", "rgba(100, 118, 233, 0.3)");
 
   return (
-    <Container py={18} maxW="8xl" centerContent>
-      <Box maxWidth="8xl" width="100%"></Box>
-      <VStack spacing={2}>
+    <Container
+    
+    py={18} maxW="8xl" centerContent>
+      <Box 
+      maxWidth="8xl" width="100%"></Box>
+      <VStack 
+      shadow={"dark-lg"}
+      spacing={2}
+      p={4}
+      borderRadius={4}
+      sx={{
+          boxShadow: `0 0 10px 2px ${shadowColor}`,
+      }}
+      >
         <Pmtr />
         <HStack>
           <BridgeVolume />
@@ -35,7 +47,8 @@ export const Stats: React.FC = () => {
         </HStack>
         <ChainFee />
         <VolumeComparison />
-        <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
+      </VStack>
+      <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
          
           <Text textAlign="center" fontFamily="Futura">
             Data is feteched from:
@@ -89,10 +102,10 @@ export const Stats: React.FC = () => {
             fontFamily="futura"
             href="https://www.gravitybridge.net/"
           >
-            Gravity Bridge ®
+            Gravity Bridge 
           </Link>
 
-            Is A Registered Trademark | Powered By
+          ® Is A Registered Trademark | Powered By
             <Link
             _hover={{ textDecoration: "none", color: "blue" }}
             color={BottomTextColor}
@@ -105,7 +118,6 @@ export const Stats: React.FC = () => {
           </Text>
           
           </HStack>
-      </VStack>
     </Container>
   );
 };

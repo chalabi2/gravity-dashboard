@@ -103,7 +103,7 @@ export const Header = () => {
         fontWeight="light"
         fontSize="18px"
         color={headerTextColor}
-        href="https://info.gravitychain.io:9000/"
+        href="https://info.gravitychain.io/"
         isExternal
         _hover={{
           textDecoration: "none",

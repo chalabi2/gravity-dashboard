@@ -5,7 +5,11 @@ This is a dashboard to view various Gravity Bridge statistics. It uses the [Grav
 Simply fork the repository, enable github pages, and a github pages action will automatically run and deploy the application
 
 ### To do list
-Data Missing:
-* Bandage with free dune tier, add dune info to chandra api and fetch every 24 hrs, stretch.
-* Total Bridge Volume & TVL - take the logic from gravity info api for volume, make it recursive, make it save to a data base every months average ala transactions. implement the exact same logic from volume afterwards but instead of erc20 transfer events for the bridge look at locked events
-* Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly.
+* Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly on chart.
+* Refactor chain & bridge fee queries to use new gravity info endpoints.
+* Add mobile resizing
+* Fix Font
+* Fix line elements
+* Add wallet connect to show analytics for individual wallets
+* Add IBC transfer data IE which chains are sending or receiving the most tokens to and from gravity.
+* Add profitbale relay info
