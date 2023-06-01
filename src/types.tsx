@@ -241,6 +241,36 @@ export type gravityDenomToString = {
     'ibc/D157AD8A50DAB0FC4EB95BBE1D9407A590FA2CDEE04C90A76C005089BF76E519': 'FUND'
   };
 
+  export const tokenDecimalsMap: { [key: string]: number } = {
+    DAI: 18,
+    USDT: 6,
+    USDC: 6,
+    WBTC: 8,
+    WETH: 18,
+    wstETH: 18,
+    ATOM: 6,
+    UMEE: 6,
+    stkATOM: 6,
+    AXL: 6,
+    SOMM: 6,
+    ISLM: 6,
+    UND: 6,
+    NYM_Duplicate: 6,
+    CMDX: 6,
+    KUJI: 6,
+    LUNA: 6,
+    MNTL: 6,
+    USK: 6,
+    USD: 6,
+    PLANQ: 6,
+    STARS: 6,
+    CHEQ: 9,
+    HUAHUA: 6,
+    NYM: 6,
+    FUND: 6
+
+  };
+
   export interface ChainFeeData {
     denom: string;
     totalChainFees: number;

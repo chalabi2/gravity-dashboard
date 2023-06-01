@@ -13,6 +13,7 @@ Tooltip } from '@chakra-ui/react';
 import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
+import { getFees } from '../calculations/feeQuery';
 
 function formatTotalAmount(amount: number, decimals: number): string {
   const formattedAmount = amount / Math.pow(10, decimals);
@@ -30,6 +31,8 @@ export const Assets: React.FC = () => {
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
   const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const blockFees = getFees();
+
 
   const modalBgText = useColorModeValue("white", "black");
   const [clickPosition, setClickPosition] = React.useState({

@@ -38,6 +38,8 @@ export const Stats: React.FC = () => {
       borderRadius={4}
       sx={{
           boxShadow: `0 0 10px 2px ${shadowColor}`,
+            backdropFilter: 'blur(2px)',
+            bgColor: 'transparent'
       }}
       >
         <Pmtr />

@@ -31,6 +31,7 @@ import { BridgeFeeData, ChainFeeData } from "../../types";
 import { useMenu } from "@chakra-ui/react";
 import { getCombinedFeeData } from "../calculations/oracle";
 import { getAverageFees } from "../calculations/oracle";
+import { getFees } from "../calculations/feeQuery"
 
 interface ChainFeeProps {}
 
@@ -67,6 +68,124 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     x: 0,
     y: 0,
   });
+
+
+  //Handle Fees
+  type FeesData = {
+    allTimeChainFees: { [key: string]: Number };
+    allTimeBridgeFees: { [key: string]: Number };
+    oneYearChainFees: { [key: string]: Number };
+    oneYearBridgeFees: { [key: string]: Number };
+    oneMonthChainFees: { [key: string]: Number };
+    oneMonthBridgeFees: { [key: string]: Number };
+    oneWeekChainFees: { [key: string]: Number };
+    oneWeekBridgeFees: { [key: string]: Number };
+    oneDayChainFees: { [key: string]: Number };
+    oneDayBridgeFees: { [key: string]: Number };
+  };
+
+  const [feesData, setFeesData] = useState<FeesData | null>(null);
+
+  useEffect(() => {
+    getFees().then((result) => {
+      if(result) {
+        setFeesData(result);
+      } else {
+        setFeesData(null);
+      }
+    });
+  }, []);
+
+  //All Time
+  const getAllTimeChainFees = (denom: string) => {
+    if (!feesData) return 0;
+    const fees = feesData.allTimeChainFees[denom];
+    if (!fees) return 0;
+  
+    return (fees);
+  };
+
+  const getAllTimeBridgeFees = (denom: string) => {
+    if (!feesData) return 0;
+    const fees = feesData.allTimeBridgeFees[denom];
+    if (!fees) return 0;
+  
+    return (fees);
+  };  
+
+  //1 year
+  const getOneYearChainFees = (denom: string) => {
+    if (!feesData) return 0;
+    const fees = feesData.oneYearChainFees[denom];
+    if (!fees) return 0;
+  
+    return (fees);
+  };
+
+  const getOneYearBridgeFees = (denom: string) => {
+    if (!feesData) return 0;
+    const fees = feesData.oneYearBridgeFees[denom];
+    if (!fees) return 0;
+  
+    return (fees);
+  };
+
+    //1 month
+    const getOneMonthChainFees = (denom: string) => {
+      if (!feesData) return 0;
+
+      const fees = feesData.oneMonthChainFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
+  
+    const getOneMonthBridgeFees = (denom: string) => {
+      if (!feesData) return 0;
+    
+      const fees = feesData.oneMonthBridgeFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
+
+    //1 week
+    const getOneWeekChainFees = (denom: string) => {
+      if (!feesData) return 0;
+    
+      const fees = feesData.oneWeekChainFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
+  
+    const getOneWeekBridgeFees = (denom: string) => {
+      if (!feesData) return 0;
+    
+      const fees = feesData.oneWeekBridgeFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
+
+    //1 day
+    const getOneDayChainFees = (denom: string) => {
+      if (!feesData) return 0;
+    
+      const fees = feesData.oneDayChainFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
+  
+    const getOneDayBridgeFees = (denom: string) => {
+      if (!feesData) return 0;
+    
+      const fees = feesData.oneDayBridgeFees[denom];
+      if (!fees) return 0;
+    
+      return (fees);
+    };
 
   const [chainFeesData, setChainFeesData] = useState<ChainFeeData[]>([]);
   const [bridgeFeesData, setBridgeFeesData] = useState<BridgeFeeData[]>([]);
@@ -195,6 +314,7 @@ right={2}
 <Text
 fontSize="sm"
 p={0.5}
+_hover={{ cursor: "pointer" }}
 >1D</Text>
   </Flex>
   <Flex
@@ -206,6 +326,7 @@ p={0.5}
 <Text
 fontSize="sm"
 p={0.5}
+_hover={{ cursor: "pointer" }}
 >7D</Text>
   </Flex>
   <Flex
@@ -217,6 +338,7 @@ p={0.5}
 <Text
 fontSize="sm"
 p={0.5}
+_hover={{ cursor: "pointer" }}
 >1M</Text>
   </Flex>
   <Flex
@@ -228,6 +350,7 @@ p={0.5}
 <Text
 fontSize="sm"
 p={0.5}
+_hover={{ cursor: "pointer" }}
 >All</Text>
   </Flex>
 </HStack>
@@ -371,7 +494,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {formatCosmosNumber(getTotalChainFees("USDC"))}
+                      USDC: {numberWithCommas(getOneYearChainFees("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -386,7 +509,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WETH: {formatEthNumber(getTotalChainFees("WETH"))}
+                     WETH: {numberWithCommas(getOneYearChainFees("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -401,7 +524,7 @@ p={0.5}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                      wstETH: {formatEthNumber(getTotalChainFees("wstETH"))}
+                      wstETH: {numberWithCommas(getOneYearChainFees("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -416,7 +539,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDT: {formatCosmosNumber(getTotalChainFees("USDT"))}
+                      USDT: {numberWithCommas(getOneYearChainFees("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -432,7 +555,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {formatEthNumber(getTotalChainFees("FUND"))}
+                      FUND: {numberWithCommas(getOneYearChainFees("FUND")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -447,7 +570,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {formatCosmosNumber(getTotalChainFees("NYM"))}
+                      NYM: {numberWithCommas(getOneYearChainFees("NYM")).toString()}
                     </Text>
                   </HStack>
                 </VStack>
@@ -489,7 +612,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WETH: {formatEthNumber(getTotalBridgeFees("WETH"))}
+                      WETH: {numberWithCommas(getOneYearBridgeFees("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -504,13 +627,13 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {formatCosmosNumber(getTotalBridgeFees("USDC"))}
+                      USDC: {numberWithCommas(getOneYearBridgeFees("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
                     <Image
                       boxSize="25px"
-                      src="https://assets.coingecko.com/coins/images/25767/small/01_Luna_color.png?1653556122"
+                      src="https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
                     />
                     <Text
                       fontFamily="futura"
@@ -519,7 +642,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      LUNA: {formatCosmosNumber(getTotalBridgeFees("LUNA"))}
+                      USDT: {numberWithCommas(getOneYearBridgeFees("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -534,7 +657,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {formatEthNumber(getTotalBridgeFees("NYM"))}
+                      NYM: {numberWithCommas(getOneYearBridgeFees("NYM")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -549,7 +672,7 @@ p={0.5}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                      wstETH: {formatEthNumber(getTotalBridgeFees("wstETH"))}
+                     wstETH: {numberWithCommas(getOneYearBridgeFees("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -565,7 +688,7 @@ p={0.5}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {formatEthNumber(getTotalBridgeFees("FUND"))}
+                      FUND: {numberWithCommas(getOneYearBridgeFees("FUND")).toString()}
                     </Text>
                   </HStack>
                 </VStack>
