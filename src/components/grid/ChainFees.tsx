@@ -293,67 +293,6 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
         transition: 'opacity 0.3s ease-in-out', 
       }}
     />
-<HStack
-color="white"
-  shadow={"dark-sm"}
-fontFamily="Futura"
-top={1}
-right={2}
-  p={1}
-  borderRadius={4}
-   position="absolute"
-   spacing={4}
-   bgColor="rgba(0, 18, 183, 0.1)"
->
-  <Flex
-   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
-  bgColor="rgba(0, 0, 0, 0.33)"
-  borderRadius={"4px"}
-  shadow={"dark-lg"}
-  >
-<Text
-fontSize="sm"
-p={0.5}
-_hover={{ cursor: "pointer" }}
->1D</Text>
-  </Flex>
-  <Flex
-  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
-    shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.3)"
-  borderRadius={"4px"}
-  >
-<Text
-fontSize="sm"
-p={0.5}
-_hover={{ cursor: "pointer" }}
->7D</Text>
-  </Flex>
-  <Flex
-  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
-    shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.33)"
-  borderRadius={"4px"}
-  >
-<Text
-fontSize="sm"
-p={0.5}
-_hover={{ cursor: "pointer" }}
->1M</Text>
-  </Flex>
-  <Flex
-  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
-    shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.33)"
-  borderRadius={"4px"}
-  >
-<Text
-fontSize="sm"
-p={0.5}
-_hover={{ cursor: "pointer" }}
->All</Text>
-  </Flex>
-</HStack>
       <Menu>
         <MenuButton
           color="white"
@@ -425,6 +364,7 @@ _hover={{ cursor: "pointer" }}
       </Menu>
       <Box>
         {selectedMenuItem === "Fees" && (
+          
           <Stack
             justify="center"
             justifyContent="space-between"
@@ -456,7 +396,67 @@ _hover={{ cursor: "pointer" }}
                 bottom="1px"
               />
             </Text>
-
+            <HStack
+color="white"
+  shadow={"dark-sm"}
+fontFamily="Futura"
+top={1}
+right={2}
+  p={1}
+  borderRadius={4}
+   position="absolute"
+   spacing={4}
+   bgColor="rgba(0, 18, 183, 0.1)"
+>
+  <Flex
+   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  shadow={"dark-lg"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>1D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.3)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>7D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>1M</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+  bgColor="rgba(0, 0, 0, 0.33)"
+  borderRadius={"4px"}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>All</Text>
+  </Flex>
+</HStack>
             <Flex pt={4} justifyContent="space-between" width="100%" height="100%">
               <VStack
                 alignItems="center"
@@ -494,7 +494,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {numberWithCommas(getOneYearChainFees("USDC")).toString()}
+                      USDC: {numberWithCommas(getAllTimeChainFees("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -509,7 +509,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                     WETH: {numberWithCommas(getOneYearChainFees("WETH")).toString()}
+                     WETH: {numberWithCommas(getAllTimeChainFees("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -524,7 +524,7 @@ _hover={{ cursor: "pointer" }}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                      wstETH: {numberWithCommas(getOneYearChainFees("wstETH")).toString()}
+                      wstETH: {numberWithCommas(getAllTimeChainFees("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -539,7 +539,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDT: {numberWithCommas(getOneYearChainFees("USDT")).toString()}
+                      USDT: {numberWithCommas(getAllTimeChainFees("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -555,7 +555,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {numberWithCommas(getOneYearChainFees("FUND")).toString()}
+                      FUND: {numberWithCommas(getAllTimeChainFees("FUND")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -570,7 +570,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {numberWithCommas(getOneYearChainFees("NYM")).toString()}
+                      NYM: {numberWithCommas(getAllTimeChainFees("NYM")).toString()}
                     </Text>
                   </HStack>
                 </VStack>
@@ -612,7 +612,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WETH: {numberWithCommas(getOneYearBridgeFees("WETH")).toString()}
+                      WETH: {numberWithCommas(getAllTimeBridgeFees("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -627,7 +627,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {numberWithCommas(getOneYearBridgeFees("USDC")).toString()}
+                      USDC: {numberWithCommas(getAllTimeBridgeFees("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -642,7 +642,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDT: {numberWithCommas(getOneYearBridgeFees("USDT")).toString()}
+                      USDT: {numberWithCommas(getAllTimeBridgeFees("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -657,7 +657,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {numberWithCommas(getOneYearBridgeFees("NYM")).toString()}
+                      NYM: {numberWithCommas(getAllTimeBridgeFees("NYM")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -672,7 +672,7 @@ _hover={{ cursor: "pointer" }}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                     wstETH: {numberWithCommas(getOneYearBridgeFees("wstETH")).toString()}
+                     wstETH: {numberWithCommas(getAllTimeBridgeFees("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -688,7 +688,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {numberWithCommas(getOneYearBridgeFees("FUND")).toString()}
+                      FUND: {numberWithCommas(getAllTimeBridgeFees("FUND")).toString()}
                     </Text>
                   </HStack>
                 </VStack>

@@ -22,7 +22,7 @@ function convertGravityDenom(denom: string) {
 
 export async function getFees() {
   try {
-    const response = await axios.get<TransactionResponse>('https://info.gravitychain.io:9000/transactions/send_to_eth/time');
+    const response = await axios.get<TransactionResponse>('http://66.172.36.132:9000/transactions/send_to_eth/time');
 
     if (response.status !== 200) {
       console.error(`Failed to fetch fees with status ${response.status}`);
@@ -42,8 +42,8 @@ export async function getFees() {
     const oneMonthChainFees = response.data.time_frames[2].chain_fee_totals;
     const oneYearBridgeFees = response.data.time_frames[3].bridge_fee_totals;
     const oneYearChainFees = response.data.time_frames[3].chain_fee_totals;
-    const allTimeBridgeFees = response.data.time_frames[3].bridge_fee_totals;
-    const allTimeChainFees = response.data.time_frames[3].chain_fee_totals;
+    const allTimeBridgeFees = response.data.time_frames[4].bridge_fee_totals;
+    const allTimeChainFees = response.data.time_frames[4].chain_fee_totals;
 
     const oneDayBridgeFeesFormatted: { [key: string]: Number } = {};
     const oneDayChainFeesFormatted: { [key: string]: Number } = {};
