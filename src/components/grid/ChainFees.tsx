@@ -30,7 +30,7 @@ import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
 import { useMenu } from "@chakra-ui/react";
 import { getCombinedFeeData } from "../calculations/oracle";
-import { getAverageFees } from "../calculations/oracle";
+import { getAverageFees } from "../calculations/feeQuery";
 import { getFees } from "../calculations/feeQuery"
 
 interface ChainFeeProps {}
@@ -240,6 +240,8 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     mostCommonChainFeeDenom: "",
     mostCommonBridgeFeeDenom: "",
   });
+
+  console.log(feePrices)
 
   useEffect(() => {
     const fetchData = async () => {
