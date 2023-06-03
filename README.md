@@ -8,6 +8,7 @@ Simply fork the repository, enable github pages, and a github pages action will 
 **V1**
 
 * Compare Data. take every single bridge transaction, exctract denoms and their amounts for a 7 day period via block timestamp returns, then multiply by price, deliver one week time stamped data sets. Use one week data to create bridge volume graph line.
+* Get tx amounts for send to eth per time frame by looking at time stamp from very last block then back the time frame amount and add entries for corresponding time
 * Fix percent changes on bridge volume
 * Add mobile resizing
 * Fix Font
