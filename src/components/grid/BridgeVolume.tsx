@@ -166,7 +166,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-           ${bridgeInfo?.vol}
+           ${bridgeInfo?.vol ?? "1.19B"}
           </Text>
         </Flex>
         <BridgeVolumeChart data={BridgeVolumeChartData}/>
@@ -259,7 +259,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            ${bridgeInfo?.tvl}
+            ${bridgeInfo?.tvl ?? "76M"}
           </Text>
         </Flex>
       </Flex>

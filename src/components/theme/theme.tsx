@@ -12,20 +12,20 @@ export const Fonts = () => (
       /* latin */
       @font-face {
         font-family: 'Futura-Light';
-        src: url('public/fonts/futura-light-bt.woff2') format('woff2');
-        font-weight: 300;
+        src: url('./public/fonts/futura-light.ttf') format('truetype');
+        font-weight: normal;
         font-style: normal;
         font-display: swap;
       }
       /* latin */
       @font-face {
         font-family: 'Futura-MD-BT';
-        src: url('public/fonts/futura-medium-bt.woff2') format('woff2');
-        font-weight: 500;
+        src: url('./public/fonts/futura-medium.ttf') format('truetype');
+        font-weight: normal;
         font-style: normal;
         font-display: swap;
       }
-      `}
+    `}
   />
 )
 

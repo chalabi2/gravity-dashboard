@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom/client"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import { Fonts } from "./components/theme/theme";
 
 
 const container = document.getElementById("root")
@@ -13,6 +14,7 @@ const root = ReactDOM.createRoot(container)
 root.render(
   <React.StrictMode>
     <ColorModeScript />
+    <Fonts/>
     <App />
   </React.StrictMode>,
 )

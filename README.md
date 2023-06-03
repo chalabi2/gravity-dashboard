@@ -6,12 +6,13 @@ Simply fork the repository, enable github pages, and a github pages action will 
 
 ### To do list
 **V1**
-* Compare Data - once recursive bridge data is done, find a way to collect axelar and other bridge volume, display it monthly on chart.
-* Refactor chain & bridge fee queries to use new gravity info endpoints.
+
+* Compare Data. take every single bridge transaction, exctract denoms and their amounts for a 7 day period via block timestamp returns, then multiply by price, deliver one week time stamped data sets. Use one week data to create bridge volume graph line.
+* Fix percent changes on bridge volume
 * Add mobile resizing
 * Fix Font
 * Fix line elements
-* Add Skelton Text
+* Add Loading screen, make loading screen take slowest query return as isLoaded
 
 **V2**
 * Add wallet connect to show analytics for individual wallets

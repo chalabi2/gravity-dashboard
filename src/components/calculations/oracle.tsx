@@ -275,7 +275,6 @@ export async function getAverageFees() {
 
         denomCount++;
       } catch (error) {
-        console.error(`Error processing fees for denom: ${denom}`, error);
       }
     }
 

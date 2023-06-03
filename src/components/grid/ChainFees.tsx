@@ -28,33 +28,9 @@ import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
-import { useMenu } from "@chakra-ui/react";
-import { getCombinedFeeData } from "../calculations/oracle";
-import { getAverageFees } from "../calculations/feeQuery";
-import { getFees } from "../calculations/feeQuery"
+import { getFees, getAverageFees, getCombinedFeeData } from "../calculations/feeQuery";
 
 interface ChainFeeProps {}
-
-function formatCosmosNumber(number: number) {
-  const formattedNumber = Math.floor(number / 1000000);
-  return formattedNumber.toLocaleString("en-US");
-}
-
-function formatEthNumber(number: number) {
-  const formattedNumber = number / 10 ** 18;
-  return formattedNumber.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
-
-function formatBtcNumber(number: number) {
-  const formattedNumber = number / 10 ** 18;
-  return formattedNumber.toLocaleString("en-US", {
-    minimumFractionDigits: 4,
-    maximumFractionDigits: 4,
-  });
-}
 
 function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -70,6 +46,7 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   });
 
 
+  // Fees Section
   //Handle Fees
   type FeesData = {
     allTimeChainFees: { [key: string]: Number };
@@ -112,23 +89,6 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
   
     return (fees);
   };  
-
-  //1 year
-  const getOneYearChainFees = (denom: string) => {
-    if (!feesData) return 0;
-    const fees = feesData.oneYearChainFees[denom];
-    if (!fees) return 0;
-  
-    return (fees);
-  };
-
-  const getOneYearBridgeFees = (denom: string) => {
-    if (!feesData) return 0;
-    const fees = feesData.oneYearBridgeFees[denom];
-    if (!fees) return 0;
-  
-    return (fees);
-  };
 
     //1 month
     const getOneMonthChainFees = (denom: string) => {
@@ -187,6 +147,132 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
       return (fees);
     };
 
+    const [timeFrame, setTimeFrame] = useState('allTime');
+
+    const handleTimeFrameChange = (newTimeFrame: string) => {
+      setTimeFrame(newTimeFrame);
+    };
+
+    let getChainFee;
+switch (timeFrame) {
+  case 'oneDay':
+    getChainFee = getOneDayChainFees;
+    break;
+  case 'oneWeek':
+    getChainFee = getOneWeekChainFees;
+    break;
+  case 'oneMonth':
+    getChainFee = getOneMonthChainFees;
+    break;
+    case 'allTime':
+      getChainFee = getAllTimeChainFees;
+      break;
+  default:
+    getChainFee = getAllTimeChainFees;
+}
+
+let getBridgeFee;
+switch (timeFrame) {
+  case 'oneDay':
+    getBridgeFee = getOneDayBridgeFees;
+    break;
+  case 'oneWeek':
+    getBridgeFee = getOneWeekBridgeFees;
+    break;
+  case 'oneMonth':
+    getBridgeFee = getOneMonthBridgeFees;
+    break;
+  case 'allTime':
+      getBridgeFee = getAllTimeBridgeFees;
+      break;
+  default:
+    getBridgeFee = getAllTimeChainFees;
+}
+
+  // Fee Totals Section
+let timeFrameIndex;
+switch (timeFrame) {
+  case 'oneDay':
+    timeFrameIndex = 0;
+    break;
+  case 'oneWeek':
+    timeFrameIndex = 1;
+    break;
+  case 'oneMonth':
+    timeFrameIndex = 2;
+    break;
+  case 'allTime':
+    timeFrameIndex = 4;
+    break;
+  default:
+    timeFrameIndex = 4;
+}
+
+type FeePrice = {
+  averageChainFee: string;
+  averageBridgeFee: string;
+  mostCommonChainFeeDenom: string;
+  mostCommonBridgeFeeDenom: string;
+}
+
+const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    const feeData = await getAverageFees();
+    setFeePrices(Array.isArray(feeData) ? feeData : [feeData]);
+  };
+
+  fetchData();
+}, []);
+
+let getAverageChainFee;
+if (feePrices.length > timeFrameIndex) {
+  getAverageChainFee = feePrices[timeFrameIndex].averageChainFee;
+}
+
+let getAverageBridgeFee;
+if (feePrices.length > timeFrameIndex) {
+  getAverageBridgeFee = feePrices[timeFrameIndex].averageBridgeFee;
+}
+
+let mostCommonChainFeeDenom;
+if (feePrices.length > timeFrameIndex) {
+  mostCommonChainFeeDenom = feePrices[timeFrameIndex].mostCommonChainFeeDenom;
+}
+
+let mostCommonBridgeFeeDenom;
+if (feePrices.length > timeFrameIndex) {
+  mostCommonBridgeFeeDenom = feePrices[timeFrameIndex].mostCommonBridgeFeeDenom;
+}
+
+type TotalFee = {
+  totalChainFeeUSD: Number,
+  totalBridgeFeeUSD: Number,
+}
+
+const [totalFees, setTotalFees] = useState<TotalFee[]>([]);
+
+let getBridgeFeeTotal;
+if (feePrices.length > timeFrameIndex ?? 4) {
+  getBridgeFeeTotal = totalFees[timeFrameIndex]?.totalBridgeFeeUSD;
+}
+
+let getChainFeeTotal;
+if (feePrices.length > timeFrameIndex ?? 4) {
+  getChainFeeTotal = totalFees[timeFrameIndex]?.totalChainFeeUSD;
+}
+
+useEffect(() => {
+  const fetchData = async () => {
+    const feeData = await getCombinedFeeData();
+    setTotalFees(Array.isArray(feeData) ? feeData : [feeData]);
+  };
+
+  fetchData();
+}, []);
+
+//Token list section
   const [chainFeesData, setChainFeesData] = useState<ChainFeeData[]>([]);
   const [bridgeFeesData, setBridgeFeesData] = useState<BridgeFeeData[]>([]);
 
@@ -203,58 +289,12 @@ export const ChainFee: React.FC<ChainFeeProps> = () => {
     });
   }, []);
 
-  const getTotalChainFees = (denom: string) => {
-    const entry = chainFeesData.find((item) => item.denom === denom);
-    return entry ? entry.totalChainFees : 0;
-  };
-
-  const getTotalBridgeFees = (denom: string) => {
-    const entry = bridgeFeesData.find((item) => item.denom === denom);
-    return entry ? entry.totalBridgeFees : 0;
-  };
-
   const handleClickMenu = (event: React.MouseEvent) => {
     event.stopPropagation();
     onMenuOpen();
   };
   
-  const [prices, setPrices] = useState({
-    chainFeeTotalUSD: 0,
-    bridgeFeeTotalUSD: 0,
-    averageChainFee: 0,
-    averageBridgeFee: 0,
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const feeData = await getCombinedFeeData();
-      setPrices(feeData);
-    };
-
-    fetchData();
-  }, []);
-
-  const [feePrices, setFeePrices] = useState({
-    averageChainFee: "0.00",
-    averageBridgeFee: "0.00",
-    mostCommonChainFeeDenom: "",
-    mostCommonBridgeFeeDenom: "",
-  });
-
-  console.log(feePrices)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const feeData = await getAverageFees();
-      setFeePrices(feeData);
-    };
-
-    fetchData();
-  }, []);
-  
-
   const handleClickInfo = (event: React.MouseEvent) => {
-    // Store the click position
     setClickPosition({
       x: event.clientX,
       y: event.clientY,
@@ -412,9 +452,10 @@ right={2}
 >
   <Flex
    _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
-  bgColor="rgba(0, 0, 0, 0.33)"
+   bgColor={timeFrame === 'oneDay' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
   borderRadius={"4px"}
   shadow={"dark-lg"}
+  onClick={() => handleTimeFrameChange('oneDay')}
   >
 <Text
 fontSize="sm"
@@ -425,8 +466,9 @@ _hover={{ cursor: "pointer" }}
   <Flex
   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
     shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.3)"
+    bgColor={timeFrame === 'oneWeek' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
   borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('oneWeek')}
   >
 <Text
 fontSize="sm"
@@ -437,8 +479,9 @@ _hover={{ cursor: "pointer" }}
   <Flex
   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
     shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.33)"
+    bgColor={timeFrame === 'oneMonth' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
   borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('oneMonth')}
   >
 <Text
 fontSize="sm"
@@ -449,8 +492,9 @@ _hover={{ cursor: "pointer" }}
   <Flex
   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
     shadow={"dark-lg"}
-  bgColor="rgba(0, 0, 0, 0.33)"
+    bgColor={timeFrame === 'allTime' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
   borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('allTime')}
   >
 <Text
 fontSize="sm"
@@ -459,13 +503,14 @@ _hover={{ cursor: "pointer" }}
 >All</Text>
   </Flex>
 </HStack>
-            <Flex pt={4} justifyContent="space-between" width="100%" height="100%">
-              <VStack
-                alignItems="center"
-                spacing={2}
-                flexGrow={1}
-                height="100%"
-              >
+<Flex pt={4} justifyContent="space-between" width="100%" height="100%" alignItems="center">
+<VStack
+  alignItems="center"
+  spacing={2}
+  flexGrow={1}
+  height="100%"
+
+>
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
@@ -496,7 +541,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {numberWithCommas(getAllTimeChainFees("USDC")).toString()}
+                      USDC: {numberWithCommas(getChainFee("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -511,7 +556,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                     WETH: {numberWithCommas(getAllTimeChainFees("WETH")).toString()}
+                     WETH: {numberWithCommas(getChainFee("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -526,7 +571,7 @@ _hover={{ cursor: "pointer" }}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                      wstETH: {numberWithCommas(getAllTimeChainFees("wstETH")).toString()}
+                      wstETH: {numberWithCommas(getChainFee("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -541,7 +586,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDT: {numberWithCommas(getAllTimeChainFees("USDT")).toString()}
+                      USDT: {numberWithCommas(getChainFee("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -557,7 +602,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {numberWithCommas(getAllTimeChainFees("FUND")).toString()}
+                      FUND: {numberWithCommas(getChainFee("FUND")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -572,18 +617,18 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {numberWithCommas(getAllTimeChainFees("NYM")).toString()}
+                      NYM: {numberWithCommas(getChainFee("NYM")).toString()}
                     </Text>
                   </HStack>
                 </VStack>
               </VStack>
 
               <VStack
-                alignItems="center"
-                spacing={2}
-                flexGrow={0.7}
-                height="100%"
-              >
+  alignItems="center"
+  spacing={2}
+  flexGrow={1}
+  height="100%"
+>
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
@@ -614,7 +659,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      WETH: {numberWithCommas(getAllTimeBridgeFees("WETH")).toString()}
+                      WETH: {numberWithCommas(getBridgeFee("WETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -629,7 +674,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDC: {numberWithCommas(getAllTimeBridgeFees("USDC")).toString()}
+                      USDC: {numberWithCommas(getBridgeFee("USDC")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -644,7 +689,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      USDT: {numberWithCommas(getAllTimeBridgeFees("USDT")).toString()}
+                      USDT: {numberWithCommas(getBridgeFee("USDT")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -659,7 +704,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      NYM: {numberWithCommas(getAllTimeBridgeFees("NYM")).toString()}
+                      NYM: {numberWithCommas(getBridgeFee("NYM")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -674,7 +719,7 @@ _hover={{ cursor: "pointer" }}
                       fontSize="20px"
                       color="#FFFFFF"
                     >
-                     wstETH: {numberWithCommas(getAllTimeBridgeFees("wstETH")).toString()}
+                     wstETH: {numberWithCommas(getBridgeFee("wstETH")).toString()}
                     </Text>
                   </HStack>
                   <HStack>
@@ -690,7 +735,7 @@ _hover={{ cursor: "pointer" }}
                       textTransform="capitalize"
                       color="#FFFFFF"
                     >
-                      FUND: {numberWithCommas(getAllTimeBridgeFees("FUND")).toString()}
+                      FUND: {numberWithCommas(getBridgeFee("FUND")).toString()}
                     </Text>
                   </HStack>
                 </VStack>
@@ -730,6 +775,71 @@ _hover={{ cursor: "pointer" }}
                 bottom="1px"
               />
             </Text>
+            <HStack
+color="white"
+  shadow={"dark-sm"}
+fontFamily="Futura"
+top={1}
+right={2}
+  p={1}
+  borderRadius={4}
+   position="absolute"
+   spacing={4}
+   bgColor="rgba(0, 18, 183, 0.1)"
+>
+  <Flex
+   _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+   bgColor={timeFrame === 'oneDay' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
+  borderRadius={"4px"}
+  shadow={"dark-lg"}
+  onClick={() => handleTimeFrameChange('oneDay')}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>1D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+    bgColor={timeFrame === 'oneWeek' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
+  borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('oneWeek')}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>7D</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+    bgColor={timeFrame === 'oneMonth' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
+  borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('oneMonth')}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>1M</Text>
+  </Flex>
+  <Flex
+  _hover={{ textDecoration: "none", bgColor: "rgba(0, 18, 183, 0.1)" }}
+    shadow={"dark-lg"}
+    bgColor={timeFrame === 'allTime' ? "rgba(0, 18, 183, 0.1)" : "rgba(100, 100, 0, 0.5)"}
+  borderRadius={"4px"}
+  onClick={() => handleTimeFrameChange('allTime')}
+  >
+<Text
+fontSize="sm"
+p={0.5}
+_hover={{ cursor: "pointer" }}
+>All</Text>
+  </Flex>
+</HStack>
             <Flex py={4} justifyContent="space-between" width="100%" height="100%">
               <VStack
                 alignItems="center"
@@ -774,7 +884,7 @@ _hover={{ cursor: "pointer" }}
   textTransform="capitalize"
   color="#FFFFFF"
 >
-  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(prices.chainFeeTotalUSD.toFixed(0))}
+  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(getChainFeeTotal?.toFixed(0) ?? 0)}
 </Text>
           <Text
             fontFamily="Futura"
@@ -796,7 +906,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${feePrices.averageChainFee}
+      ${getAverageChainFee}
     </Text>
           <Text
             fontFamily="Futura"
@@ -817,7 +927,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            {feePrices.mostCommonChainFeeDenom}
+            {mostCommonChainFeeDenom}
           </Text>
               </VStack>
 
@@ -864,7 +974,7 @@ _hover={{ cursor: "pointer" }}
   textTransform="capitalize"
   color="#FFFFFF"
 >
-  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(prices.bridgeFeeTotalUSD.toFixed(0))}
+  <Box as="span" position="relative" top="8px">~</Box>${numberWithCommas(getBridgeFeeTotal?.toFixed(0) ?? 0)}
 </Text>
           <Text
             fontFamily="Futura"
@@ -886,7 +996,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${feePrices.averageBridgeFee}
+      ${getAverageBridgeFee}
     </Text>
           <Text
             fontFamily="Futura"
@@ -907,7 +1017,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-         {feePrices.mostCommonBridgeFeeDenom}
+         {mostCommonBridgeFeeDenom}
           </Text>
               </VStack>
             </Flex>

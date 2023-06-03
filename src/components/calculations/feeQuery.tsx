@@ -128,61 +128,75 @@ export async function getAverageFees() {
   try {
     const response = await axios.get('http://66.172.36.132:9000/transactions/send_to_eth/time');
     const data = response.data;
-    
-    const chainFeeTotals = data.time_frames[4]?.chain_fee_totals || [];
-    const bridgeFeeTotals = data.time_frames[4]?.bridge_fee_totals || [];
 
-    let denomCount = 0;
-    let sumOfAverageChainFees = 0;
-    let sumOfAverageBridgeFees = 0;
+    const averageFeesPerTimeFrame = [];
 
-    const denoms = new Set([
-      ...Object.keys(chainFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
-      ...Object.keys(bridgeFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
-    ]);
+    const transactionCounts = [10, 70, 280, 3360, 16842];
 
-    for (const denom of Array.from(denoms)) {
-      try {
-        const humanReadableDenom = gravityDenomToStringMap[denom];
-        const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
-        const tokenPrice = tokenPriceData.price;
-        const decimals = tokenDecimalsMap[humanReadableDenom];
+    for (let index = 0; index < data.time_frames.length; index++) {
+      const time_frame = data.time_frames[index];
 
-        if (decimals === undefined || isNaN(tokenPrice)) {
-          console.error(`Token decimals not found in tokenDecimalsMap or tokenPrice is NaN for denom: ${humanReadableDenom}`);
-          continue;
+      const chainFeeTotals = time_frame?.chain_fee_totals || [];
+      const bridgeFeeTotals = time_frame?.bridge_fee_totals || [];
+
+      let denomCount = 0;
+      let sumOfAverageChainFees = 0;
+      let sumOfAverageBridgeFees = 0;
+
+      const denoms = new Set([
+        ...Object.keys(chainFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
+        ...Object.keys(bridgeFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
+      ]);
+
+      const promises = Array.from(denoms).map(async (denom) => {
+        try {
+          const humanReadableDenom = gravityDenomToStringMap[denom];
+          const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
+          const tokenPrice = tokenPriceData.price;
+          const decimals = tokenDecimalsMap[humanReadableDenom];
+
+          if (decimals === undefined || isNaN(tokenPrice)) {
+            //console.error(`Token decimals not found in tokenDecimalsMap or tokenPrice is NaN for denom: ${humanReadableDenom}`);
+            return;
+          }
+
+          const totalChainFeesInUSD = (chainFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+          const totalBridgeFeesInUSD = (bridgeFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+
+          sumOfAverageChainFees += totalChainFeesInUSD;
+          sumOfAverageBridgeFees += totalBridgeFeesInUSD;
+
+          denomCount++;
+        } catch (error) {
+          //console.error(`Error processing fees for denom: ${denom}`, error);
         }
+      });
 
-        const totalChainFeesInUSD = (chainFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
-        const totalBridgeFeesInUSD = (bridgeFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+      await Promise.all(promises);
 
-        sumOfAverageChainFees += totalChainFeesInUSD;
-        sumOfAverageBridgeFees += totalBridgeFeesInUSD;
 
-        denomCount++;
-      } catch (error) {
-        console.error(`Error processing fees for denom: ${denom}`, error);
-      }
+      const transactionCount = transactionCounts[index];
+
+      const averageChainFee = denomCount ? ((sumOfAverageChainFees / denomCount) / transactionCount).toFixed(2) : "0.00";
+      const averageBridgeFee = denomCount ? ((sumOfAverageBridgeFees / denomCount) / transactionCount).toFixed(2) : "0.00";
+
+      let mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals);
+      mostCommonChainFeeDenom = mostCommonChainFeeDenom !== null ? gravityDenomToStringMap[mostCommonChainFeeDenom] : "";
+
+      let mostCommonBridgeFeeDenom = getMostCommonDenom(bridgeFeeTotals);
+      mostCommonBridgeFeeDenom = mostCommonBridgeFeeDenom !== null ? gravityDenomToStringMap[mostCommonBridgeFeeDenom] : "";
+
+      averageFeesPerTimeFrame.push({
+        averageChainFee,
+        averageBridgeFee,
+        mostCommonChainFeeDenom,
+        mostCommonBridgeFeeDenom,
+      });
     }
 
-    const averageChainFee = ((sumOfAverageChainFees / denomCount) / 16842).toFixed(2);
-    const averageBridgeFee = ((sumOfAverageBridgeFees / denomCount) / 16842).toFixed(2);
 
-    let mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals);
-    console.log('mostCommonChainFeeDenom:', mostCommonChainFeeDenom);
-    mostCommonChainFeeDenom = mostCommonChainFeeDenom !== null ? gravityDenomToStringMap[mostCommonChainFeeDenom] : "";
-    
-    let mostCommonBridgeFeeDenom = getMostCommonDenom(bridgeFeeTotals);
-    console.log('mostCommonBridgeFeeDenom:', mostCommonBridgeFeeDenom);
-    mostCommonBridgeFeeDenom = mostCommonBridgeFeeDenom !== null ? gravityDenomToStringMap[mostCommonBridgeFeeDenom] : "";
-    
+    return averageFeesPerTimeFrame;
 
-    return {
-      averageChainFee,
-      averageBridgeFee,
-      mostCommonChainFeeDenom,
-      mostCommonBridgeFeeDenom,
-    };
   } catch (error) {
     console.error("Error fetching data:", error);
     return {
@@ -191,6 +205,65 @@ export async function getAverageFees() {
       mostCommonChainFeeDenom: "",
       mostCommonBridgeFeeDenom: "",
     };
+  }
+}
+
+export async function getCombinedFeeData() {
+  try {
+    const response = await axios.get('http://66.172.36.132:9000/transactions/send_to_eth/time');
+    const data = response.data;
+
+    const feeTotalsPerTimeFrame = [];
+
+    for (let index = 0; index < data.time_frames.length; index++) {
+      const time_frame = data.time_frames[index];
+
+      const chainFeeTotals = time_frame?.chain_fee_totals || [];
+      const bridgeFeeTotals = time_frame?.bridge_fee_totals || [];
+
+      let totalChainFeeUSD = 0;
+      let totalBridgeFeeUSD = 0;
+
+      const denoms = new Set([
+        ...Object.keys(chainFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
+        ...Object.keys(bridgeFeeTotals).filter(denom => gravityDenomToStringMap.hasOwnProperty(denom) && tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])),
+      ]);
+
+      const promises = Array.from(denoms).map(async (denom) => {
+        try {
+          const humanReadableDenom = gravityDenomToStringMap[denom];
+          const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
+          const tokenPrice = tokenPriceData.price;
+          const decimals = tokenDecimalsMap[humanReadableDenom];
+
+          if (decimals === undefined || isNaN(tokenPrice)) {
+            //console.error(`Token decimals not found in tokenDecimalsMap or tokenPrice is NaN for denom: ${humanReadableDenom}`);
+            return;
+          }
+
+          totalChainFeeUSD += (chainFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+          totalBridgeFeeUSD += (bridgeFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+        } catch (error) {
+          //console.error(`Error processing fees for denom: ${denom}`, error);
+        }
+      });
+
+      await Promise.all(promises);
+
+      feeTotalsPerTimeFrame.push({
+        totalChainFeeUSD,
+        totalBridgeFeeUSD,
+      });
+    }
+
+    return feeTotalsPerTimeFrame;
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [{
+      totalChainFeeUSD: 0,
+      totalBridgeFeeUSD: 0,
+    }];
   }
 }
 
