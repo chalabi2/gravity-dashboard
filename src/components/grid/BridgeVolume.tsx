@@ -17,11 +17,11 @@ import { getBridgeTvl } from '../calculations/chandraApi';
 import { DuneData } from '../../types'
 
 export const BridgeVolume = () => {
-  const { today: volumeInfo, yesterday: yesterdayVolumeInfo } = useVolumeInfo();
+  const { today: volumeInfo, yesterday: yesterdayVolumeInfo, dayBeforeYesterday: dayBeforeYesterdayVolumeInfo } = useVolumeInfo();
   const dailyVolume = volumeInfo?.daily_volume || 0;
   const weeklyVolume = volumeInfo?.weekly_volume || 0;
-  const yesterdayDailyVolume = yesterdayVolumeInfo?.daily_volume || 0;
-  const yesterdayWeeklyVolume = yesterdayVolumeInfo?.weekly_volume || 0;
+  const yesterdayDailyVolume = yesterdayVolumeInfo?.daily_volume || dayBeforeYesterdayVolumeInfo?.daily_volume || 0;
+  const yesterdayWeeklyVolume = yesterdayVolumeInfo?.weekly_volume || dayBeforeYesterdayVolumeInfo?.weekly_volume || 0;
 
   const dailyVolumeChange = yesterdayDailyVolume !== 0 ? ((dailyVolume - yesterdayDailyVolume) / yesterdayDailyVolume) * 100 : 0;
   const weeklyVolumeChange = yesterdayWeeklyVolume !== 0 ? ((weeklyVolume - yesterdayWeeklyVolume) / yesterdayWeeklyVolume) * 100 : 0;

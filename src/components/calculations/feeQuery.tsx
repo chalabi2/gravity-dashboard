@@ -132,6 +132,7 @@ export async function getAverageFees() {
     const averageFeesPerTimeFrame = [];
 
     const transactionCounts = [10, 70, 280, 3360, 16842];
+    const chainFeeTransactionCounts = [10, 70, 280, 3360, 6149];
 
     for (let index = 0; index < data.time_frames.length; index++) {
       const time_frame = data.time_frames[index];
@@ -176,8 +177,9 @@ export async function getAverageFees() {
 
 
       const transactionCount = transactionCounts[index];
+      const chainFeeTransactionCount = chainFeeTransactionCounts[index];
 
-      const averageChainFee = denomCount ? ((sumOfAverageChainFees / denomCount) / transactionCount).toFixed(2) : "0.00";
+      const averageChainFee = denomCount ? ((sumOfAverageChainFees / denomCount) / chainFeeTransactionCount).toFixed(2) : "0.00";
       const averageBridgeFee = denomCount ? ((sumOfAverageBridgeFees / denomCount) / transactionCount).toFixed(2) : "0.00";
 
       let mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals);
