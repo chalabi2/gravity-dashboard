@@ -28,28 +28,31 @@ export const Stats: React.FC = () => {
   return (
     <Container
     
-    py={18} maxW="8xl" centerContent>
+    py={"100px"} maxW="8xl" centerContent>
       <Box 
       maxWidth="8xl" width="100%"></Box>
-      <VStack 
-      shadow={"dark-lg"}
-      spacing={2}
-      p={4}
-      borderRadius={4}
-      sx={{
-          boxShadow: `0 0 10px 2px ${shadowColor}`,
-            backdropFilter: 'blur(2px)',
-            bgColor: 'transparent'
-      }}
+      <HStack
+            shadow={"dark-lg"}
+            spacing={2}
+            p={4}
+            borderRadius={4}
+            sx={{
+                boxShadow: `0 0 10px 2px ${shadowColor}`,
+                  backdropFilter: 'blur(2px)',
+                  bgColor: 'transparent'
+            }}
       >
+      <VStack >
         <Pmtr />
         <HStack>
           <BridgeVolume />
           <Assets />
+
         </HStack>
-        <ChainFee />
-        <VolumeComparison />
+
       </VStack>
+      <ChainFee />
+      </HStack>
       <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
          
           <Text textAlign="center" fontFamily="Futura">

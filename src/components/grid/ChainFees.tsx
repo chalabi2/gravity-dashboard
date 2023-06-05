@@ -28,13 +28,16 @@ import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
-import { getFees, getAverageFees, getCombinedFeeData } from "../calculations/feeQuery";
+import { getFees, getAverageFees, getCombinedFeeData, getAverageFeesTwo } from "../calculations/feeQuery";
 
 interface ChainFeeProps {}
 
 function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+const test = getAverageFeesTwo();
+console.log(test)
 
 export const ChainFee: React.FC<ChainFeeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -215,6 +218,11 @@ type FeePrice = {
   mostCommonBridgeFeeDenom: string;
 }
 
+type FeePriceTwo = {
+  averageChainFee: string;
+  averageBridgeFee: string;
+}
+
 const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
 
 useEffect(() => {
@@ -226,6 +234,18 @@ useEffect(() => {
   fetchData();
 }, []);
 
+const [feePricesTwo, setFeePricesTwo] = useState<FeePriceTwo[]>([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    const feeData = await getAverageFeesTwo();
+    setFeePricesTwo(Array.isArray(feeData) ? feeData : [feeData]);
+  };
+
+  fetchData();
+}, []);
+
+
 let getAverageChainFee;
 if (feePrices.length > timeFrameIndex) {
   getAverageChainFee = feePrices[timeFrameIndex].averageChainFee;
@@ -234,6 +254,16 @@ if (feePrices.length > timeFrameIndex) {
 let getAverageBridgeFee;
 if (feePrices.length > timeFrameIndex) {
   getAverageBridgeFee = feePrices[timeFrameIndex].averageBridgeFee;
+}
+
+let getAverageChainFeeTwo;
+if (feePricesTwo.length > timeFrameIndex) {
+  getAverageChainFeeTwo = feePricesTwo[timeFrameIndex].averageChainFee;
+}
+
+let getAverageBridgeFeeTwo;
+if (feePricesTwo.length > timeFrameIndex) {
+  getAverageBridgeFeeTwo = feePricesTwo[timeFrameIndex].averageBridgeFee;
 }
 
 let mostCommonChainFeeDenom;
@@ -413,7 +443,7 @@ useEffect(() => {
             align="center"
             spacing="0px"
             width="680px"
-            height="sm"
+            height="482px"
             maxWidth="100%"
             bg="rgba(0, 18, 183, 0.5)"
             borderRadius="6px"
@@ -620,6 +650,38 @@ _hover={{ cursor: "pointer" }}
                       NYM: {numberWithCommas(getChainFee("NYM")).toString()}
                     </Text>
                   </HStack>
+                  <HStack>
+                    <Image
+                      boxSize="25px"
+                      borderRadius={"full"}
+                      src="https://assets.coingecko.com/coins/images/23308/small/somm_new.png?1650884424"
+                    />
+                    <Text
+                      fontFamily="futura"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      SOMM: {numberWithCommas(getChainFee("SOMM")).toString()}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <Image
+                      boxSize="25px"
+                      borderRadius={"full"}
+                      src="https://assets.coingecko.com/coins/images/25181/small/thumbnail.png?1658821784"
+                    />
+                    <Text
+                      fontFamily="futura"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      MNTL: {numberWithCommas(getChainFee("MNTL")).toString()}
+                    </Text>
+                  </HStack>
                 </VStack>
               </VStack>
 
@@ -636,7 +698,7 @@ _hover={{ cursor: "pointer" }}
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Bridge Fees
+                  Eth Gas Fees
                   <Box
                     width={{ md: "200%", base: "15%" }}
                     ml={{ md: "-40px", base: "128px" }}
@@ -738,6 +800,38 @@ _hover={{ cursor: "pointer" }}
                       FUND: {numberWithCommas(getBridgeFee("FUND")).toString()}
                     </Text>
                   </HStack>
+                  <HStack>
+                    <Image
+                      boxSize="25px"
+                      borderRadius={"full"}
+                      src="https://assets.coingecko.com/coins/images/23308/small/somm_new.png?1650884424"
+                    />
+                    <Text
+                      fontFamily="futura"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      SOMM: {numberWithCommas(getBridgeFee("SOMM")).toString()}
+                    </Text>
+                  </HStack>
+                  <HStack>
+                    <Image
+                      boxSize="25px"
+                      borderRadius={"full"}
+                      src="https://assets.coingecko.com/coins/images/25181/small/thumbnail.png?1658821784"
+                    />
+                    <Text
+                      fontFamily="futura"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      MNTL: {numberWithCommas(getBridgeFee("MNTL")).toString()}
+                    </Text>
+                  </HStack>
                 </VStack>
               </VStack>
             </Flex>
@@ -750,7 +844,7 @@ _hover={{ cursor: "pointer" }}
             align="center"
             spacing="0px"
             width="680px"
-            height="sm"
+            height="482px"
             maxWidth="100%"
             bg="rgba(0, 18, 183, 0.5)"
             borderRadius="6px"
@@ -906,7 +1000,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${getAverageChainFee}
+      ${getAverageChainFeeTwo}
     </Text>
           <Text
             fontFamily="Futura"
@@ -916,7 +1010,29 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Most Common Fee
+           Most Paid Fee
+
+          </Text>
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+            pb={4}
+          >
+            {mostCommonChainFeeDenom}
+          </Text>
+          <Text
+            fontFamily="Futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+           Record Fee
 
           </Text>
           <Text
@@ -944,7 +1060,7 @@ _hover={{ cursor: "pointer" }}
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Bridge Fees
+                  Eth Gas Fees
                   <Box
                     width={{ md: "200%", base: "15%" }}
                     ml={{ md: "-40px", base: "128px" }}
@@ -962,7 +1078,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            Total Bridge Fees
+            Total Eth Gas Fees
 
           </Text>
           <Text
@@ -984,7 +1100,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            Average Bridge Fee
+            Average Eth Gas Fee
 
           </Text>
           <Text
@@ -996,7 +1112,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${getAverageBridgeFee}
+      ${getAverageBridgeFeeTwo}
     </Text>
           <Text
             fontFamily="Futura"
@@ -1006,7 +1122,29 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Most Common Fee
+           Most Paid Fee
+
+          </Text>
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+            pb={4}
+          >
+         {mostCommonBridgeFeeDenom}
+          </Text>
+          <Text
+            fontFamily="Futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+           Record Fee
 
           </Text>
           <Text
@@ -1030,7 +1168,7 @@ _hover={{ cursor: "pointer" }}
            align="center"
            spacing="0px"
            width="680px"
-           height="sm"
+           height="482px"
            maxWidth="100%"
            bg="rgba(0, 18, 183, 0.5)"
            borderRadius="6px"
@@ -1082,7 +1220,7 @@ Tokens             <Box
                </Text>
                <Box
         width="75%"
-        height="250px"
+        height="365px"
         overflowY="scroll"
         overflowX="hidden"
         color="#FFFFFF"
@@ -1123,7 +1261,7 @@ Tokens             <Box
                  textTransform="capitalize"
                  color="#FFFFFF"
                >
-                 Bridge Fees
+                 Eth Gas Fees
                  <Box
                    width={{ md: "200%", base: "15%" }}
                    ml={{ md: "-40px", base: "128px" }}
@@ -1135,7 +1273,7 @@ Tokens             <Box
                </Text>
                <Box
         width="75%"
-        height="250px"
+        height="365px"
         overflowY="scroll"
         overflowX="hidden"
         color="#FFFFFF"
@@ -1185,8 +1323,8 @@ Tokens             <Box
                       >
                     <Text>In Gravity Bridge there are two fees you must pay in order to bridge your assets from the Gravity Bridge chain to Ethereum.</Text>
                     <Text>A chain fee is 0.002% or 2 basis points in the denom of the total amount you are bridging. This fee is paid directly to the stakers of the graviton token.</Text>
-                    <Text>A bridge fee is the fee you pay to have your tokens relayed between the two bridges. This fee covers the gas cost on the Eth side.</Text>
-                    <Text>The data shown in this panel represents the total amount of chain fees and bridge fees paid by bridgers in their respective denoms.</Text>
+                    <Text>An Eth gas fee is the fee you pay to have your tokens relayed between the two bridges. This fee covers the gas cost on the Eth side.</Text>
+                    <Text>The data shown in this panel represents the total amount of chain fees and eth gas fees paid by bridgers in their respective denoms.</Text>
                     <Text>On the top right are the time based data selectors. 1D = One day, 7D = Seven Days, 1M = One Month, & All = Since block 491,111</Text>
                     </Wrap>
                     </VStack>
