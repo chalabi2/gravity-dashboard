@@ -22,22 +22,20 @@ import {
   Menu,
   MenuList,
   MenuItem,
-  Wrap
+  Wrap,
+  Link
 } from "@chakra-ui/react";
 import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
 import { BridgeFeeData, ChainFeeData } from "../../types";
-import { getFees, getAverageFees, getCombinedFeeData, getAverageFeesTwo } from "../calculations/feeQuery";
+import { getFees, getAverageFees, getCombinedFeeData, getMostValuableFees } from "../calculations/feeQuery";
 
 interface ChainFeeProps {}
 
 function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
-const test = getAverageFeesTwo();
-console.log(test)
 
 export const ChainFee: React.FC<ChainFeeProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -218,9 +216,13 @@ type FeePrice = {
   mostCommonBridgeFeeDenom: string;
 }
 
-type FeePriceTwo = {
-  averageChainFee: string;
-  averageBridgeFee: string;
+type FeeMax = {
+  maxChainFee: string;
+  maxBridgeFee: string;
+  maxChainFeeDenom: string;
+  maxBridgeFeeDenom: string;
+  txHashRecordBridge: string;
+  txHashRecordChain: string;
 }
 
 const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
@@ -234,18 +236,6 @@ useEffect(() => {
   fetchData();
 }, []);
 
-const [feePricesTwo, setFeePricesTwo] = useState<FeePriceTwo[]>([]);
-
-useEffect(() => {
-  const fetchData = async () => {
-    const feeData = await getAverageFeesTwo();
-    setFeePricesTwo(Array.isArray(feeData) ? feeData : [feeData]);
-  };
-
-  fetchData();
-}, []);
-
-
 let getAverageChainFee;
 if (feePrices.length > timeFrameIndex) {
   getAverageChainFee = feePrices[timeFrameIndex].averageChainFee;
@@ -256,16 +246,6 @@ if (feePrices.length > timeFrameIndex) {
   getAverageBridgeFee = feePrices[timeFrameIndex].averageBridgeFee;
 }
 
-let getAverageChainFeeTwo;
-if (feePricesTwo.length > timeFrameIndex) {
-  getAverageChainFeeTwo = feePricesTwo[timeFrameIndex].averageChainFee;
-}
-
-let getAverageBridgeFeeTwo;
-if (feePricesTwo.length > timeFrameIndex) {
-  getAverageBridgeFeeTwo = feePricesTwo[timeFrameIndex].averageBridgeFee;
-}
-
 let mostCommonChainFeeDenom;
 if (feePrices.length > timeFrameIndex) {
   mostCommonChainFeeDenom = feePrices[timeFrameIndex].mostCommonChainFeeDenom;
@@ -274,6 +254,33 @@ if (feePrices.length > timeFrameIndex) {
 let mostCommonBridgeFeeDenom;
 if (feePrices.length > timeFrameIndex) {
   mostCommonBridgeFeeDenom = feePrices[timeFrameIndex].mostCommonBridgeFeeDenom;
+}
+
+const [feeMax, setFeeMax] = useState<FeeMax[]>([]);
+
+useEffect(() => {
+  const fetchData = async () => {
+    const feeDataMax = await getMostValuableFees();
+    setFeeMax(Array.isArray(feeDataMax) ? feeDataMax : [feeDataMax]);
+  };
+
+  fetchData();
+}, []);
+
+let getHighestChainFee = "0";
+let getHighestBridgeFee = "0";
+let getHighestChainFeeDenom = "";
+let getHighestBridgeFeeDenom = "";
+let txHashRecordChain = "";
+let txHashRecordBridge = "";
+
+if (feeMax.length > timeFrameIndex) {
+  getHighestChainFee = feeMax[timeFrameIndex].maxChainFee;
+  getHighestBridgeFee = feeMax[timeFrameIndex].maxBridgeFee;
+  getHighestChainFeeDenom = feeMax[timeFrameIndex].maxChainFeeDenom;
+  getHighestBridgeFeeDenom = feeMax[timeFrameIndex].maxBridgeFeeDenom;
+  txHashRecordBridge = feeMax[timeFrameIndex].txHashRecordBridge;
+  txHashRecordChain = feeMax[timeFrameIndex].txHashRecordChain;
 }
 
 type TotalFee = {
@@ -337,6 +344,8 @@ useEffect(() => {
   const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [selectedMenuItem, setSelectedMenuItem] = useState("Fees");
 
+  const txLinkChainFee = `https://www.mintscan.io/gravity-bridge/txs/${txHashRecordChain}`
+  const txLinkBridgeFee = `https://www.mintscan.io/gravity-bridge/txs/${txHashRecordBridge}`
 
   return (
     <Box
@@ -451,22 +460,14 @@ useEffect(() => {
             <Text
             pt={2}
               fontFamily="Futura"
-              lineHeight="1.17"
-              fontWeight="light"
-              fontSize="24px"
+              lineHeight="1"
+              fontWeight="Bold"
+              fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
               textAlign="center"
             >
               Fees
-              <Box
-                width={{ md: "300%", base: "15%" }}
-                ml={{ md: "-40px", base: "128px" }}
-                height="1px"
-                bgColor="rgb(255,255,255, 0.5)"
-                position={{ md: "relative", base: "sticky" }}
-                bottom="1px"
-              />
             </Text>
             <HStack
 color="white"
@@ -489,6 +490,7 @@ right={2}
   >
 <Text
 fontSize="sm"
+fontFamily="Futura"
 p={0.5}
 _hover={{ cursor: "pointer" }}
 >1D</Text>
@@ -503,6 +505,7 @@ _hover={{ cursor: "pointer" }}
 <Text
 fontSize="sm"
 p={0.5}
+fontFamily="Futura"
 _hover={{ cursor: "pointer" }}
 >7D</Text>
   </Flex>
@@ -544,19 +547,11 @@ _hover={{ cursor: "pointer" }}
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
-                  fontSize="20px"
+                  fontSize="24px"
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Chain Fees
-                  <Box
-                    width={{ md: "200%", base: "15%" }}
-                    ml={{ md: "-40px", base: "128px" }}
-                    height="1px"
-                    bgColor="rgb(255,255,255, 0.5)"
-                    position={{ md: "relative", base: "sticky" }}
-                   
-                  />
+                  Chain Fees:
                 </Text>
                 <VStack alignItems="left" spacing={5}>
                   <HStack>
@@ -694,19 +689,11 @@ _hover={{ cursor: "pointer" }}
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
-                  fontSize="20px"
+                  fontSize="24px"
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Eth Gas Fees
-                  <Box
-                    width={{ md: "200%", base: "15%" }}
-                    ml={{ md: "-40px", base: "128px" }}
-                    height="1px"
-                    bgColor="rgb(255,255,255, 0.5)"
-                    position={{ md: "relative", base: "sticky" }}
-                    
-                  />
+                  Eth Gas Fees:
                 </Text>
                 <VStack alignItems="right" spacing={5}>
                   <HStack>
@@ -852,22 +839,15 @@ _hover={{ cursor: "pointer" }}
             <Text
             pt={2}
               fontFamily="Futura"
-              lineHeight="1.17"
-              fontWeight="light"
-              fontSize="24px"
+              lineHeight="1"
+              fontWeight="bold"
+              fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
               textAlign="center"
             >
               Fee Totals
-              <Box
-                width={{ md: "150%", base: "15%" }}
-                ml={{ md: "-26px", base: "128px" }}
-                height="1px"
-                bgColor="rgb(255,255,255, 0.5)"
-                position={{ md: "relative", base: "sticky" }}
-                bottom="1px"
-              />
+  
             </Text>
             <HStack
 color="white"
@@ -944,19 +924,12 @@ _hover={{ cursor: "pointer" }}
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
-                  fontSize="20px"
+                  fontSize="24px"
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Chain Fees
-                  <Box
-                    width={{ md: "200%", base: "15%" }}
-                    ml={{ md: "-40px", base: "128px" }}
-                    height="1px"
-                    bgColor="rgb(255,255,255, 0.5)"
-                    position={{ md: "relative", base: "sticky" }}
-                
-                  />
+                  Chain Fees:
+          
                 </Text>
                 <Text
             fontFamily="Futura"
@@ -1000,7 +973,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${getAverageChainFeeTwo}
+      ${getAverageChainFee}
     </Text>
           <Text
             fontFamily="Futura"
@@ -1010,7 +983,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Most Paid Fee
+           Most Used Fee
 
           </Text>
           <Text
@@ -1032,8 +1005,21 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Record Fee
+           Highest Fee
 
+          </Text>
+          <HStack
+          spacing="1"
+          >
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+            ${getHighestChainFee}
           </Text>
           <Text
             fontFamily="futura"
@@ -1043,8 +1029,25 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-            {mostCommonChainFeeDenom}
+            in {getHighestChainFeeDenom}
           </Text>
+          
+          </HStack>
+          <Link
+          href={txLinkChainFee}
+          target="_blank"
+          >
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+            Tx Link
+          </Text>
+          </Link>
               </VStack>
 
               <VStack
@@ -1056,19 +1059,12 @@ _hover={{ cursor: "pointer" }}
                 <Text
                   fontFamily="Futura"
                   fontWeight="light"
-                  fontSize="20px"
+                  fontSize="24"
                   textTransform="capitalize"
                   color="#FFFFFF"
                 >
-                  Eth Gas Fees
-                  <Box
-                    width={{ md: "200%", base: "15%" }}
-                    ml={{ md: "-40px", base: "128px" }}
-                    height="1px"
-                    bgColor="rgb(255,255,255, 0.5)"
-                    position={{ md: "relative", base: "sticky" }}
-
-                  />
+                  Eth Gas Fees:
+        
                 </Text>
                 <Text
             fontFamily="Futura"
@@ -1112,7 +1108,7 @@ _hover={{ cursor: "pointer" }}
       textTransform="capitalize"
       color="#FFFFFF"
     >
-      ${getAverageBridgeFeeTwo}
+      ${getAverageBridgeFee}
     </Text>
           <Text
             fontFamily="Futura"
@@ -1122,7 +1118,7 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Most Paid Fee
+           Most Used Fee
 
           </Text>
           <Text
@@ -1144,8 +1140,21 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-           Record Fee
+           Highest Fee
 
+          </Text>
+          <HStack
+          spacing="1"
+          >
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+            ${getHighestBridgeFee}
           </Text>
           <Text
             fontFamily="futura"
@@ -1155,8 +1164,24 @@ _hover={{ cursor: "pointer" }}
             textTransform="capitalize"
             color="#FFFFFF"
           >
-         {mostCommonBridgeFeeDenom}
+            in {getHighestBridgeFeeDenom}
           </Text>
+          </HStack>
+          <Link
+          href={txLinkBridgeFee}
+          target="_blank"
+          >
+          <Text
+            fontFamily="futura"
+            lineHeight="1.4"
+            fontWeight="light"
+            fontSize="20px"
+            textTransform="capitalize"
+            color="#FFFFFF"
+          >
+            Tx Link
+          </Text>
+          </Link>
               </VStack>
             </Flex>
           </Stack>
@@ -1176,21 +1201,14 @@ _hover={{ cursor: "pointer" }}
            <Text
            pt={2}
              fontFamily="Futura"
-             lineHeight="1.17"
-             fontWeight="light"
-             fontSize="24px"
+             lineHeight="1"
+             fontWeight="bold"
+             fontSize="28px"
              textTransform="capitalize"
              color="#FFFFFF"
              textAlign="center"
            >
-Tokens             <Box
-               width={{ md: "150%", base: "15%" }}
-               ml={{ md: "-26px", base: "128px" }}
-               height="1px"
-               bgColor="rgb(255,255,255, 0.5)"
-               position={{ md: "relative", base: "sticky" }}
-               bottom="1px"
-             />
+Tokens             
            </Text>
            <Flex py={4} justifyContent="space-between" width="100%" height="100%">
              <VStack
@@ -1204,19 +1222,12 @@ Tokens             <Box
                <Text
                  fontFamily="Futura"
                  fontWeight="light"
-                 fontSize="20px"
+                 fontSize="24"
                  textTransform="capitalize"
                  color="#FFFFFF"
                >
-                 Chain Fees
-                 <Box
-                   width={{ md: "200%", base: "15%" }}
-                   ml={{ md: "-40px", base: "128px" }}
-                   height="1px"
-                   bgColor="rgb(255,255,255, 0.5)"
-                   position={{ md: "relative", base: "sticky" }}
-               
-                 />
+                 Chain Fees:
+                
                </Text>
                <Box
         width="75%"
@@ -1257,19 +1268,12 @@ Tokens             <Box
                <Text
                  fontFamily="Futura"
                  fontWeight="light"
-                 fontSize="20px"
+                 fontSize="24px"
                  textTransform="capitalize"
                  color="#FFFFFF"
                >
-                 Eth Gas Fees
-                 <Box
-                   width={{ md: "200%", base: "15%" }}
-                   ml={{ md: "-40px", base: "128px" }}
-                   height="1px"
-                   bgColor="rgb(255,255,255, 0.5)"
-                   position={{ md: "relative", base: "sticky" }}
-
-                 />
+                 Eth Gas Fees:
+              
                </Text>
                <Box
         width="75%"

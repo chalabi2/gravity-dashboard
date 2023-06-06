@@ -116,8 +116,8 @@ export const Assets: React.FC = () => {
   >
 <Text
   fontFamily="Futura"
-  fontWeight="light"
-  fontSize="24px"
+  fontWeight="bold"
+  fontSize="28"
   color="#FFFFFF"
   textAlign="center"
   paddingRight="30px"
@@ -125,14 +125,6 @@ export const Assets: React.FC = () => {
   position="relative"
 >
   Eth Assets
-  <Box
-    width="63%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-    ml="50px"
-    bottom="2px"
-  />
 </Text>
     <Flex direction="column">
       <Text
@@ -143,14 +135,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly In
-        <Box
-    width="75%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+    
       </Text>
       <SkeletonText
                   isLoaded={!isLoading}
@@ -176,14 +161,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly Out
-        <Box
-    width="85%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+  
       </Text>
       <Text
         fontFamily="Futura"
@@ -220,14 +198,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Daily In
-        <Box
-    width="56%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+        
       </Text>
       <Text
         fontFamily="futura"
@@ -248,14 +219,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Daily Out
-        <Box
-    width="65%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+        
       </Text>
       <Text
         fontFamily="futura"
@@ -295,14 +259,6 @@ export const Assets: React.FC = () => {
     gridColumn="1 / 3"
   >
     Biggest Movers
-    <Box
-    width="50%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-    ml="66px"
-    bottom="1px"
-  />
   </Text>
   <HStack justifyContent="center"  spacing={12} gridColumn="1 / 3">
     <UnorderedList

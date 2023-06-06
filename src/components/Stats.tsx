@@ -23,12 +23,12 @@ export const Stats: React.FC = () => {
     md: "732px !important",
   });
   const BottomTextColor = useColorModeValue("black", "white");
-  const shadowColor = useColorModeValue("rgba(0, 0, 153, 0.3)", "rgba(100, 118, 233, 0.3)");
+  const shadowColor = useColorModeValue("grey", "grey");
 
   return (
     <Container
     
-    py={"100px"} maxW="8xl" centerContent>
+    py={"50px"} maxW="8xl" centerContent>
       <Box 
       maxWidth="8xl" width="100%"></Box>
       <HStack
@@ -37,7 +37,7 @@ export const Stats: React.FC = () => {
             p={4}
             borderRadius={4}
             sx={{
-                boxShadow: `0 0 10px 2px ${shadowColor}`,
+                
                   backdropFilter: 'blur(2px)',
                   bgColor: 'transparent'
             }}

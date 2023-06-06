@@ -140,21 +140,14 @@ export const BridgeVolume = () => {
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Text
           fontFamily="Futura"
-          lineHeight="1.17"
-          fontWeight="light"
-          fontSize="24px"
+          lineHeight="1"
+          fontWeight="bold"
+          fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"
         >
           Bridge Volume
-          <Box
-    width="100%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="-1px"
-  />
+          
         </Text>
       </Flex>
       <HStack>
@@ -234,20 +227,13 @@ export const BridgeVolume = () => {
         <Text
           fontFamily="Futura"
           lineHeight="1.17"
-          fontWeight="light"
-          fontSize="24px"
+          fontWeight="bold"
+          fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"
         >
           TVL
-          <Box
-    width="100%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="-1px"
-  />
+        
         </Text>
       </Flex>
       <HStack>

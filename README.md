@@ -7,14 +7,15 @@ Simply fork the repository, enable github pages, and a github pages action will 
 ### To do list
 **V1**
 
-* Compare Data. take every single bridge transaction, exctract denoms and their amounts for a 7 day period via block timestamp returns, then multiply by price, deliver one week time stamped data sets. Use one week data to create bridge volume graph line.
-* Fix Average collection
+* Add data caching
+    - find price data once, spread to all functions needing price data
+    - query all transactions once, spread all transactions to functions needing all transaction data
+    - work around info.gravity & imperator price api rate limit
 * Add mobile resizing
-* Fix Font
-* Fix line elements
 * Add Loading screen, make loading screen take slowest query return as isLoaded
 
 **V2**
 * Add wallet connect to show analytics for individual wallets
+* Add chart comparing gravity bridge to other cosmos bridges
 * Add IBC transfer data IE which chains are sending or receiving the most tokens to and from gravity.
 * Add profitbale relay info

@@ -12,7 +12,7 @@ export const Fonts = () => (
       /* latin */
       @font-face {
         font-family: 'Futura-Light';
-        src: url('./public/fonts/futura-light.ttf') format('truetype');
+        src: url('/fonts/futura-light-bt.woff2') format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
@@ -20,7 +20,7 @@ export const Fonts = () => (
       /* latin */
       @font-face {
         font-family: 'Futura-MD-BT';
-        src: url('./public/fonts/futura-medium.ttf') format('truetype');
+        src: url('/fonts/futura-medium.woff2') format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;

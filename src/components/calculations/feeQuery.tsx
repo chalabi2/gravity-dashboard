@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from 'moment';
 
-import { gravityDenomToStringMap, tokenDecimalsMap } from "../../types";
+import { gravityDenomToStringMap, tokenDecimalsMap, BlockTransaction, Fee} from "../../types";
 import { fetchTokenPriceData } from "./oracle"
 import { getTxAmt } from "./totalTx";
 
@@ -135,11 +135,10 @@ export async function getAverageFees() {
     const averageFeesPerTimeFrame = [];
 
     let { daily, weekly, monthly, yearly, allTime } = await getTxAmt();
-    const bridgeFeeTransactionCount = await getTxAmt();
     const chainFeeAllTimeTx = allTime - 10693
     
-    const transactionCountsAuto = [daily, weekly, monthly, 17028];
-    const chainFeeTransactionCounts = [daily, weekly, monthly, 6327];
+    const transactionCountsAuto = [daily, weekly, monthly, yearly, allTime];
+    const chainFeeTransactionCounts = [daily, weekly, monthly, yearly, chainFeeAllTimeTx];
 
     for (let index = 0; index < data.time_frames.length; index++) {
       const time_frame = data.time_frames[index];
@@ -185,7 +184,7 @@ export async function getAverageFees() {
       const transactionCountAuto = transactionCountsAuto[index] || 0;
       const chainFeeTransactionCount = chainFeeTransactionCounts[index] || 0;
 
-      const averageChainFee = chainFeeTransactionCount ? (sumOfAverageChainFees / chainFeeTransactionCount).toFixed(2) : "0.00";
+      const averageChainFee = chainFeeTransactionCount ? (sumOfAverageChainFees  / chainFeeTransactionCount).toFixed(2) : "0.00";
       const averageBridgeFee = transactionCountAuto ? (sumOfAverageBridgeFees / transactionCountAuto).toFixed(2) : "0.00";
 
       let mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals);
@@ -215,112 +214,99 @@ export async function getAverageFees() {
   }
 }
 
-export async function getAverageFeesTwo() {
-  try {
-    const response = await axios.get('http://66.172.36.132:9000/transactions/send_to_eth');
-    const transactions = response.data;
-
-    const timeFrames = ['daily', 'weekly', 'monthly', 'allTime'];
-    const averageFeesPerTimeFrame = [];
-
-    for (const timeFrame of timeFrames) {
-      let sumOfChainFeesInUSD = 0;
-      let sumOfBridgeFeesInUSD = 0;
-      let transactionCount = 0;
-
-      for (const transaction of transactions) {
-        // Make sure the transaction is within the time frame
-        if (isWithinTimeFrame(transaction.formatted_date, timeFrame)) {
-          const chainFee = transaction.transactions[0].data.chain_fee;
-          const bridgeFee = transaction.transactions[0].data.bridge_fee;
-
-          // Check if chainFee array is not empty
-          if (chainFee.length > 0) {
-            // Calculate total chain fee in USD
-            for (const fee of chainFee) {
-              if (fee.denom) { // Add a null check for fee.denom
-                const denom = fee.denom;
-                const humanReadableDenom = gravityDenomToStringMap[denom];
-                try {
-                  const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
-                  const tokenPrice = tokenPriceData.price;
-                  const decimals = tokenDecimalsMap[humanReadableDenom];
-
-                  if (decimals !== undefined && !isNaN(tokenPrice)) {
-                    sumOfChainFeesInUSD += (fee.amount / Math.pow(10, decimals)) * tokenPrice;
-                  }
-                } catch (error) {
-                  console.error("Error fetching token price:", error);
-                }
-              }
-            }
-
-            // Increment transactionCount only if chainFee array is not empty
-            if (chainFee.length > 0) {
-              transactionCount++;
-            }
-          }
-
-          // Calculate total bridge fee in USD
-          for (const fee of bridgeFee) {
-            if (fee.denom) { // Add a null check for fee.denom
-              const denom = fee.denom;
-              const humanReadableDenom = gravityDenomToStringMap[denom];
-              try {
-                const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
-                const tokenPrice = tokenPriceData.price;
-                const decimals = tokenDecimalsMap[humanReadableDenom];
-
-                if (decimals !== undefined && !isNaN(tokenPrice)) {
-                  sumOfBridgeFeesInUSD += (fee.amount / Math.pow(10, decimals)) * tokenPrice;
-                }
-              } catch (error) {
-                console.error("Error fetching token price:", error);
-              }
-            }
-          }
-
-          transactionCount++;
-        }
-      }
-
-      // Calculate averages
-      const averageChainFee = transactionCount ? (sumOfChainFeesInUSD / transactionCount).toFixed(2) : "0.00";
-      const averageBridgeFee = transactionCount ? (sumOfBridgeFeesInUSD / transactionCount).toFixed(2) : "0.00";
-
-      averageFeesPerTimeFrame.push({
-        averageChainFee,
-        averageBridgeFee,
-      });
-    }
-
-    return averageFeesPerTimeFrame;
-
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return {
-      averageChainFee: "0.00",
-      averageBridgeFee: "0.00",
-    };
-  }
+interface MostValuableFee {
+  maxChainFee: string;
+  maxBridgeFee: string;
+  maxChainFeeDenom: string;
+  maxBridgeFeeDenom: string;
+  txHashRecordBridge: string;
+  txHashRecordChain: string;
 }
 
+export async function getMostValuableFees(): Promise<MostValuableFee[]> {
+  try {
+    const response = await axios.get('http://66.172.36.132:9000/transactions/send_to_eth');
+    const transactions = response.data.reverse();
 
-function isWithinTimeFrame(formattedDate: string, timeFrame: string) {
-  const date = moment(formattedDate, "MM-DD-YYYY");
-  const now = moment();
+    let { daily, weekly, monthly, yearly, allTime } = await getTxAmt();
 
-  switch(timeFrame) {
-    case 'daily':
-      return now.diff(date, 'days') < 1;
-    case 'weekly':
-      return now.diff(date, 'weeks') < 1;
-    case 'monthly':
-      return now.diff(date, 'months') < 1;
-    case 'allTime':
-      return true;
-    default:
-      return false;
+    const transactionCountsAuto = [daily, weekly, monthly, yearly, allTime];
+    const mostValuableFeesPerTimeFrame: MostValuableFee[] = [];
+
+    for (let index = 0; index < transactionCountsAuto.length; index++) {
+      const timeframeTransactionsCount = transactionCountsAuto[index];
+      let maxChainFeeInUSD = 0;
+      let maxBridgeFeeInUSD = 0;
+      let maxChainFeeDenom = '';
+      let maxBridgeFeeDenom = '';
+      let txHashRecordBridge = '';
+      let txHashRecordChain = '';
+
+      const timeframeTransactions = transactions.slice(0, timeframeTransactionsCount);
+
+      const chainFeePromises = timeframeTransactions.flatMap((transaction: BlockTransaction) => {
+        return transaction.transactions[0].data.chain_fee.map(async (fee: Fee) => {
+          if (fee.denom) {
+            const denom = fee.denom;
+            const humanReadableDenom = gravityDenomToStringMap[denom];
+            try {
+              const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
+              const tokenPrice = tokenPriceData.price;
+              const decimals = tokenDecimalsMap[humanReadableDenom];
+              if (decimals !== undefined && !isNaN(tokenPrice)) {
+                const feeInUSD = (parseInt(fee.amount) / Math.pow(10, decimals)) * tokenPrice;
+                if (feeInUSD > maxChainFeeInUSD) {
+                  maxChainFeeInUSD = feeInUSD;
+                  maxChainFeeDenom = humanReadableDenom;
+                  txHashRecordChain = transaction.transactions[0].tx_hash;
+                }
+              }
+            } catch (error) {
+              // Ignore transactions that don't have a price
+            }
+          }
+        });
+      });
+
+      const bridgeFeePromises = timeframeTransactions.flatMap((transaction: BlockTransaction) => {
+  return transaction.transactions[0].data.bridge_fee.map(async (fee: Fee) => {
+          if (fee.denom) {
+            const denom = fee.denom;
+            const humanReadableDenom = gravityDenomToStringMap[denom];
+            try {
+              const tokenPriceData = await fetchTokenPriceData(humanReadableDenom);
+              const tokenPrice = tokenPriceData.price;
+              const decimals = tokenDecimalsMap[humanReadableDenom];
+              if (decimals !== undefined && !isNaN(tokenPrice)) {
+                const feeInUSD = (parseFloat(fee.amount) / Math.pow(10, decimals)) * tokenPrice;
+                if (feeInUSD > maxBridgeFeeInUSD) {
+                  maxBridgeFeeInUSD = feeInUSD;
+                  maxBridgeFeeDenom = humanReadableDenom;
+                  txHashRecordBridge = transaction.transactions[0].tx_hash;
+                }
+              }
+            } catch (error) {
+              // Ignore transactions that don't have a price
+            }
+          }
+        });
+      });
+
+      await Promise.all([...chainFeePromises, ...bridgeFeePromises]);
+
+      mostValuableFeesPerTimeFrame.push({
+        maxChainFee: maxChainFeeInUSD.toFixed(2),
+        maxBridgeFee: maxBridgeFeeInUSD.toFixed(2),
+        maxChainFeeDenom,
+        maxBridgeFeeDenom,
+        txHashRecordBridge,
+        txHashRecordChain
+      });
+    }
+    return mostValuableFeesPerTimeFrame;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
   }
 }
 

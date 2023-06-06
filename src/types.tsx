@@ -290,3 +290,25 @@ export type gravityDenomToString = {
     tvl: string;
     vol: string;
   }
+
+export  interface Data {
+    amount: Amount[];
+    bridge_fee: Amount[];
+    chain_fee: Amount[];
+    eth_dest: string;
+    sender: string;
+  }
+  
+export  interface Transaction {
+    tx_hash: string;
+    data: Data;
+  }
+  
+export  interface BlockTransaction {
+    block_number: number;
+    transactions: Transaction[];
+    formatted_date: string;
+  }
+  
+  // Define the Fee type
+ export type Fee = Amount;
