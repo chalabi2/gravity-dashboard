@@ -141,7 +141,7 @@ export const BridgeVolume = () => {
         <Text
           fontFamily="Futura"
           lineHeight="1"
-          fontWeight="bold"
+          fontWeight="light"
           fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"
@@ -227,7 +227,7 @@ export const BridgeVolume = () => {
         <Text
           fontFamily="Futura"
           lineHeight="1.17"
-          fontWeight="bold"
+          fontWeight="light"
           fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"

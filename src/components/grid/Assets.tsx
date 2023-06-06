@@ -116,7 +116,7 @@ export const Assets: React.FC = () => {
   >
 <Text
   fontFamily="Futura"
-  fontWeight="bold"
+  fontWeight="light"
   fontSize="28"
   color="#FFFFFF"
   textAlign="center"
