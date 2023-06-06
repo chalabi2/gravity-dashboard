@@ -37,7 +37,18 @@ function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export const ChainFee: React.FC<ChainFeeProps> = () => {
+type FeePrice = {
+  averageChainFee: string;
+  averageBridgeFee: string;
+  mostCommonChainFeeDenom: string;
+  mostCommonBridgeFeeDenom: string;
+}
+
+export const ChainFee: React.FC<{ 
+  feePrices: FeePrice[], 
+  setFeePrices: React.Dispatch<React.SetStateAction<FeePrice[]>>
+}> = ({ feePrices, setFeePrices }) => {
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalBg = useColorModeValue("white", "black");
   const modalBgText = useColorModeValue("black", "white");
@@ -209,13 +220,6 @@ switch (timeFrame) {
     timeFrameIndex = 4;
 }
 
-type FeePrice = {
-  averageChainFee: string;
-  averageBridgeFee: string;
-  mostCommonChainFeeDenom: string;
-  mostCommonBridgeFeeDenom: string;
-}
-
 type FeeMax = {
   maxChainFee: string;
   maxBridgeFee: string;
@@ -225,7 +229,6 @@ type FeeMax = {
   txHashRecordChain: string;
 }
 
-const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -234,7 +237,7 @@ useEffect(() => {
   };
 
   fetchData();
-}, []);
+}, [feePrices]);
 
 let getAverageChainFee;
 if (feePrices.length > timeFrameIndex) {
@@ -461,7 +464,7 @@ useEffect(() => {
             pt={2}
               fontFamily="Futura"
               lineHeight="1"
-              fontWeight="light"
+              fontWeight="Bold"
               fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
@@ -840,7 +843,7 @@ _hover={{ cursor: "pointer" }}
             pt={2}
               fontFamily="Futura"
               lineHeight="1"
-              fontWeight="light"
+              fontWeight="bold"
               fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
@@ -1202,7 +1205,7 @@ _hover={{ cursor: "pointer" }}
            pt={2}
              fontFamily="Futura"
              lineHeight="1"
-             fontWeight="light"
+             fontWeight="bold"
              fontSize="28px"
              textTransform="capitalize"
              color="#FFFFFF"

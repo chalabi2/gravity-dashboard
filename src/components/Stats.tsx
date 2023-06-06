@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   Box,
   VStack,
@@ -15,8 +16,13 @@ import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
 import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
+import { FeePrice } from "../types"
 
-export const Stats: React.FC = () => {
+export const Stats: React.FC<{ 
+  feePrices: FeePrice[], 
+  setFeePrices: React.Dispatch<React.SetStateAction<FeePrice[]>>
+}> = ({ feePrices, setFeePrices }) => {
+
   const marginTopValue = useBreakpointValue({ base: "-50px", md: "0" });
   const pmtrWidth = useBreakpointValue({
     base: "331px",
@@ -51,7 +57,7 @@ export const Stats: React.FC = () => {
         </HStack>
 
       </VStack>
-      <ChainFee />
+      <ChainFee feePrices={feePrices} setFeePrices={setFeePrices} />
       </HStack>
       <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
          
