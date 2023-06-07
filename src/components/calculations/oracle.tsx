@@ -16,6 +16,8 @@ const symbolToCoinIdMap: SymbolToCoinIdMap = {
   STARS: 'stars',
   CHEQ: 'cheq',
   HUAHUA: 'huahua',
+  NYM: 'nym',
+  FUND: 'unification',
   OSMO: 'osmosis'
 };
 
