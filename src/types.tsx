@@ -312,10 +312,16 @@ export  interface BlockTransaction {
   
   // Define the Fee type
  export type Fee = Amount;
- 
+
 export type FeePrice = {
     averageChainFee: string;
     averageBridgeFee: string;
     mostCommonChainFeeDenom: string;
     mostCommonBridgeFeeDenom: string;
   }
+
+  export type TotalFee = {
+    totalChainFeeUSD: Number,
+    totalBridgeFeeUSD: Number,
+  }
+  

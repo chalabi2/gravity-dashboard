@@ -4,7 +4,7 @@ import { gravityDenomToStringMap, ChainFee, BridgeFee, Amount } from "../../type
 
 export async function getChainFeeTotals() {
   try {
-    const response = await axios.get("https://info.gravitychain.io:9000/transactions/send_to_eth");
+    const response = await axios.get("http://66.172.36.132:9000/transactions/send_to_eth");
     const entries = response.data;
 
     const feesByDenom: Record<string, number> = {};
@@ -40,7 +40,7 @@ export async function getChainFeeTotals() {
 
 export async function getBridgeFeeTotals() {
   try {
-    const response = await axios.get("https://info.gravitychain.io:9000/transactions/send_to_eth");
+    const response = await axios.get("http://66.172.36.132:9000/transactions/send_to_eth");
     const entries = response.data;
 
     const feesByDenom: Record<string, number> = {};
@@ -76,7 +76,7 @@ export async function getBridgeFeeTotals() {
 
 export async function getTokenAmountTotals() {
   try {
-    const response = await axios.get("https://info.gravitychain.io:9000/transactions/send_to_eth");
+    const response = await axios.get("http://66.172.36.132:9000/transactions/send_to_eth");
     const entries = response.data;
 
     const tokensByDenom: Record<string, number> = {};

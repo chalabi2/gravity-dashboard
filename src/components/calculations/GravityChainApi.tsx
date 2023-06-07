@@ -4,7 +4,7 @@ import { ChainTotalSupplyNumbers, Erc20Metadata, EthInfo, GravityInfo, VolumeInf
 
 const UPDATE_TIME = 5000;
 
-export const SERVER_URL = "https://info.gravitychain.io:9000/";
+export const SERVER_URL = "http://66.172.36.132:9000/";
 
 export const useGravityBridgeInfo = () => {
   const [gravityBridgeInfo, setGravityBridgeInfo] = useState<GravityInfo | null>(null);

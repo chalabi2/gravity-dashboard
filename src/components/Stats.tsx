@@ -16,12 +16,12 @@ import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
 import { BridgeVolume } from "./grid/BridgeVolume";
 import { VolumeComparison } from "./grid/VolumeComparison";
-import { FeePrice } from "../types"
+import { TotalFee } from "../types"
 
 export const Stats: React.FC<{ 
-  feePrices: FeePrice[], 
-  setFeePrices: React.Dispatch<React.SetStateAction<FeePrice[]>>
-}> = ({ feePrices, setFeePrices }) => {
+  totalFees: TotalFee[], 
+  setTotalFees: React.Dispatch<React.SetStateAction<TotalFee[]>>
+}> = ({ totalFees, setTotalFees }) => {
 
   const marginTopValue = useBreakpointValue({ base: "-50px", md: "0" });
   const pmtrWidth = useBreakpointValue({
@@ -57,7 +57,7 @@ export const Stats: React.FC<{
         </HStack>
 
       </VStack>
-      <ChainFee feePrices={feePrices} setFeePrices={setFeePrices} />
+      <ChainFee totalFees={totalFees} setTotalFees={setTotalFees} />
       </HStack>
       <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
          
@@ -106,17 +106,7 @@ export const Stats: React.FC<{
         </Text>
         <HStack>
             <Text textAlign="center" fontFamily="Futura">
-          <Link
-            _hover={{ textDecoration: "none", color: "blue" }}
-            color={BottomTextColor}
-            p="4px"
-            fontFamily="futura"
-            href="https://www.gravitybridge.net/"
-          >
-            Gravity Bridge 
-          </Link>
-
-          ® Is A Registered Trademark | Powered By
+          Powered By
             <Link
             _hover={{ textDecoration: "none", color: "blue" }}
             color={BottomTextColor}

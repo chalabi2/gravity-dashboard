@@ -16,8 +16,6 @@ const symbolToCoinIdMap: SymbolToCoinIdMap = {
   STARS: 'stars',
   CHEQ: 'cheq',
   HUAHUA: 'huahua',
-  NYM: 'nym',
-  FUND: 'unification',
   OSMO: 'osmosis'
 };
 
@@ -27,7 +25,7 @@ export const fetchTokenPriceData = async (denom: string): Promise<FetchTokenPric
   const supportedByGravityChain = ['DAI', 'USDT', 'USDC', 'WBTC', 'WETH', 'wstETH'].includes(symbol);
 
   if (supportedByGravityChain) {
-    const response = await axios.get('https://info.gravitychain.io:9000/erc20_metadata');
+    const response = await axios.get('http://66.172.36.132:9000/erc20_metadata');
     const data = response.data;
 
     let tokenData: any;

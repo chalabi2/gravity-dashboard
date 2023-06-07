@@ -260,7 +260,7 @@ export const Assets: React.FC = () => {
   >
     Biggest Movers
   </Text>
-  <HStack justifyContent="center"  spacing={12} gridColumn="1 / 3">
+  <HStack mt={-3} justifyContent="center"  spacing={12} gridColumn="1 / 3">
     <UnorderedList
       listStyleType="none"
       ml={0}

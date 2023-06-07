@@ -12,7 +12,7 @@ Simply fork the repository, enable github pages, and a github pages action will 
     - query all transactions once, spread all transactions to functions needing all transaction data
     - work around info.gravity & imperator price api rate limit/resource limit
 * Add mobile resizing
-* Add Loading screen, make loading screen take slowest query return as isLoaded
+* Find price for nym & unification
 
 **V2**
 * Add wallet connect to show analytics for individual wallets

@@ -8,20 +8,18 @@ import { Background } from "./components/theme/Background";
 import { Flares } from "./components/theme/flares";
 import { Fonts } from "./components/theme/theme";
 import { LoadingScreen } from "./components/LoadingScreen";
-import { FeePrice } from "./types"
-import { getAverageFees } from "./components/calculations/feeQuery"; // Import your API function
+import { TotalFee } from "./types"
+import { getCombinedFeeData } from "./components/calculations/feeQuery";
 
 export const App: React.FC = () => {
-  const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
+  const [totalFees, setTotalFees] = useState<TotalFee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-
+  
   useEffect(() => {
     const fetchData = async () => {
-      const feeData = await getAverageFees();
-      setFeePrices(Array.isArray(feeData) ? feeData : [feeData]);
-      setIsLoading(false);
-      setIsLoaded(true); // Set isLoaded to true here
+      const feeData = await getCombinedFeeData();
+      setTotalFees(Array.isArray(feeData) ? feeData : [feeData]);
     };
   
     fetchData();
@@ -29,11 +27,7 @@ export const App: React.FC = () => {
 
   return (
     <ChakraProvider theme={theme}>
-      
-      {isLoading ? <LoadingScreen isLoaded={isLoaded} /> :  
-        <>
-        <Fonts />
-        <Background
+       <Background
           position="absolute"
           top={0}
           left={0}
@@ -44,11 +38,14 @@ export const App: React.FC = () => {
           style={{ opacity: 0.2 }}
         />
         <Flares />
+        {totalFees.length === 0 ? <LoadingScreen isLoaded={false} /> :
+        <>
+        <Fonts />
         <VStack 
             width="100%" 
             spacing={0}>
           <Header />
-        <Stats feePrices={feePrices} setFeePrices={setFeePrices} />
+        <Stats totalFees={totalFees} setTotalFees={setTotalFees} />
         </VStack>  
         </>
         }

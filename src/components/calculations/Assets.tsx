@@ -46,7 +46,7 @@ const tokenDecimalsMap: { [key: string]: number } = {
 export async function getTokenAmountTotals() {
   try {
     const response = await axios.get(
-      "https://info.gravitychain.io:9000/transactions/send_to_eth"
+      "http://66.172.36.132:9000/transactions/send_to_eth"
     );
     const entries = response.data;
 
@@ -76,11 +76,12 @@ export async function getTokenAmountTotals() {
       .filter((denom) => tokenDecimalsMap.hasOwnProperty(denom))
       .map(async (denom, index) => {
         try {
-          const tokenPriceData = await fetchTokenPriceData(denom);
-          if (tokenPriceData.price === undefined) {
-            return null;
-          }
-          const tokenPrice = tokenPriceData.price;
+         const tokenPriceData = await fetchTokenPriceData(denom);
+if (tokenPriceData === null || tokenPriceData.price === undefined) {
+  return null;
+}
+const tokenPrice = tokenPriceData.price;
+
           const decimals = tokenDecimalsMap[denom];
           const formattedAmount = formatAmount(tokensByDenom[denom], decimals);
           const totalValue = formattedAmount * tokenPrice;

@@ -28,7 +28,7 @@ import {
 import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { getBridgeFeeTotals, getChainFeeTotals } from "../calculations/fees";
-import { BridgeFeeData, ChainFeeData } from "../../types";
+import { BridgeFeeData, ChainFeeData, TotalFee } from "../../types";
 import { getFees, getAverageFees, getCombinedFeeData, getMostValuableFees } from "../calculations/feeQuery";
 
 interface ChainFeeProps {}
@@ -37,17 +37,10 @@ function numberWithCommas(x: any) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-type FeePrice = {
-  averageChainFee: string;
-  averageBridgeFee: string;
-  mostCommonChainFeeDenom: string;
-  mostCommonBridgeFeeDenom: string;
-}
-
 export const ChainFee: React.FC<{ 
-  feePrices: FeePrice[], 
-  setFeePrices: React.Dispatch<React.SetStateAction<FeePrice[]>>
-}> = ({ feePrices, setFeePrices }) => {
+  totalFees: TotalFee[], 
+  setTotalFees: React.Dispatch<React.SetStateAction<TotalFee[]>>
+}> = ({ totalFees, setTotalFees }) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalBg = useColorModeValue("white", "black");
@@ -229,15 +222,23 @@ type FeeMax = {
   txHashRecordChain: string;
 }
 
+type FeePrice = {
+  averageChainFee: string;
+  averageBridgeFee: string;
+  mostCommonChainFeeDenom: string;
+  mostCommonBridgeFeeDenom: string;
+}
+
+const [feePrices, setFeePrices] = useState<FeePrice[]>([]);
 
 useEffect(() => {
   const fetchData = async () => {
     const feeData = await getAverageFees();
     setFeePrices(Array.isArray(feeData) ? feeData : [feeData]);
   };
-
+  
   fetchData();
-}, [feePrices]);
+}, []);
 
 let getAverageChainFee;
 if (feePrices.length > timeFrameIndex) {
@@ -285,13 +286,6 @@ if (feeMax.length > timeFrameIndex) {
   txHashRecordBridge = feeMax[timeFrameIndex].txHashRecordBridge;
   txHashRecordChain = feeMax[timeFrameIndex].txHashRecordChain;
 }
-
-type TotalFee = {
-  totalChainFeeUSD: Number,
-  totalBridgeFeeUSD: Number,
-}
-
-const [totalFees, setTotalFees] = useState<TotalFee[]>([]);
 
 let getBridgeFeeTotal;
 if (feePrices.length > timeFrameIndex ?? 4) {
@@ -464,7 +458,7 @@ useEffect(() => {
             pt={2}
               fontFamily="Futura"
               lineHeight="1"
-              fontWeight="Bold"
+              fontWeight="light"
               fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
@@ -843,7 +837,7 @@ _hover={{ cursor: "pointer" }}
             pt={2}
               fontFamily="Futura"
               lineHeight="1"
-              fontWeight="bold"
+              fontWeight="light"
               fontSize="28px"
               textTransform="capitalize"
               color="#FFFFFF"
@@ -1205,7 +1199,7 @@ _hover={{ cursor: "pointer" }}
            pt={2}
              fontFamily="Futura"
              lineHeight="1"
-             fontWeight="bold"
+             fontWeight="light"
              fontSize="28px"
              textTransform="capitalize"
              color="#FFFFFF"

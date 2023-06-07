@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Text, VStack, useBreakpointValue, keyframes, useColorModeValue, Heading } from '@chakra-ui/react';
+import { Box, Text, VStack, useBreakpointValue, keyframes, useColorModeValue, Heading, Spinner, Image } from '@chakra-ui/react';
 import { Logo } from "./theme/Logo";
+import gravGif from '../grav.gif';
 
 interface LoadingScreenProps {
   isLoaded: boolean;
@@ -28,8 +29,8 @@ to {
 `;
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoaded }) => {
-  const logoSize = useBreakpointValue({ base: "100%", md: "100%" });
-  const headerTextColor = useColorModeValue("black", "white");
+  const fadeOut = useColorModeValue("1", "0");
+  const filter = useColorModeValue("invert(1) brightness(0.2) hue-rotate(180deg)", "invert(2) hue-rotate(180deg)")
 
   return (
     <VStack
@@ -37,28 +38,18 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoaded }) => {
       height="100vh"
       justifyContent="center"
       alignItems="center"
-      animation={isLoaded ? `${fadeOutAnimation} 10s ease-in` : ''}
-      opacity={isLoaded ? 0 : 1}
+      animation={`${fadeOut} 10s ease-out forwards`}
+      opacity={isLoaded ? fadeOut : '1'} // Change the opacity based on isLoaded state
     >
       <VStack spacing={2} alignItems="center">
-        <Logo height={logoSize} width={logoSize} />
-        {isLoaded ? (
-          <Text fontSize="xl" fontWeight="bold" animation={`${flashAnimation} 1s infinite`}>
-            Fetching data...
-          </Text>
-        ) : (
-          <Heading
-            as="h1"
-            fontFamily="Futura"
-            lineHeight="1.36"
-            fontWeight="medium"
-            letterSpacing="0.1em"
-            color={headerTextColor}
-            fontSize="60px"
-          >
-            STATISTICS
-          </Heading>
-        )}
+      <Box
+  sx={{
+    filter: filter,
+  }}
+>
+  <Image boxSize="300px" src={gravGif} alt="Loading" />
+</Box>
+        
       </VStack>
     </VStack>
   );
