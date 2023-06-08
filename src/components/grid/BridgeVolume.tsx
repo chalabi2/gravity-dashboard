@@ -129,8 +129,8 @@ export const BridgeVolume = () => {
         borderRadius="6px"
         justify="flex-start"
         align="flex-start"
-        p={{ base: "14px", md: "20px" }}
-        pl={{ base: "0", md: "5px" }}
+        p={{ base: "20px", md: "20px" }}
+        pl={{ base: "5px", md: "5px" }}
         spacing="24px"
         width="330px"
         maxWidth="100%"

@@ -13,7 +13,7 @@ interface Transaction {
 }
 
 export async function getTxAmt() {
-  const response = await axios.get<Transaction[]>(`http://66.172.36.132:9000/transactions/send_to_eth`);
+  const response = await axios.get<Transaction[]>(`https://info.gravitychain.io:9000/transactions/send_to_eth`);
 
   const transactions = response.data;
 

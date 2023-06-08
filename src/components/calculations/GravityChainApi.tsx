@@ -1,27 +1,33 @@
-// api.tsx
-import { useEffect, useState } from 'react';
-import { ChainTotalSupplyNumbers, Erc20Metadata, EthInfo, GravityInfo, VolumeInfo } from '../../types';
+import { useEffect, useState } from "react";
+import {
+  ChainTotalSupplyNumbers,
+  Erc20Metadata,
+  EthInfo,
+  GravityInfo,
+  VolumeInfo,
+} from "../../types";
 
 const UPDATE_TIME = 5000;
 
-export const SERVER_URL = "http://66.172.36.132:9000/";
+export const SERVER_URL = "https://info.gravitychain.io:9000/";
 
 export const useGravityBridgeInfo = () => {
-  const [gravityBridgeInfo, setGravityBridgeInfo] = useState<GravityInfo | null>(null);
+  const [gravityBridgeInfo, setGravityBridgeInfo] =
+    useState<GravityInfo | null>(null);
 
   useEffect(() => {
     const fetchGravityInfo = async () => {
-        let request_url = SERVER_URL + "gravity_bridge_info";
-        const requestOptions: any = {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        };
-    
-        const result = await fetch(request_url, requestOptions);
-        const json = await result.json();
+      let request_url = SERVER_URL + "gravity_bridge_info";
+      const requestOptions: any = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      const result = await fetch(request_url, requestOptions);
+      const json = await result.json();
       setGravityBridgeInfo(json);
     };
 
@@ -38,22 +44,22 @@ export const useEthBridgeInfo = () => {
 
   useEffect(() => {
     const fetchEthInfo = async () => {
-        let request_url = SERVER_URL + "eth_bridge_info";
-        const requestOptions: any = {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        };
-    
-        const result = await fetch(request_url, requestOptions);
-        const json: EthInfo = await result.json();
-        // reverse so these show up in reverse cronological order
-        json.batch_events.reverse()
-        json.deposit_events.reverse()
-        json.logic_calls.reverse()
-        json.valset_updates.reverse()
+      let request_url = SERVER_URL + "eth_bridge_info";
+      const requestOptions: any = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      const result = await fetch(request_url, requestOptions);
+      const json: EthInfo = await result.json();
+
+      json.batch_events.reverse();
+      json.deposit_events.reverse();
+      json.logic_calls.reverse();
+      json.valset_updates.reverse();
       setEthBridgeInfo(json);
     };
 
@@ -66,21 +72,23 @@ export const useEthBridgeInfo = () => {
 };
 
 export const useSupplyInfo = () => {
-  const [supplyInfo, setSupplyInfo] = useState<ChainTotalSupplyNumbers | null>(null);
+  const [supplyInfo, setSupplyInfo] = useState<ChainTotalSupplyNumbers | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchDistributionInfo = async () => {
-        let request_url = SERVER_URL + "supply_info";
-        const requestOptions: any = {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        };
-    
-        const result = await fetch(request_url, requestOptions);
-        const json = await result.json();
+      let request_url = SERVER_URL + "supply_info";
+      const requestOptions: any = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      const result = await fetch(request_url, requestOptions);
+      const json = await result.json();
       setSupplyInfo(json);
     };
 
@@ -93,21 +101,22 @@ export const useSupplyInfo = () => {
 };
 
 export const useErc20Metadata = () => {
-  const [erc20Metadata, setErc20Metadata] = useState<Array<Erc20Metadata> | null>(null);
+  const [erc20Metadata, setErc20Metadata] =
+    useState<Array<Erc20Metadata> | null>(null);
 
   useEffect(() => {
     const fetchErc20Metadata = async () => {
-        let request_url = SERVER_URL + "erc20_metadata";
-        const requestOptions: any = {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        };
-    
-        const result = await fetch(request_url, requestOptions);
-        const json = await result.json();
+      let request_url = SERVER_URL + "erc20_metadata";
+      const requestOptions: any = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+
+      const result = await fetch(request_url, requestOptions);
+      const json = await result.json();
       setErc20Metadata(json);
     };
 
@@ -121,10 +130,12 @@ export const useErc20Metadata = () => {
 
 export const useVolumeInfo = () => {
   const [volumeInfo, setVolumeInfo] = useState<VolumeInfo | null>(null);
-  const [yesterdayVolumeInfo, setYesterdayVolumeInfo] = useState<VolumeInfo | null>(null);
-  const [dayBeforeYesterdayVolumeInfo, setDayBeforeYesterdayVolumeInfo] = useState<VolumeInfo | null>(null);
-  
-  const ONE_DAY = 1000 * 60 * 60 * 24; // Milliseconds in a day
+  const [yesterdayVolumeInfo, setYesterdayVolumeInfo] =
+    useState<VolumeInfo | null>(null);
+  const [dayBeforeYesterdayVolumeInfo, setDayBeforeYesterdayVolumeInfo] =
+    useState<VolumeInfo | null>(null);
+
+  const ONE_DAY = 1000 * 60 * 60 * 24;
 
   useEffect(() => {
     const fetchVolumeInfo = async () => {
@@ -136,25 +147,24 @@ export const useVolumeInfo = () => {
           "Content-Type": "application/json",
         },
       };
-  
+
       const result = await fetch(request_url, requestOptions);
       const json = await result.json();
 
-      // Set the day before yesterday's info to yesterday's info before updating
       setDayBeforeYesterdayVolumeInfo(yesterdayVolumeInfo);
-      // Set yesterday's info to the last fetched info before updating the current info
+
       setYesterdayVolumeInfo(volumeInfo);
       setVolumeInfo(json);
     };
 
     fetchVolumeInfo();
-    const interval = setInterval(fetchVolumeInfo, ONE_DAY); // Update to use 24 hour interval
+    const interval = setInterval(fetchVolumeInfo, ONE_DAY);
     return () => clearInterval(interval);
-  }, [volumeInfo, yesterdayVolumeInfo]);
+  }, [volumeInfo, yesterdayVolumeInfo, ONE_DAY]);
 
-  return { 
-    today: volumeInfo, 
+  return {
+    today: volumeInfo,
     yesterday: yesterdayVolumeInfo,
-    dayBeforeYesterday: dayBeforeYesterdayVolumeInfo 
+    dayBeforeYesterday: dayBeforeYesterdayVolumeInfo,
   };
 };

@@ -59,6 +59,7 @@
     ]
   },
   "devDependencies": {
+    "@chakra-ui/cli": "^2.4.1",
     "@protobufs/ibc": "^0.1.0"
   }
 }

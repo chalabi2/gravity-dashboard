@@ -1,6 +1,6 @@
-import axios from "axios";
-import { gravityDenomToStringMap, Amount } from "../../types";
+import { gravityDenomToStringMap } from "../../types";
 import { fetchTokenPriceData } from "./oracle";
+import { fetchSendToEthTime } from "./feeQuery";
 
 const formatAmount = (amount: number, decimals: number) => {
   return amount / Math.pow(10, decimals);
@@ -45,42 +45,32 @@ const tokenDecimalsMap: { [key: string]: number } = {
 
 export async function getTokenAmountTotals() {
   try {
-    const response = await axios.get(
-      "http://66.172.36.132:9000/transactions/send_to_eth"
-    );
-    const entries = response.data;
+    const response = await fetchSendToEthTime();
+    const entries = response.data.time_frames[4].amount_totals;
 
     const tokensByDenom: Record<string, number> = {};
 
-    entries.forEach(
-      (entry: { transactions: { data: { amount: Amount[] } }[] }) => {
-        const transactions = entry.transactions[0]?.data;
-        if (transactions && transactions.amount) {
-          transactions.amount.forEach((tokens: Amount) => {
-            const denom = tokens.denom;
-            const amount = parseInt(tokens.amount, 10);
+    for (let [denom, amount] of Object.entries(entries)) {
+      const readableDenom = gravityDenomToStringMap[denom] || denom;
 
-            const readableDenom =
-              gravityDenomToStringMap[denom] || denom;
-            if (tokensByDenom[readableDenom]) {
-              tokensByDenom[readableDenom] += amount;
-            } else {
-              tokensByDenom[readableDenom] = amount;
-            }
-          });
-        }
+      const numAmount = Number(amount);
+
+      if (tokensByDenom[readableDenom]) {
+        tokensByDenom[readableDenom] += numAmount;
+      } else {
+        tokensByDenom[readableDenom] = numAmount;
       }
-    );
+    }
 
     const resultPromises = Object.keys(tokensByDenom)
       .filter((denom) => tokenDecimalsMap.hasOwnProperty(denom))
       .map(async (denom, index) => {
         try {
-         const tokenPriceData = await fetchTokenPriceData(denom);
-if (tokenPriceData === null || tokenPriceData.price === undefined) {
-  return null;
-}
-const tokenPrice = tokenPriceData.price;
+          const tokenPriceData = await fetchTokenPriceData(denom);
+          if (tokenPriceData === null || tokenPriceData.price === undefined) {
+            return null;
+          }
+          const tokenPrice = tokenPriceData.price;
 
           const decimals = tokenDecimalsMap[denom];
           const formattedAmount = formatAmount(tokensByDenom[denom], decimals);
@@ -98,7 +88,6 @@ const tokenPrice = tokenPriceData.price;
 
     let result = await Promise.all(resultPromises);
 
-    // Filter out null or undefined results
     result = result.filter(
       (
         item
@@ -110,7 +99,6 @@ const tokenPrice = tokenPriceData.price;
       } => item !== null
     );
 
-    // Explicitly define the type for the array with a type assertion
     const sortedResult = result as {
       denom: string;
       totalAmounts: string;
@@ -118,10 +106,8 @@ const tokenPrice = tokenPriceData.price;
       totalValue: number;
     }[];
 
-    // Sort by total value
     sortedResult.sort((a, b) => b.totalValue - a.totalValue);
 
-    // Limit to top 6
     const topResult = sortedResult.slice(0, 6);
 
     return topResult;

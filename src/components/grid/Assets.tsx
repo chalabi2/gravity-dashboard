@@ -13,7 +13,6 @@ Tooltip } from '@chakra-ui/react';
 import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
 import { InfoIcon } from "@chakra-ui/icons";
-import { getFees } from '../calculations/feeQuery';
 
 function formatTotalAmount(amount: number, decimals: number): string {
   const formattedAmount = amount / Math.pow(10, decimals);
@@ -31,7 +30,6 @@ export const Assets: React.FC = () => {
   const percentageDifference = (monthlyOut / (monthlyIn + monthlyOut)) * 100;
   const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const blockFees = getFees();
 
 
   const modalBgText = useColorModeValue("white", "black");
@@ -42,14 +40,14 @@ export const Assets: React.FC = () => {
   
 
   const handleClick = (event: React.MouseEvent) => {
-    // Store the click position
+
     setClickPosition({
       x: event.clientX,
       y: event.clientY,
     });
     onOpen();
   };
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
@@ -59,16 +57,16 @@ export const Assets: React.FC = () => {
 
   const fetchData = async () => {
     const now = Date.now();
-    const cacheTimeout = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const cacheTimeout = 15 * 60 * 1000; 
   
-    // If data is already fetched and cached within the valid time window, do not fetch again
+
     if (lastFetched && now - lastFetched < cacheTimeout) {
       return;
     }
   
     const data = await getTokenAmountTotals();
     setTopDenoms(data);
-    setLastFetched(now); // Update the timestamp of the last fetched data
+    setLastFetched(now); 
   };
 
   useEffect(() => {
@@ -81,7 +79,7 @@ export const Assets: React.FC = () => {
     onMouseEnter={() => setShowInfoIcon(true)}
     onMouseLeave={() => {
       if (!isOpen) {
-        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+        setShowInfoIcon(false); 
       }
     }}
     position="relative">
@@ -97,8 +95,8 @@ export const Assets: React.FC = () => {
       onClick={handleClick}
       zIndex={1}
       style={{
-        opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
-        transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+        opacity: showInfoIcon ? 1 : 0, 
+        transition: 'opacity 0.3s ease-in-out', 
       }}
     />
   <Grid

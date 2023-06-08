@@ -8,18 +8,19 @@ import { Background } from "./components/theme/Background";
 import { Flares } from "./components/theme/flares";
 import { Fonts } from "./components/theme/theme";
 import { LoadingScreen } from "./components/LoadingScreen";
-import { TotalFee } from "./types"
+import { TotalFee } from "./types";
 import { getCombinedFeeData } from "./components/calculations/feeQuery";
 
 export const App: React.FC = () => {
   const [totalFees, setTotalFees] = useState<TotalFee[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const feeData = await getCombinedFeeData();
-      setTotalFees(Array.isArray(feeData) ? feeData : [feeData]);
+      // Set a timeout to delay the disappearance of the loading screen
+      setTimeout(() => {
+        setTotalFees(Array.isArray(feeData) ? feeData : [feeData]);
+      }, 2000); // Delay for 2 seconds
     };
   
     fetchData();
@@ -27,29 +28,28 @@ export const App: React.FC = () => {
 
   return (
     <ChakraProvider theme={theme}>
-       <Background
-          position="absolute"
-          top={0}
-          left={0}
-          width="100%"
-          height="100%"
-          zIndex={-1}
-          objectFit="cover"
-          style={{ opacity: 0.2 }}
-        />
-        <Flares />
-        {totalFees.length === 0 ? <LoadingScreen isLoaded={false} /> :
+      <Background
+        position="absolute"
+        top={0}
+        left={0}
+        width="100%"
+        height="100%"
+        zIndex={-1}
+        objectFit="cover"
+        style={{ opacity: 0.2 }}
+      />
+      <Flares />
+      {totalFees.length === 0 ? (
+        <LoadingScreen isLoaded={false} />
+      ) : (
         <>
-        <Fonts />
-        <VStack 
-            width="100%" 
-            spacing={0}>
-          <Header />
-        <Stats totalFees={totalFees} setTotalFees={setTotalFees} />
-        </VStack>  
+          <Fonts />
+          <VStack width="100%" spacing={0}>
+            <Header />
+            <Stats totalFees={totalFees} setTotalFees={setTotalFees} />
+          </VStack>
         </>
-        }
-
+      )}
     </ChakraProvider>
   );
 };
