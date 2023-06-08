@@ -7,10 +7,6 @@ Simply fork the repository, enable github pages, and a github pages action will 
 ### To do list
 **V1**
 
-* Add data caching
-    - find price data once, spread to all functions needing price data
-    - query all transactions once, spread all transactions to functions needing all transaction data
-    - work around info.gravity & imperator price api rate limit/resource limit
 * Add mobile resizing
 * Find price for nym & unification
 
