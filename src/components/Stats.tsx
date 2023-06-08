@@ -1,10 +1,9 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   VStack,
-  Flex,
   Text,
-  useBreakpointValue,
   Link,
   useColorModeValue,
   Container,
@@ -14,86 +13,124 @@ import { Pmtr } from "./grid/Pmtr";
 import { ChainFee } from "./grid/ChainFees";
 import { Assets } from "./grid/Assets";
 import { BridgeVolume } from "./grid/BridgeVolume";
-import { VolumeComparison } from "./grid/VolumeComparison";
+import { TotalFee } from "../types";
 
-export const Stats: React.FC = () => {
-  const marginTopValue = useBreakpointValue({ base: "-50px", md: "0" });
-  const pmtrWidth = useBreakpointValue({
-    base: "331px",
-    md: "732px !important",
-  });
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return windowSize;
+}
+
+export const Stats: React.FC<{
+  totalFees: TotalFee[];
+  setTotalFees: React.Dispatch<React.SetStateAction<TotalFee[]>>;
+}> = ({ totalFees, setTotalFees }) => {
+  const windowSize = useWindowSize();
+  const isLargeScreen = windowSize >= 1414; // Check if screen size is larger than 1414px
+
   const BottomTextColor = useColorModeValue("black", "white");
 
   return (
-    <Container py={18} maxW="8xl" centerContent>
+    <Container py={"50px"} maxW="8xl" centerContent>
       <Box maxWidth="8xl" width="100%"></Box>
-      <VStack spacing={2}>
-        <Pmtr />
-        <HStack>
-          <BridgeVolume />
-          <Assets />
+      {isLargeScreen ? (
+        <HStack
+          shadow={"dark-lg"}
+          spacing={2}
+          p={4}
+          borderRadius={4}
+          sx={{
+            backdropFilter: "blur(2px)",
+            bgColor: "transparent",
+          }}
+        >
+          <VStack>
+            <Pmtr />
+            <HStack>
+              <BridgeVolume />
+              <Assets />
+            </HStack>
+          </VStack>
+          <ChainFee totalFees={totalFees} setTotalFees={setTotalFees} />
         </HStack>
-        <ChainFee />
-        <VolumeComparison />
-        <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
-         
-          <Text textAlign="center" fontFamily="Futura">
-            Data is feteched from:
-            <Link
-              _hover={{ textDecoration: "none", color: "blue" }}
-              color={BottomTextColor}
-              p="4px"
-              fontFamily="futura"
-              href="https://www.coingecko.com/en/coins/graviton"
-            >
-              Coin Gecko
-              </Link>
-              |
-              <Link
-                _hover={{ textDecoration: "none", color: "blue" }}
-                color={BottomTextColor}
-                p="4px"
-                fontFamily="futura"
-                href="https://github.com/Gravity-Bridge/gravity-info-api"
-              >
-                Gravity info API
-              </Link>
-              |
-              <Link
-                _hover={{ textDecoration: "none", color: "blue" }}
-                color={BottomTextColor}
-                p="4px"
-                fontFamily="futura"
-                href="https://info.osmosis.zone/"
-              >
-                Osmosis price feed
-              </Link>
-              |
-              <Link
-                _hover={{ textDecoration: "none", color: "blue" }}
-                color={BottomTextColor}
-                p="4px"
-                fontFamily="futura"
-                href="https://dune.com/"
-              >
-                Dune Analytics
-              </Link>
-          </Text>
-        </Text>
-        <HStack>
-            <Text textAlign="center" fontFamily="Futura">
+      ) : (
+        <VStack
+          shadow={"dark-lg"}
+          spacing={2}
+          p={4}
+          borderRadius={4}
+          sx={{
+            backdropFilter: "blur(2px)",
+            bgColor: "transparent",
+          }}
+        >
+          <Pmtr />
+          <HStack>
+            <BridgeVolume />
+            <Assets />
+          </HStack>
+          <ChainFee totalFees={totalFees} setTotalFees={setTotalFees} />
+        </VStack>
+      )}
+      <Text zIndex={0} textAlign="center" fontSize="sm" mt={4}>
+        <Text textAlign="center" fontFamily="Futura">
+          Data is feteched from:
           <Link
             _hover={{ textDecoration: "none", color: "blue" }}
             color={BottomTextColor}
             p="4px"
             fontFamily="futura"
-            href="https://www.gravitybridge.net/"
+            href="https://www.coingecko.com/en/coins/graviton"
           >
-            Gravity Bridge ®
+            Coin Gecko
           </Link>
-
-            Is A Registered Trademark | Powered By
-            <Link
+          |
+          <Link
+            _hover={{ textDecoration: "none", color: "blue" }}
+            color={BottomTextColor}
+            p="4px"
+            fontFamily="futura"
+            href="https://github.com/Gravity-Bridge/gravity-info-api"
+          >
+            Gravity info API
+          </Link>
+          |
+          <Link
+            _hover={{ textDecoration: "none", color: "blue" }}
+            color={BottomTextColor}
+            p="4px"
+            fontFamily="futura"
+            href="https://info.osmosis.zone/"
+          >
+            Osmosis price feed
+          </Link>
+          |
+          <Link
+            _hover={{ textDecoration: "none", color: "blue" }}
+            color={BottomTextColor}
+            p="4px"
+            fontFamily="futura"
+            href="https://dune.com/"
+          >
+            Dune Analytics
+          </Link>
+        </Text>
+      </Text>
+      <HStack>
+        <Text textAlign="center" fontFamily="Futura">
+          Powered By
+          <Link
             _hover={{ textDecoration: "none", color: "blue" }}
             color={BottomTextColor}
             p="4px"
@@ -102,10 +139,8 @@ export const Stats: React.FC = () => {
           >
             Chandra Station
           </Link>
-          </Text>
-          
-          </HStack>
-      </VStack>
+        </Text>
+      </HStack>
     </Container>
   );
 };

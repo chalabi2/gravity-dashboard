@@ -12,6 +12,13 @@
     },
     "rpcClients": {
       "enabled": true
-    }
+    },
+    "prototypes": {
+      "typingsFormat": {
+        "customTypes": {
+          "useCosmosSDKDec": true
+        }
+  }
+}
   }
 }

@@ -22,6 +22,6 @@ export async function getBridgeTvl() {
       tvl: formatNumber(tvl)
     };
   } catch (error) {
-    throw new Error(`Error getting bridge volume: ${error}`);
+    //throw new Error(`Error getting bridge volume: ${error}`);
   }
 }

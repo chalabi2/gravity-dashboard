@@ -241,6 +241,36 @@ export type gravityDenomToString = {
     'ibc/D157AD8A50DAB0FC4EB95BBE1D9407A590FA2CDEE04C90A76C005089BF76E519': 'FUND'
   };
 
+  export const tokenDecimalsMap: { [key: string]: number } = {
+    DAI: 18,
+    USDT: 6,
+    USDC: 6,
+    WBTC: 8,
+    SHIB: 18,
+    WETH: 18,
+    wstETH: 18,
+    ATOM: 6,
+    UMEE: 6,
+    stkATOM: 6,
+    AXL: 6,
+    SOMM: 6,
+    ISLM: 18,
+    UND: 6,
+    NYM_Duplicate: 6,
+    CMDX: 6,
+    KUJI: 6,
+    LUNA: 6,
+    MNTL: 6,
+    USK: 6,
+    USD: 6,
+    PLANQ: 18,
+    STARS: 6,
+    CHEQ: 9,
+    HUAHUA: 6,
+    NYM: 6,
+    FUND: 9
+  };
+
   export interface ChainFeeData {
     denom: string;
     totalChainFees: number;
@@ -260,3 +290,38 @@ export type gravityDenomToString = {
     tvl: string;
     vol: string;
   }
+
+export  interface Data {
+    amount: Amount[];
+    bridge_fee: Amount[];
+    chain_fee: Amount[];
+    eth_dest: string;
+    sender: string;
+  }
+  
+export  interface Transaction {
+    tx_hash: string;
+    data: Data;
+  }
+  
+export  interface BlockTransaction {
+    block_number: number;
+    transactions: Transaction[];
+    formatted_date: string;
+  }
+  
+  // Define the Fee type
+ export type Fee = Amount;
+
+export type FeePrice = {
+    averageChainFee: string;
+    averageBridgeFee: string;
+    mostCommonChainFeeDenom: string;
+    mostCommonBridgeFeeDenom: string;
+  }
+
+  export type TotalFee = {
+    totalChainFeeUSD: Number,
+    totalBridgeFeeUSD: Number,
+  }
+  

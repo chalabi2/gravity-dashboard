@@ -17,11 +17,11 @@ import { getBridgeTvl } from '../calculations/chandraApi';
 import { DuneData } from '../../types'
 
 export const BridgeVolume = () => {
-  const { today: volumeInfo, yesterday: yesterdayVolumeInfo } = useVolumeInfo();
+  const { today: volumeInfo, yesterday: yesterdayVolumeInfo, dayBeforeYesterday: dayBeforeYesterdayVolumeInfo } = useVolumeInfo();
   const dailyVolume = volumeInfo?.daily_volume || 0;
   const weeklyVolume = volumeInfo?.weekly_volume || 0;
-  const yesterdayDailyVolume = yesterdayVolumeInfo?.daily_volume || 0;
-  const yesterdayWeeklyVolume = yesterdayVolumeInfo?.weekly_volume || 0;
+  const yesterdayDailyVolume = yesterdayVolumeInfo?.daily_volume || dayBeforeYesterdayVolumeInfo?.daily_volume || 0;
+  const yesterdayWeeklyVolume = yesterdayVolumeInfo?.weekly_volume || dayBeforeYesterdayVolumeInfo?.weekly_volume || 0;
 
   const dailyVolumeChange = yesterdayDailyVolume !== 0 ? ((dailyVolume - yesterdayDailyVolume) / yesterdayDailyVolume) * 100 : 0;
   const weeklyVolumeChange = yesterdayWeeklyVolume !== 0 ? ((weeklyVolume - yesterdayWeeklyVolume) / yesterdayWeeklyVolume) * 100 : 0;
@@ -129,7 +129,8 @@ export const BridgeVolume = () => {
         borderRadius="6px"
         justify="flex-start"
         align="flex-start"
-        p={{ base: "14px", md: "25px" }}
+        p={{ base: "20px", md: "20px" }}
+        pl={{ base: "5px", md: "5px" }}
         spacing="24px"
         width="330px"
         maxWidth="100%"
@@ -140,21 +141,14 @@ export const BridgeVolume = () => {
       <Flex justify="space-between" align="center" alignSelf="stretch">
         <Text
           fontFamily="Futura"
-          lineHeight="1.17"
+          lineHeight="1"
           fontWeight="light"
-          fontSize="24px"
+          fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"
         >
           Bridge Volume
-          <Box
-    width="100%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="-1px"
-  />
+          
         </Text>
       </Flex>
       <HStack>
@@ -166,7 +160,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-           ${bridgeInfo?.vol}
+           ${bridgeInfo?.vol ?? "1.19B"}
           </Text>
         </Flex>
         <BridgeVolumeChart data={BridgeVolumeChartData}/>
@@ -235,19 +229,12 @@ export const BridgeVolume = () => {
           fontFamily="Futura"
           lineHeight="1.17"
           fontWeight="light"
-          fontSize="24px"
+          fontSize="28px"
           textTransform="capitalize"
           color="#FFFFFF"
         >
           TVL
-          <Box
-    width="100%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="-1px"
-  />
+        
         </Text>
       </Flex>
       <HStack>
@@ -259,7 +246,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            ${bridgeInfo?.tvl}
+            ${bridgeInfo?.tvl ?? "76M"}
           </Text>
         </Flex>
       </Flex>
@@ -277,7 +264,7 @@ export const BridgeVolume = () => {
           <ModalCloseButton />
           <ModalBody fontFamily="Futura" fontSize="20px">
             This grid item shows the the total volume transfered between Gravity Bridge & Ethereum including the daily and weekly total amounts.
-            TVL is the total value locked in the Gravity Bridge contracts.
+            TVL is the total value locked in the Gravity Bridge contracts. The percentages next to the volume amounts show the change in volume from the previous day or week.
           </ModalBody>
           <ModalFooter>
           </ModalFooter>

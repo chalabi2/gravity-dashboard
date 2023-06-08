@@ -12,7 +12,8 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  useMediaQuery
+  useMediaQuery,
+  SkeletonText
 } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import { useState, useEffect } from "react";
@@ -41,7 +42,7 @@ export const Pmtr = () => {
   
     return () => clearInterval(intervalId); // Clean up the interval when the component unmounts
   }, []);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalBgText = useColorModeValue("white", "black");
   const [clickPosition, setClickPosition] = React.useState({
@@ -114,16 +115,13 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Price
-            <Box
-    width={{md: "85%", base: "15%"}}
-    ml={{md: "0", base: "128px"}}
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position={{md: "relative", base: "sticky"}}
-
-    bottom="1px"
-  />
+      
           </Text>
+          <SkeletonText
+                  isLoaded={!isLoading}
+          noOfLines={1}
+          skeletonHeight="5"
+          >
           <Text
             fontFamily="futura"
             lineHeight="1.4"
@@ -134,6 +132,7 @@ export const Pmtr = () => {
           >
             ${data.price.toFixed(3)}
           </Text>
+          </SkeletonText>
         </Box>
         <Box mb={{ base: "10px", md: 0 }} width={{ base: "100%", md: "auto" }}>
           <Text
@@ -145,15 +144,7 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Market Cap
-            <Box
-    width={{md: "100%", base: "33%"}}
-    ml={{md: "0", base: "102px"}}
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position={{md: "relative", base: "sticky"}}
-
-    bottom="1px"
-  />
+            
           </Text>
           <Text
             fontFamily="futura"
@@ -176,15 +167,7 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Trading Volume
-            <Box
-    width={{md: "100%", base: "43%"}}
-    ml={{md: "0", base: "88px"}}
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position={{md: "relative", base: "sticky"}}
-
-    bottom="1px"
-  />
+           
           </Text>
           <Text
             fontFamily="futura"
@@ -207,15 +190,7 @@ export const Pmtr = () => {
             color="#FFFFFF"
           >
             Rank
-            <Box
-    width={{md: "100%", base: "16%"}}
-    ml={{md: "0", base: "125px"}}
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position={{md: "relative", base: "sticky"}}
-
-    bottom="1px"
-  />
+           
           </Text>
           <Text
             fontFamily="futura"

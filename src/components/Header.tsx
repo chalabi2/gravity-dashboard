@@ -35,35 +35,6 @@ export const Header = () => {
 
   const MobileMenuItems = () => (
     <VStack alignItems="center" spacing="1rem">
-      <ColorModeSwitcher />
-      <Link
-        fontFamily="Futura"
-        fontWeight="light"
-        fontSize="18px"
-        color={headerTextColor}
-        href="https://info.gravitychain.io:9000/"
-        isExternal
-        _hover={{
-          textDecoration: "none",
-          color: "blue",
-        }}
-      >
-        API
-      </Link>
-      <Link
-        fontFamily="Futura"
-        fontWeight="light"
-        fontSize="18px"
-        color={headerTextColor}
-        href="https://www.mintscan.io/gravity-bridge"
-        isExternal
-        _hover={{
-          textDecoration: "none",
-          color: "blue",
-        }}
-      >
-        Block Explorer
-      </Link>
       <Link
       href="https://chandrastation.github.io/space-station/"
       >
@@ -92,6 +63,36 @@ export const Header = () => {
       </Text>
       </Box>
       </Link>
+      <Link
+        fontFamily="Futura"
+        fontWeight="light"
+        fontSize="18px"
+        color={headerTextColor}
+        href="https://info.gravitychain.io:9000/"
+        isExternal
+        _hover={{
+          textDecoration: "none",
+          color: "blue",
+        }}
+      >
+        API
+      </Link>
+      <Link
+        fontFamily="Futura"
+        fontWeight="light"
+        fontSize="18px"
+        color={headerTextColor}
+        href="https://www.mintscan.io/gravity-bridge"
+        isExternal
+        _hover={{
+          textDecoration: "none",
+          color: "blue",
+        }}
+      >
+        Block Explorer
+      </Link>
+      
+      <ColorModeSwitcher />
     </VStack>
   );
 
@@ -103,7 +104,7 @@ export const Header = () => {
         fontWeight="light"
         fontSize="18px"
         color={headerTextColor}
-        href="https://info.gravitychain.io:9000/"
+        href="https://info.gravitychain.io/"
         isExternal
         _hover={{
           textDecoration: "none",

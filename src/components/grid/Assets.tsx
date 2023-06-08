@@ -8,6 +8,7 @@ import { Grid, Text, Box, Flex, ListItem, UnorderedList, HStack, IconButton, use
   ModalBody,
   ModalFooter,
   useMediaQuery,
+  SkeletonText,
 Tooltip } from '@chakra-ui/react';
 import { getTokenAmountTotals } from "../calculations/Assets";
 import { useVolumeInfo } from '../calculations/GravityChainApi';
@@ -30,6 +31,7 @@ export const Assets: React.FC = () => {
   const percentageDifferenceDaily = (dailyOut / (dailyIn + dailyOut)) * 100;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+
   const modalBgText = useColorModeValue("white", "black");
   const [clickPosition, setClickPosition] = React.useState({
     x: 0,
@@ -38,14 +40,14 @@ export const Assets: React.FC = () => {
   
 
   const handleClick = (event: React.MouseEvent) => {
-    // Store the click position
+
     setClickPosition({
       x: event.clientX,
       y: event.clientY,
     });
     onOpen();
   };
-
+  const [isLoading] = useState(false);
   const [showInfoIcon, setShowInfoIcon] = useState(false);
   
   const [isMobile] = useMediaQuery("(max-width: 480px)");
@@ -55,16 +57,16 @@ export const Assets: React.FC = () => {
 
   const fetchData = async () => {
     const now = Date.now();
-    const cacheTimeout = 15 * 60 * 1000; // 15 minutes in milliseconds
+    const cacheTimeout = 15 * 60 * 1000; 
   
-    // If data is already fetched and cached within the valid time window, do not fetch again
+
     if (lastFetched && now - lastFetched < cacheTimeout) {
       return;
     }
   
     const data = await getTokenAmountTotals();
     setTopDenoms(data);
-    setLastFetched(now); // Update the timestamp of the last fetched data
+    setLastFetched(now); 
   };
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export const Assets: React.FC = () => {
     onMouseEnter={() => setShowInfoIcon(true)}
     onMouseLeave={() => {
       if (!isOpen) {
-        setShowInfoIcon(false); // Hide icon when not hovered and modal is not open
+        setShowInfoIcon(false); 
       }
     }}
     position="relative">
@@ -93,8 +95,8 @@ export const Assets: React.FC = () => {
       onClick={handleClick}
       zIndex={1}
       style={{
-        opacity: showInfoIcon ? 1 : 0, // Set opacity based on showInfoIcon state
-        transition: 'opacity 0.3s ease-in-out', // Gradual opacity transition
+        opacity: showInfoIcon ? 1 : 0, 
+        transition: 'opacity 0.3s ease-in-out', 
       }}
     />
   <Grid
@@ -113,7 +115,7 @@ export const Assets: React.FC = () => {
 <Text
   fontFamily="Futura"
   fontWeight="light"
-  fontSize="24px"
+  fontSize="28"
   color="#FFFFFF"
   textAlign="center"
   paddingRight="30px"
@@ -121,14 +123,6 @@ export const Assets: React.FC = () => {
   position="relative"
 >
   Eth Assets
-  <Box
-    width="63%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-    ml="50px"
-    bottom="2px"
-  />
 </Text>
     <Flex direction="column">
       <Text
@@ -139,15 +133,13 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly In
-        <Box
-    width="75%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+    
       </Text>
+      <SkeletonText
+                  isLoaded={!isLoading}
+          noOfLines={1}
+          skeletonHeight="5"
+          >
       <Text
         fontFamily="futura"
         fontWeight="light"
@@ -156,6 +148,7 @@ export const Assets: React.FC = () => {
       >
         ${monthlyIn.toLocaleString()}
       </Text>
+      </SkeletonText>
     </Flex>
     <Flex direction="column">
       <Text
@@ -166,14 +159,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Monthly Out
-        <Box
-    width="85%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+  
       </Text>
       <Text
         fontFamily="Futura"
@@ -210,14 +196,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Daily In
-        <Box
-    width="56%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+        
       </Text>
       <Text
         fontFamily="futura"
@@ -238,14 +217,7 @@ export const Assets: React.FC = () => {
         color="#FFFFFF"
       >
         Daily Out
-        <Box
-    width="65%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-
-    bottom="1px"
-  />
+        
       </Text>
       <Text
         fontFamily="futura"
@@ -285,16 +257,8 @@ export const Assets: React.FC = () => {
     gridColumn="1 / 3"
   >
     Biggest Movers
-    <Box
-    width="50%"
-    height="1px"
-    bgColor="rgb(255,255,255, 0.5)"
-    position="relative"
-    ml="66px"
-    bottom="1px"
-  />
   </Text>
-  <HStack justifyContent="center"  spacing={12} gridColumn="1 / 3">
+  <HStack mt={-3} justifyContent="center"  spacing={12} gridColumn="1 / 3">
     <UnorderedList
       listStyleType="none"
       ml={0}
