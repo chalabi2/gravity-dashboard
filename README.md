@@ -8,7 +8,7 @@ Data fetching can be rather subjective and in order to ensure at least two stand
 
 * Average fees are all the fees added together denominated in $USD and divided by total amount of transactions for a given time frame.
 
-* The amount of transactions in each time frame is calculated by looking at the transactions time stamp and filtering it **side-note, chain fees were enabled post gravity launch. 
+* The amount of transactions in each time frame is calculated by looking at the transactions time stamp and filtering it. *Side-note: chain fees were enabled post gravity launch*
 
 * Highest fees are also gathered by iterating through every transaction with a fee in order to find the highest $USD value fee.
 
