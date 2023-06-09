@@ -80,9 +80,6 @@ export const fetchTokenPriceData = async (
       }
 
       if (!tokenData) {
-        throw new Error(
-          `Token with symbol ${symbol} not found in the response`
-        );
       }
 
       return {
@@ -92,9 +89,6 @@ export const fetchTokenPriceData = async (
       const coinId = symbolToCoinIdMap[symbol];
 
       if (!coinId) {
-        throw new Error(
-          `Token with symbol ${symbol} not found in the symbolToCoinIdMap`
-        );
       }
 
       const response = await axios.get(
@@ -117,6 +111,7 @@ export const fetchTokenPriceData = async (
 
   return pricePromise;
 };
+
 
 const formatAmount = (amount: number, decimals: number) => {
   return amount / Math.pow(10, decimals);
