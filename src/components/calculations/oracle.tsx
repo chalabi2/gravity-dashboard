@@ -50,7 +50,7 @@ export const fetchTokenPriceData = async (
 
   if (symbol === "fund" || symbol === "unification" || symbol === "FUND") {
     return {
-      price: 0.128936,
+      price: 0,
     };
   }
 
