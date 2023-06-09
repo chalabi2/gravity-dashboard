@@ -55,6 +55,8 @@ export const ChainFee: React.FC<{
     y: 0,
   });
 
+  const [isLargerThan767] = useMediaQuery("(min-width: 767px)");
+
   // Fees Section
   //Handle Fees
   type FeesData = {
@@ -221,9 +223,12 @@ export const ChainFee: React.FC<{
   type FeeMax = {
     maxChainFee: string;
     maxBridgeFee: string;
+    secondMaxBridgeFee: string;
     maxChainFeeDenom: string;
     maxBridgeFeeDenom: string;
+    secondMaxBridgeFeeDenom: string;
     txHashRecordBridge: string;
+    secondTxHashRecordBridge: string;
     txHashRecordChain: string;
   };
 
@@ -287,10 +292,10 @@ export const ChainFee: React.FC<{
 
   if (feeMax.length > timeFrameIndex) {
     getHighestChainFee = feeMax[timeFrameIndex].maxChainFee;
-    getHighestBridgeFee = feeMax[timeFrameIndex].maxBridgeFee;
+    getHighestBridgeFee = feeMax[timeFrameIndex].secondMaxBridgeFee;
     getHighestChainFeeDenom = feeMax[timeFrameIndex].maxChainFeeDenom;
-    getHighestBridgeFeeDenom = feeMax[timeFrameIndex].maxBridgeFeeDenom;
-    txHashRecordBridge = feeMax[timeFrameIndex].txHashRecordBridge;
+    getHighestBridgeFeeDenom = feeMax[timeFrameIndex].secondMaxBridgeFeeDenom;
+    txHashRecordBridge = feeMax[timeFrameIndex].secondTxHashRecordBridge;
     txHashRecordChain = feeMax[timeFrameIndex].txHashRecordChain;
   }
 
@@ -390,7 +395,7 @@ export const ChainFee: React.FC<{
           aria-label="More"
           position="absolute"
           top={1}
-          right={"240px"}
+          right={{base: "65px", md: "240px"}}
           size="md"
           variant="ghost"
           onClick={handleClickMenu}
@@ -454,6 +459,8 @@ export const ChainFee: React.FC<{
       </Menu>
       <Box>
         {selectedMenuItem === "Fees" && (
+          <>
+          {isLargerThan767 ? (
           <Stack
             justify="center"
             justifyContent="space-between"
@@ -589,7 +596,7 @@ export const ChainFee: React.FC<{
               </Flex>
             ) : (
               <>
-                <Flex
+                <HStack
                   pt={4}
                   justifyContent="space-between"
                   width="100%"
@@ -894,12 +901,462 @@ export const ChainFee: React.FC<{
                       </HStack>
                     </VStack>
                   </VStack>
-                </Flex>
+                </HStack>
               </>
             )}
           </Stack>
+          ) : (
+            //small fees section
+<Stack
+            justify="center"
+            justifyContent="space-between"
+            align="center"
+            spacing="0px"
+            width="335px"
+            height="1000px"
+            maxWidth="100%"
+            bg="rgba(0, 18, 183, 0.5)"
+            borderRadius="6px"
+          >
+            <Text
+              pt={2}
+              fontFamily="Futura"
+              lineHeight="1"
+              fontWeight="light"
+              fontSize="28px"
+              textTransform="capitalize"
+              color="#FFFFFF"
+              textAlign="center"
+            >
+              Fees
+            </Text>
+            <VStack
+              color="white"
+              shadow={"dark-sm"}
+              fontFamily="Futura"
+              top={1}
+              right={2}
+              p={1}
+              borderRadius={4}
+              position="absolute"
+              spacing={4}
+              bgColor="rgba(0, 18, 183, 0.1)"
+            >
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                bgColor={
+                  timeFrame === "oneDay"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                shadow={"dark-lg"}
+                onClick={() => handleTimeFrameChange("oneDay")}
+              >
+                <Text
+                  fontSize="sm"
+                  fontFamily="Futura"
+                  p={0.5}
+                  _hover={{ cursor: "pointer" }}
+                >
+                  1D
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "oneWeek"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("oneWeek")}
+              >
+                <Text
+                  fontSize="sm"
+                  p={0.5}
+                  fontFamily="Futura"
+                  _hover={{ cursor: "pointer" }}
+                >
+                  7D
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "oneMonth"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("oneMonth")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  1M
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "allTime"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("allTime")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  All
+                </Text>
+              </Flex>
+            </VStack>
+            {isLoading ? (
+              <Flex
+                justifyContent="center"
+                alignItems="center"
+                width="100%"
+                height="100%"
+              >
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="white"
+                  color="rgba(0, 18, 183, 0.1)"
+                  size="xl"
+                />
+              </Flex>
+            ) : (
+              <>
+                <VStack
+                  pt={4}
+                  justifyContent="space-between"
+                  width="100%"
+                  height="100%"
+                  alignItems="center"
+                >
+                  <VStack
+                    alignItems="center"
+                    spacing={2}
+                    flexGrow={1}
+                    height="100%"
+                  >
+                    <Text
+                      fontFamily="Futura"
+                      fontWeight="light"
+                      fontSize="24px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Chain Fees:
+                    </Text>
+                    <VStack alignItems="left" spacing={5}>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          USDC:{" "}
+                          {numberWithCommas(getChainFee("USDC")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          WETH:{" "}
+                          {numberWithCommas(getChainFee("WETH")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/18834/small/wstETH.png?1633565443"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          color="#FFFFFF"
+                        >
+                          wstETH:{" "}
+                          {numberWithCommas(getChainFee("wstETH")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          USDT:{" "}
+                          {numberWithCommas(getChainFee("USDT")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/7845/small/DV80FOp.png?1554953278"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          FUND:{" "}
+                          {numberWithCommas(getChainFee("FUND")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/24488/small/NYM_Token.png?1649926353"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          NYM: {numberWithCommas(getChainFee("NYM")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/23308/small/somm_new.png?1650884424"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          SOMM:{" "}
+                          {numberWithCommas(getChainFee("SOMM")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/25181/small/thumbnail.png?1658821784"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          MNTL:{" "}
+                          {numberWithCommas(getChainFee("MNTL")).toString()}
+                        </Text>
+                      </HStack>
+                    </VStack>
+                  </VStack>
+
+                  <VStack
+                    alignItems="center"
+                    spacing={2}
+                    flexGrow={1}
+                    height="100%"
+                  >
+                    <Text
+                      fontFamily="Futura"
+                      fontWeight="light"
+                      fontSize="24px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Eth Gas Fees:
+                    </Text>
+                    <VStack alignItems="right" spacing={5}>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          WETH:{" "}
+                          {numberWithCommas(getBridgeFee("WETH")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          USDC:{" "}
+                          {numberWithCommas(getBridgeFee("USDC")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          USDT:{" "}
+                          {numberWithCommas(getBridgeFee("USDT")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          src="https://assets.coingecko.com/coins/images/24488/small/NYM_Token.png?1649926353"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          NYM:{" "}
+                          {numberWithCommas(getBridgeFee("NYM")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/18834/small/wstETH.png?1633565443"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          color="#FFFFFF"
+                        >
+                          wstETH:{" "}
+                          {numberWithCommas(getBridgeFee("wstETH")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/7845/small/DV80FOp.png?1554953278"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          FUND:{" "}
+                          {numberWithCommas(getBridgeFee("FUND")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/23308/small/somm_new.png?1650884424"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          SOMM:{" "}
+                          {numberWithCommas(getBridgeFee("SOMM")).toString()}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          borderRadius={"full"}
+                          src="https://assets.coingecko.com/coins/images/25181/small/thumbnail.png?1658821784"
+                        />
+                        <Text
+                          fontFamily="futura"
+                          fontWeight="light"
+                          fontSize="20px"
+                          textTransform="capitalize"
+                          color="#FFFFFF"
+                        >
+                          MNTL:{" "}
+                          {numberWithCommas(getBridgeFee("MNTL")).toString()}
+                        </Text>
+                      </HStack>
+                    </VStack>
+                  </VStack>
+                </VStack>
+              </>
+            )}
+          </Stack>
+            )}
+            </>
         )}
         {selectedMenuItem === "Totals" && (
+           <>
+           {isLargerThan767 ? (
           <Stack
             justify="flex-start"
             justifyContent="space-between"
@@ -1131,7 +1588,7 @@ export const ChainFee: React.FC<{
                         textTransform="capitalize"
                         color="#FFFFFF"
                       >
-                        ${getHighestChainFee}
+                        ${numberWithCommas(getHighestChainFee)}
                       </Text>
                       <Text
                         fontFamily="futura"
@@ -1258,7 +1715,7 @@ export const ChainFee: React.FC<{
                         textTransform="capitalize"
                         color="#FFFFFF"
                       >
-                        ${getHighestBridgeFee}
+                        ${numberWithCommas(getHighestBridgeFee)}
                       </Text>
                       <Text
                         fontFamily="futura"
@@ -1288,8 +1745,402 @@ export const ChainFee: React.FC<{
               </>
             )}
           </Stack>
+          ) : (
+            // small fee totals
+            <Stack
+            justify="flex-start"
+            justifyContent="space-between"
+            align="center"
+            spacing="0px"
+            width="335px"
+            height="1000px"
+            maxWidth="100%"
+            bg="rgba(0, 18, 183, 0.5)"
+            borderRadius="6px"
+          >
+            <Text
+              pt={2}
+              fontFamily="Futura"
+              lineHeight="1"
+              fontWeight="light"
+              fontSize="28px"
+              textTransform="capitalize"
+              color="#FFFFFF"
+              textAlign="center"
+            >
+              Fee Totals
+            </Text>
+            <VStack
+              color="white"
+              shadow={"dark-sm"}
+              fontFamily="Futura"
+              top={1}
+              right={2}
+              p={1}
+              borderRadius={4}
+              position="absolute"
+              spacing={4}
+              bgColor="rgba(0, 18, 183, 0.1)"
+            >
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                bgColor={
+                  timeFrame === "oneDay"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                shadow={"dark-lg"}
+                onClick={() => handleTimeFrameChange("oneDay")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  1D
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "oneWeek"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("oneWeek")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  7D
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "oneMonth"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("oneMonth")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  1M
+                </Text>
+              </Flex>
+              <Flex
+                _hover={{
+                  textDecoration: "none",
+                  bgColor: "rgba(0, 18, 183, 0.1)",
+                }}
+                shadow={"dark-lg"}
+                bgColor={
+                  timeFrame === "allTime"
+                    ? "rgba(0, 18, 183, 0.1)"
+                    : "rgba(100, 100, 0, 0.5)"
+                }
+                borderRadius={"4px"}
+                onClick={() => handleTimeFrameChange("allTime")}
+              >
+                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                  All
+                </Text>
+              </Flex>
+            </VStack>
+            {isLongLoading ? (
+              <Flex
+                justifyContent="center"
+                alignItems="center"
+                width="100%"
+                height="100%"
+              >
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="white"
+                  color="rgba(0, 18, 183, 0.1)"
+                  size="xl"
+                />
+              </Flex>
+            ) : (
+              <>
+                <VStack
+                  py={4}
+                  justifyContent="space-between"
+                  width="100%"
+                  height="100%"
+                >
+                  <VStack
+                    alignItems="center"
+                    spacing={2}
+                    flexGrow={1}
+                    height="100%"
+                  >
+                    <Text
+                      fontFamily="Futura"
+                      fontWeight="light"
+                      fontSize="24px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Chain Fees:
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Total Chain Fees
+                    </Text>
+                    <Text
+                      pb={4}
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      <Box as="span" position="relative" top="8px">
+                        ~
+                      </Box>
+                      ${numberWithCommas(getChainFeeTotal?.toFixed(0) ?? 0)}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Average Chain Fee
+                    </Text>
+                    <Text
+                      pb={4}
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      ${getAverageChainFee}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Most Used Fee
+                    </Text>
+                    <Text
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                      pb={4}
+                    >
+                      {mostCommonChainFeeDenom}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Highest Fee
+                    </Text>
+                    <HStack spacing="1">
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        ${numberWithCommas(getHighestChainFee)}
+                      </Text>
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        in {getHighestChainFeeDenom}
+                      </Text>
+                    </HStack>
+                    <Link href={txLinkChainFee} target="_blank">
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        Tx Link
+                      </Text>
+                    </Link>
+                  </VStack>
+
+                  <VStack
+                    alignItems="center"
+                    spacing={2}
+                    flexGrow={1}
+                    height="100%"
+                  >
+                    <Text
+                      fontFamily="Futura"
+                      fontWeight="light"
+                      fontSize="24"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Eth Gas Fees:
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Total Eth Gas Fees
+                    </Text>
+                    <Text
+                      pb={4}
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      <Box as="span" position="relative" top="8px">
+                        ~
+                      </Box>
+                      ${numberWithCommas(getBridgeFeeTotal?.toFixed(0) ?? 0)}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Average Eth Gas Fee
+                    </Text>
+                    <Text
+                      pb={4}
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      ${getAverageBridgeFee}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Most Used Fee
+                    </Text>
+                    <Text
+                      fontFamily="futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                      pb={4}
+                    >
+                      {mostCommonBridgeFeeDenom}
+                    </Text>
+                    <Text
+                      fontFamily="Futura"
+                      lineHeight="1.4"
+                      fontWeight="light"
+                      fontSize="20px"
+                      textTransform="capitalize"
+                      color="#FFFFFF"
+                    >
+                      Highest Fee
+                    </Text>
+                    <HStack spacing="1">
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        ${numberWithCommas(getHighestBridgeFee)}
+                      </Text>
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        in {getHighestBridgeFeeDenom}
+                      </Text>
+                    </HStack>
+                    <Link href={txLinkBridgeFee} target="_blank">
+                      <Text
+                        fontFamily="futura"
+                        lineHeight="1.4"
+                        fontWeight="light"
+                        fontSize="20px"
+                        textTransform="capitalize"
+                        color="#FFFFFF"
+                      >
+                        Tx Link
+                      </Text>
+                    </Link>
+                  </VStack>
+                </VStack>
+              </>
+            )}
+          </Stack>
+          )}
+          </>
         )}
         {selectedMenuItem === "Tokens" && (
+          <>
+          {isLargerThan767 ? (
           <Stack
             justify="flex-start"
             justifyContent="space-between"
@@ -1406,6 +2257,125 @@ export const ChainFee: React.FC<{
               </VStack>
             </Flex>
           </Stack>
+           ) : (
+            <Stack
+            justify="flex-start"
+            justifyContent="space-between"
+            align="center"
+            spacing="0px"
+            width="335px"
+            height="1000px"
+            maxWidth="100%"
+            bg="rgba(0, 18, 183, 0.5)"
+            borderRadius="6px"
+          >
+            <Text
+              pt={2}
+              fontFamily="Futura"
+              lineHeight="1"
+              fontWeight="light"
+              fontSize="28px"
+              textTransform="capitalize"
+              color="#FFFFFF"
+              textAlign="center"
+            >
+              Tokens
+            </Text>
+            <VStack
+              py={4}
+              justifyContent="space-between"
+              width="100%"
+              height="100%"
+            >
+              <VStack
+                alignItems="center"
+                spacing={4}
+                flexGrow={1}
+                height="100%"
+                align="start"
+                width="50%"
+              >
+                <Text
+                  fontFamily="Futura"
+                  fontWeight="light"
+                  fontSize="24"
+                  textTransform="capitalize"
+                  color="#FFFFFF"
+                >
+                  Chain Fees:
+                </Text>
+                <Box
+                  width={{base: "150%", md: "75%"}}
+                  height="365px"
+                  overflowY="scroll"
+                  overflowX="hidden"
+                  color="#FFFFFF"
+                  css={{
+                    "&::-webkit-scrollbar": {
+                      width: "1px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      background: "#888",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: "#f1f1f1",
+                    },
+                  }}
+                >
+                  {chainFeesData.map((item) => (
+                    <Text fontFamily="Futura" key={item.denom}>
+                      {item.denom}: {item.totalChainFees}
+                    </Text>
+                  ))}
+                </Box>
+              </VStack>
+
+              <VStack
+                alignItems="center"
+                spacing={4}
+                flexGrow={1}
+                height="100%"
+                width="50%"
+                align="start"
+              >
+                <Text
+                  fontFamily="Futura"
+                  fontWeight="light"
+                  fontSize="24px"
+                  textTransform="capitalize"
+                  color="#FFFFFF"
+                >
+                  Eth Gas Fees:
+                </Text>
+                <Box
+                  width={{base: "150%", md: "75%"}}
+                  height="365px"
+                  overflowY="scroll"
+                  overflowX="hidden"
+                  color="#FFFFFF"
+                  css={{
+                    "&::-webkit-scrollbar": {
+                      width: "1px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      background: "#888",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: "#f1f1f1",
+                    },
+                  }}
+                >
+                  {bridgeFeesData.map((item) => (
+                    <Text fontFamily="Futura" key={item.denom}>
+                      {item.denom}: {item.totalBridgeFees}
+                    </Text>
+                  ))}
+                </Box>
+              </VStack>
+            </VStack>
+          </Stack>
+            )}
+          </>
         )}
       </Box>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -1413,7 +2383,7 @@ export const ChainFee: React.FC<{
 
         <ModalContent
           top={isMobile ? 0 : clickPosition.y - 30}
-          left={isMobile ? 0 : clickPosition.x - 175}
+          left={isMobile ? 0 : clickPosition.x - 500}
           position={isMobile ? "initial" : "fixed"}
           bgColor={modalBg}
           minH="200px" // Add minH property to set a minimum height

@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-unused-vars */
+
 import { gravityDenomToStringMap } from "../../types";
 import { fetchTokenPriceData } from "./oracle";
 import { fetchSendToEthTime } from "./feeQuery";

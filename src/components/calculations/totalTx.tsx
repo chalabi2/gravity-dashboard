@@ -8,7 +8,7 @@ dayjs.extend(weekOfYear);
 
 interface Transaction {
   block_number: number;
-  transactions: any[]; // change `any` to the actual type of a transaction
+  transactions: any[]; 
   formatted_date: string;
 }
 

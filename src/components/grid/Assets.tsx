@@ -107,7 +107,7 @@ export const Assets: React.FC = () => {
     gap={4}
     background="rgba(0, 18, 183, 0.5)"
     borderRadius="8px"
-    width="340px"
+    width="335px"
     height="sm"
     maxWidth="100%"
 

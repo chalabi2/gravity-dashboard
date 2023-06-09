@@ -17,10 +17,9 @@ export const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const feeData = await getCombinedFeeData();
-      // Set a timeout to delay the disappearance of the loading screen
       setTimeout(() => {
         setTotalFees(Array.isArray(feeData) ? feeData : [feeData]);
-      }, 2000); // Delay for 2 seconds
+      }, 3000); 
     };
   
     fetchData();

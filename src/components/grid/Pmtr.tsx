@@ -72,9 +72,9 @@ export const Pmtr = () => {
     }}
       p={{ base: "14px", md: "25px" }}
       borderRadius="6px"
-      maxH="90px"
+      maxH={{base: "280px", md: "90px"}}
       maxWidth="680"
-      width="680px"
+      width={{base: "335px", md: "680px"}}
       bg="rgba(0, 18, 183, 0.5)"
     >
       <Box 
