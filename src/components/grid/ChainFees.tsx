@@ -50,6 +50,7 @@ export const ChainFee: React.FC<{
   const [isLongLoading, setIsLongLoading] = useState(true);
   const modalBg = useColorModeValue("white", "black");
   const modalBgText = useColorModeValue("black", "white");
+  const selectorColor = useColorModeValue("rgba(0, 18, 183, 0.1)", "rgba(0, 18, 183, 0.5)");
   const [clickPosition, setClickPosition] = React.useState({
     x: 0,
     y: 0,
@@ -494,16 +495,22 @@ export const ChainFee: React.FC<{
               borderRadius={4}
               position="absolute"
               spacing={4}
-              bgColor="rgba(0, 18, 183, 0.1)"
+              bgColor={selectorColor}
+
+
             >
               <Flex
+                w="25px"
+                h="25px"
+                justifyContent="center"
+                alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
                 }}
                 bgColor={
                   timeFrame === "oneDay"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
@@ -511,15 +518,20 @@ export const ChainFee: React.FC<{
                 onClick={() => handleTimeFrameChange("oneDay")}
               >
                 <Text
+                  pr={0.5}
+                  alignSelf="center"
                   fontSize="sm"
                   fontFamily="Futura"
-                  p={0.5}
                   _hover={{ cursor: "pointer" }}
                 >
                   1D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -527,7 +539,7 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneWeek"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
@@ -535,7 +547,8 @@ export const ChainFee: React.FC<{
               >
                 <Text
                   fontSize="sm"
-                  p={0.5}
+                  pr={0.5}
+                  alignSelf="center"
                   fontFamily="Futura"
                   _hover={{ cursor: "pointer" }}
                 >
@@ -543,6 +556,10 @@ export const ChainFee: React.FC<{
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -550,17 +567,22 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneMonth"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneMonth")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   1M
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -568,13 +590,14 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "allTime"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("allTime")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   All
                 </Text>
               </Flex>
@@ -940,16 +963,22 @@ export const ChainFee: React.FC<{
               borderRadius={4}
               position="absolute"
               spacing={4}
-              bgColor="rgba(0, 18, 183, 0.1)"
+              bgColor={selectorColor}
+
+
             >
               <Flex
+                w="25px"
+                h="25px"
+                justifyContent="center"
+                alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
                 }}
                 bgColor={
                   timeFrame === "oneDay"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
@@ -957,15 +986,20 @@ export const ChainFee: React.FC<{
                 onClick={() => handleTimeFrameChange("oneDay")}
               >
                 <Text
+                  pr={0.5}
+                  alignSelf="center"
                   fontSize="sm"
                   fontFamily="Futura"
-                  p={0.5}
                   _hover={{ cursor: "pointer" }}
                 >
                   1D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -973,7 +1007,7 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneWeek"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
@@ -981,7 +1015,8 @@ export const ChainFee: React.FC<{
               >
                 <Text
                   fontSize="sm"
-                  p={0.5}
+                  pr={0.5}
+                  alignSelf="center"
                   fontFamily="Futura"
                   _hover={{ cursor: "pointer" }}
                 >
@@ -989,6 +1024,10 @@ export const ChainFee: React.FC<{
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -996,17 +1035,22 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneMonth"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneMonth")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   1M
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1014,13 +1058,14 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "allTime"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("allTime")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   All
                 </Text>
               </Flex>
@@ -1390,27 +1435,43 @@ export const ChainFee: React.FC<{
               borderRadius={4}
               position="absolute"
               spacing={4}
-              bgColor="rgba(0, 18, 183, 0.1)"
+              bgColor={selectorColor}
+
+
             >
               <Flex
+                w="25px"
+                h="25px"
+                justifyContent="center"
+                alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
                 }}
                 bgColor={
                   timeFrame === "oneDay"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 shadow={"dark-lg"}
                 onClick={() => handleTimeFrameChange("oneDay")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text
+                  pr={0.5}
+                  alignSelf="center"
+                  fontSize="sm"
+                  fontFamily="Futura"
+                  _hover={{ cursor: "pointer" }}
+                >
                   1D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1418,17 +1479,27 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneWeek"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneWeek")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text
+                  fontSize="sm"
+                  pr={0.5}
+                  alignSelf="center"
+                  fontFamily="Futura"
+                  _hover={{ cursor: "pointer" }}
+                >
                   7D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1436,17 +1507,22 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneMonth"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneMonth")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   1M
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1454,13 +1530,14 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "allTime"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("allTime")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   All
                 </Text>
               </Flex>
@@ -1780,27 +1857,43 @@ export const ChainFee: React.FC<{
               borderRadius={4}
               position="absolute"
               spacing={4}
-              bgColor="rgba(0, 18, 183, 0.1)"
+              bgColor={selectorColor}
+
+
             >
               <Flex
+                w="25px"
+                h="25px"
+                justifyContent="center"
+                alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
                 }}
                 bgColor={
                   timeFrame === "oneDay"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 shadow={"dark-lg"}
                 onClick={() => handleTimeFrameChange("oneDay")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text
+                  pr={0.5}
+                  alignSelf="center"
+                  fontSize="sm"
+                  fontFamily="Futura"
+                  _hover={{ cursor: "pointer" }}
+                >
                   1D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1808,17 +1901,27 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneWeek"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneWeek")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text
+                  fontSize="sm"
+                  pr={0.5}
+                  alignSelf="center"
+                  fontFamily="Futura"
+                  _hover={{ cursor: "pointer" }}
+                >
                   7D
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1826,17 +1929,22 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "oneMonth"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("oneMonth")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   1M
                 </Text>
               </Flex>
               <Flex
+              w="25px"
+              h="25px"
+              justifyContent="center"
+              alignContent="center"
                 _hover={{
                   textDecoration: "none",
                   bgColor: "rgba(0, 18, 183, 0.1)",
@@ -1844,13 +1952,14 @@ export const ChainFee: React.FC<{
                 shadow={"dark-lg"}
                 bgColor={
                   timeFrame === "allTime"
-                    ? "rgba(0, 18, 183, 0.1)"
+                    ? "rgba(25, 50, 225, 0.5)"
                     : "rgba(100, 100, 0, 0.5)"
                 }
                 borderRadius={"4px"}
                 onClick={() => handleTimeFrameChange("allTime")}
               >
-                <Text fontSize="sm" p={0.5} _hover={{ cursor: "pointer" }}>
+                <Text fontSize="sm" pr={0.5}
+                  alignSelf="center" _hover={{ cursor: "pointer" }}>
                   All
                 </Text>
               </Flex>
