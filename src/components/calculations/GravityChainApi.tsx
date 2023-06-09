@@ -160,7 +160,7 @@ export const useVolumeInfo = () => {
     fetchVolumeInfo();
     const interval = setInterval(fetchVolumeInfo, ONE_DAY);
     return () => clearInterval(interval);
-  }, [volumeInfo, yesterdayVolumeInfo, ONE_DAY]);
+  }, []);
 
   return {
     today: volumeInfo,
