@@ -310,7 +310,6 @@ export  interface BlockTransaction {
     formatted_date: string;
   }
   
-  // Define the Fee type
  export type Fee = Amount;
 
 export type FeePrice = {

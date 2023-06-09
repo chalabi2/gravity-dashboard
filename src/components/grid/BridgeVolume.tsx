@@ -50,7 +50,6 @@ export const BridgeVolume = () => {
   });
 
   const handleClick = (event: React.MouseEvent) => {
-    // Store the click position
     setClickPosition({
       x: event.clientX,
       y: event.clientY,
@@ -132,7 +131,7 @@ export const BridgeVolume = () => {
         p={{ base: "20px", md: "20px" }}
         pl={{ base: "5px", md: "5px" }}
         spacing="24px"
-        width="330px"
+        width="335px"
         maxWidth="100%"
         height="sm"
         background="rgba(0, 18, 183, 0.5)"
@@ -177,7 +176,7 @@ export const BridgeVolume = () => {
       {['Daily:', 'Weekly:'].map((label, index) => (
         <Flex
           key={index}
-          justify="space-between"
+          
           align="center"
           alignSelf="stretch"
         >
@@ -202,29 +201,31 @@ export const BridgeVolume = () => {
               {index === 0 ? formatNumber(dailyVolume) : formatNumber(weeklyVolume)}
               </Text>
             </Flex>
-            <Flex
-              paddingX="12px"
-              paddingY="2px"
-              borderRadius="64px"
-              ml="5px"
-              align="center"
-              background={index === 0 ? dailyColor : weeklyColor}
-            >
-               <Text
-                fontFamily="futura"
-                lineHeight="1"
-                fontWeight="light"
-                fontSize="20px"
-                letterSpacing="0.32px"
-                color="white"
-              >
- {index === 0 ? `${dailyPercentageChange}%` : `${weeklyPercentageChange}%`}
-              </Text>
-            </Flex>
+            {dailyVolumeChange > 0 && (
+  <Flex
+    paddingX="12px"
+    paddingY="2px"
+    borderRadius="64px"
+    ml="5px"
+    align="center"
+    background={index === 0 ? dailyColor : weeklyColor}
+  >
+    <Text
+      fontFamily="futura"
+      lineHeight="1"
+      fontWeight="light"
+      fontSize="20px"
+      letterSpacing="0.32px"
+      color="white"
+    >
+      {index === 0 ? `${dailyPercentageChange}%` : `${weeklyPercentageChange}%`}
+    </Text>
+  </Flex>
+)}
           </Flex>
         </Flex>
       ))}
-      <Flex pt={4} justify="space-between" align="center" alignSelf="stretch">
+      <Flex pt={{base: 0, md: 4}} justify="space-between" align="center" alignSelf="stretch">
         <Text
           fontFamily="Futura"
           lineHeight="1.17"

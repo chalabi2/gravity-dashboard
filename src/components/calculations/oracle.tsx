@@ -68,7 +68,7 @@ export const fetchTokenPriceData = async (
 
       if (symbol === "USDC") {
         const usdcData = data.filter((item: any) => item.symbol === "USDC");
-        tokenData = usdcData[1]; // Choose the second item in the filtered array for USDC
+        tokenData = usdcData[1];
       } else {
         tokenData = data.find((item: any) => item.symbol === symbol);
       }
@@ -126,7 +126,6 @@ export async function getCombinedFeeData() {
     let bridgeFeeTotalUSD = 0;
     /* eslint-disable  @typescript-eslint/no-unused-vars */
     let chainFeeCount = 0;
-    // eslint-disable-next-line
     let bridgeFeeCount = 0;
     let chainFeeTransactionCount = 0;
     let bridgeFeeTransactionCount = 0;
@@ -356,8 +355,6 @@ export async function getAverageFees() {
 
     const mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals) || "";
     const mostCommonBridgeFeeDenom = getMostCommonDenom(bridgeFeeTotals) || "";
-
-    console.log("mostCommonChainFeeDenom", mostCommonChainFeeDenom);
 
     return {
       averageChainFee,

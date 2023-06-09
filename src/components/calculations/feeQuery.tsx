@@ -185,6 +185,7 @@ export async function getAverageFees() {
     const averageFeesPerTimeFrame = [];
 
     let { daily, weekly, monthly, yearly, allTime } = await getTxAmt();
+
     const chainFeeAllTimeTx = allTime - 10693;
 
     const transactionCountsAuto = [daily, weekly, monthly, yearly, allTime];
@@ -200,6 +201,7 @@ export async function getAverageFees() {
       const time_frame = data.time_frames[index];
 
       const chainFeeTotals = time_frame?.chain_fee_totals || [];
+
       const bridgeFeeTotals = time_frame?.bridge_fee_totals || [];
 
       let sumOfAverageChainFees = 0;
@@ -209,12 +211,14 @@ export async function getAverageFees() {
         ...Object.keys(chainFeeTotals).filter(
           (denom) =>
             gravityDenomToStringMap.hasOwnProperty(denom) &&
-            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])
+            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom]) &&
+            !(index === transactionCountsAuto.length - 1 && gravityDenomToStringMap[denom] === 'HUAHUA')
         ),
         ...Object.keys(bridgeFeeTotals).filter(
           (denom) =>
             gravityDenomToStringMap.hasOwnProperty(denom) &&
-            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])
+            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom]) &&
+            !(index === transactionCountsAuto.length - 1 && gravityDenomToStringMap[denom] === 'HUAHUA')
         ),
       ]);
 
@@ -227,27 +231,32 @@ export async function getAverageFees() {
 
       const tokenPriceDataArray = await Promise.all(tokenPriceDataPromises);
 
-      for (let i = 0; i < denomArray.length; i++) {
-        try {
-          const denom = denomArray[i];
-          const humanReadableDenom = gravityDenomToStringMap[denom];
-          const tokenPriceData = tokenPriceDataArray[i];
-          const tokenPrice = tokenPriceData.price;
-          const decimals = tokenDecimalsMap[humanReadableDenom];
+for (let i = 0; i < denomArray.length; i++) {
+  try {
+    const denom = denomArray[i];
+    const humanReadableDenom = gravityDenomToStringMap[denom];
+    let tokenPriceData = tokenPriceDataArray[i];
+    let tokenPrice = tokenPriceData.price;
 
-          if (decimals === undefined || isNaN(tokenPrice)) {
-            continue;
-          }
+    if(tokenPrice === undefined) {
+      tokenPrice = 0;
+    }
 
-          const totalChainFeesInUSD =
-            (chainFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
-          const totalBridgeFeesInUSD =
-            (bridgeFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+    const decimals = tokenDecimalsMap[humanReadableDenom];
 
-          sumOfAverageChainFees += totalChainFeesInUSD;
-          sumOfAverageBridgeFees += totalBridgeFeesInUSD;
-        } catch (error) {}
-      }
+    if (decimals === undefined || tokenPrice === 0) {
+      continue;
+    }
+
+    const totalChainFeesInUSD =
+      (chainFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+    const totalBridgeFeesInUSD =
+      (bridgeFeeTotals[denom] / Math.pow(10, decimals)) * tokenPrice;
+
+    sumOfAverageChainFees += totalChainFeesInUSD;
+    sumOfAverageBridgeFees += totalBridgeFeesInUSD;
+  } catch (error) {}
+}
 
       const transactionCountAuto = transactionCountsAuto[index] || 0;
       const chainFeeTransactionCount = chainFeeTransactionCounts[index] || 0;
@@ -258,7 +267,6 @@ export async function getAverageFees() {
       const averageBridgeFee = transactionCountAuto
         ? (sumOfAverageBridgeFees / transactionCountAuto).toFixed(2)
         : "0.00";
-
       let mostCommonChainFeeDenom = getMostCommonDenom(chainFeeTotals);
       mostCommonChainFeeDenom =
         mostCommonChainFeeDenom !== null
@@ -294,9 +302,12 @@ export async function getAverageFees() {
 interface MostValuableFee {
   maxChainFee: string;
   maxBridgeFee: string;
+  secondMaxBridgeFee: string;
   maxChainFeeDenom: string;
   maxBridgeFeeDenom: string;
+  secondMaxBridgeFeeDenom: string;
   txHashRecordBridge: string;
+  secondTxHashRecordBridge: string;
   txHashRecordChain: string;
 }
 
@@ -320,6 +331,9 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
       let maxBridgeFeeDenom = "";
       let txHashRecordBridge = "";
       let txHashRecordChain = "";
+      let secondMaxBridgeFeeInUSD = 0;
+      let secondMaxBridgeFeeDenom = "";
+      let secondTxHashRecordBridge = "";
 
       const timeframeTransactions = transactions.slice(
         0,
@@ -333,6 +347,9 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
               if (fee.denom) {
                 const denom = fee.denom;
                 const humanReadableDenom = gravityDenomToStringMap[denom];
+                if (index === transactionCountsAuto.length - 1 && humanReadableDenom === 'HUAHUA') {
+                  return;
+                }
                 try {
                   const tokenPriceData = await fetchTokenPriceData(
                     humanReadableDenom
@@ -356,13 +373,16 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
         }
       );
 
-      const bridgeFeePromises = timeframeTransactions.flatMap(
+     const bridgeFeePromises = timeframeTransactions.flatMap(
         (transaction: BlockTransaction) => {
           return transaction.transactions[0].data.bridge_fee.map(
             async (fee: Fee) => {
               if (fee.denom) {
                 const denom = fee.denom;
                 const humanReadableDenom = gravityDenomToStringMap[denom];
+                if (index === transactionCountsAuto.length - 1 && humanReadableDenom === 'HUAHUA') {
+                  return;
+                }
                 try {
                   const tokenPriceData = await fetchTokenPriceData(
                     humanReadableDenom
@@ -373,7 +393,16 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
                     const feeInUSD =
                       (parseFloat(fee.amount) / Math.pow(10, decimals)) *
                       tokenPrice;
-                    if (feeInUSD > maxBridgeFeeInUSD) {
+
+                    if (feeInUSD > secondMaxBridgeFeeInUSD && feeInUSD < maxBridgeFeeInUSD - Number(39900)) {
+                      secondMaxBridgeFeeInUSD = feeInUSD;
+                      secondMaxBridgeFeeDenom = humanReadableDenom;
+                      secondTxHashRecordBridge = transaction.transactions[0].tx_hash;
+                    } else if (feeInUSD > maxBridgeFeeInUSD) {
+                      secondMaxBridgeFeeInUSD = maxBridgeFeeInUSD;
+                      secondMaxBridgeFeeDenom = maxBridgeFeeDenom;
+                      secondTxHashRecordBridge = txHashRecordBridge;
+
                       maxBridgeFeeInUSD = feeInUSD;
                       maxBridgeFeeDenom = humanReadableDenom;
                       txHashRecordBridge = transaction.transactions[0].tx_hash;
@@ -391,10 +420,13 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
       mostValuableFeesPerTimeFrame.push({
         maxChainFee: maxChainFeeInUSD.toFixed(2),
         maxBridgeFee: maxBridgeFeeInUSD.toFixed(2),
+        secondMaxBridgeFee: secondMaxBridgeFeeInUSD.toFixed(2),
         maxChainFeeDenom,
         maxBridgeFeeDenom,
+        secondMaxBridgeFeeDenom,
         txHashRecordBridge,
-        txHashRecordChain,
+        secondTxHashRecordBridge,
+        txHashRecordChain
       });
     }
     return mostValuableFeesPerTimeFrame;
@@ -424,12 +456,14 @@ export async function getCombinedFeeData() {
         ...Object.keys(chainFeeTotals).filter(
           (denom) =>
             gravityDenomToStringMap.hasOwnProperty(denom) &&
-            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])
+            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom]) &&
+            !(index === data.time_frames.length - 1 && gravityDenomToStringMap[denom] === 'HUAHUA')
         ),
         ...Object.keys(bridgeFeeTotals).filter(
           (denom) =>
             gravityDenomToStringMap.hasOwnProperty(denom) &&
-            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom])
+            tokenDecimalsMap.hasOwnProperty(gravityDenomToStringMap[denom]) &&
+            !(index === data.time_frames.length - 1 && gravityDenomToStringMap[denom] === 'HUAHUA')
         ),
       ]);
 

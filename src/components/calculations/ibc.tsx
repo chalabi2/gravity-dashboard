@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Token, gravityDenomToStringMap } from "../../types";
-//import { DenomTrace } from "../../codegen/ibc/applications/transfer/v1/transfer";
 
 function formatTokenAmount(amount: string, decimals: number): number {
     const amountFloat = parseFloat(amount);
@@ -45,7 +44,6 @@ export async function getIbcAssets(): Promise<{ inAssets: Map<string, number>; o
     const outAssets = new Map();
     const uniqueDenoms = new Set<string>();
 
-    // Collect unique denoms
     for (const entry of data) {
         const { token } = entry.data;
         for (const asset of token as Token[]) {
@@ -56,10 +54,8 @@ export async function getIbcAssets(): Promise<{ inAssets: Map<string, number>; o
         }
     }
 
-    // Query denom traces for unique denoms
     const denomTraceMap = new Map<string, string>();
 
-    // Replace the for loop with Promise.all
     await Promise.all(Array.from(uniqueDenoms).map(async (denom) => {
         try {
             const baseDenom = await get_ibc_denom_human_readable(denom);
@@ -74,7 +70,6 @@ export async function getIbcAssets(): Promise<{ inAssets: Map<string, number>; o
         }
     }));
 
-    // Process transactions with mapped denoms
     for (const entry of data) {
       const { sender, receiver, token } = entry.data;
   
