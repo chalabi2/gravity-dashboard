@@ -42,9 +42,15 @@ export const fetchTokenPriceData = async (
     return tokenPriceDataCache[symbol].data;
   }
 
-  if (symbol === "nym" || symbol === "unification") {
+  if (symbol === "nym" || symbol === "NYM") {
     return {
-      price: 0,
+      price: 0.223147,
+    };
+  }
+
+  if (symbol === "fund" || symbol === "unification" || symbol === "FUND") {
+    return {
+      price: 0.128936,
     };
   }
 
