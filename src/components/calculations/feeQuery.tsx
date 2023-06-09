@@ -314,7 +314,8 @@ interface MostValuableFee {
 export async function getMostValuableFees(): Promise<MostValuableFee[]> {
   try {
     const response = await axios.get(
-      "https://info.gravitychain.io:9000/transactions/send_to_eth"
+      "https://info.gravitychain.io:9000/transactions/send_to_eth",
+      { headers: { "Cache-Control": "no-store" } }
     );
     const transactions = response.data.reverse();
 

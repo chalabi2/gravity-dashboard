@@ -24,7 +24,7 @@ export async function getTxAmt() {
   let allTransactions = 0;
 
   transactions.forEach((transaction: Transaction) => {
-    const date = dayjs(transaction.formatted_date, 'MM-DD-YYYY');
+    const date = dayjs(transaction.formatted_date.replace(/-/g, "/"), 'MM/DD/YYYY');
     const week = date.week();
     const month = date.month();
     const year = date.year();
