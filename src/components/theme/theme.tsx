@@ -20,7 +20,7 @@ export const Fonts = () => (
       /* latin */
       @font-face {
         font-family: 'Futura-MD-BT';
-        src: url('/fonts/futura-medium.woff2') format('woff2');
+        src: url('/fonts/futura-medium-bt.woff2') format('woff2');
         font-weight: normal;
         font-style: normal;
         font-display: swap;
