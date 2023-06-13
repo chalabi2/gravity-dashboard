@@ -1,7 +1,7 @@
 {
   "name": "gravity-dashboard",
   "version": "0.1.0",
-  "homepage": "https://chalabi2.github.io/gravity-dashboard/",
+  "homepage": "https://gravitypulse.app",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
