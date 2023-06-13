@@ -36,7 +36,7 @@ export const Header = () => {
   const MobileMenuItems = () => (
     <VStack alignItems="center" spacing="1rem">
       <Link
-      href="https://chandrastation.github.io/space-station/"
+      href="https://bridge.gravitypulse.app"
       >
       <Box
         as="button"
