@@ -395,7 +395,7 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
                       (parseFloat(fee.amount) / Math.pow(10, decimals)) *
                       tokenPrice;
 
-                    if (feeInUSD > secondMaxBridgeFeeInUSD && feeInUSD < maxBridgeFeeInUSD - Number(37000)) {
+                    if (feeInUSD > secondMaxBridgeFeeInUSD && feeInUSD < maxBridgeFeeInUSD - Number(38000)) {
                       secondMaxBridgeFeeInUSD = feeInUSD;
                       secondMaxBridgeFeeDenom = humanReadableDenom;
                       secondTxHashRecordBridge = transaction.transactions[0].tx_hash;
