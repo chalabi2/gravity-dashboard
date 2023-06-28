@@ -17,38 +17,43 @@ export async function getTxAmt() {
 
   const transactions = response.data;
 
-  let dailyTransactions: { [key: string]: number } = {};
-  let weeklyTransactions: { [key: string]: number } = {};
-  let monthlyTransactions: { [key: string]: number } = {};
-  let yearlyTransactions: { [key: string]: number } = {};
+  const today = dayjs();
+  const weekStart = today.startOf('week');
+  const monthStart = today.startOf('month');
+  const yearStart = today.startOf('year');
+
+  let dailyCount = 0;
+  let weeklyCount = 0;
+  let monthlyCount = 0;
+  let yearlyCount = 0;
   let allTransactions = 0;
 
   transactions.forEach((transaction: Transaction) => {
     const date = dayjs(transaction.formatted_date.replace(/-/g, "/"), 'MM/DD/YYYY');
-    const week = date.week();
-    const month = date.month();
-    const year = date.year();
 
-    dailyTransactions[date.format('MM-DD-YYYY')] = (dailyTransactions[date.format('MM-DD-YYYY')] || 0) + transaction.transactions.length;
-    weeklyTransactions[`${year}-${week}`] = (weeklyTransactions[`${year}-${week}`] || 0) + transaction.transactions.length;
-    monthlyTransactions[`${year}-${month}`] = (monthlyTransactions[`${year}-${month}`] || 0) + transaction.transactions.length;
-    yearlyTransactions[year] = (yearlyTransactions[year] || 0) + transaction.transactions.length;
+    if(date.isSameOrBefore(today) && date.isAfter(dayjs(today).subtract(1, 'day'))) {
+      dailyCount += transaction.transactions.length;
+    }
+    if(date.isSameOrBefore(today) && date.isAfter(weekStart)) {
+      weeklyCount += transaction.transactions.length;
+    }
+    if(date.isSameOrBefore(today) && date.isAfter(monthStart)) {
+      monthlyCount += transaction.transactions.length;
+    }
+    if(date.isSameOrBefore(today) && date.isAfter(yearStart)) {
+      yearlyCount += transaction.transactions.length;
+    }
     allTransactions += transaction.transactions.length;
   });
 
-  const averages = {
-    daily: calculateAverage(Object.values(dailyTransactions)),
-    weekly: calculateAverage(Object.values(weeklyTransactions)),
-    monthly: calculateAverage(Object.values(monthlyTransactions)),
-    yearly: calculateAverage(Object.values(yearlyTransactions)),
+  const counts = {
+    daily: dailyCount,
+    weekly: weeklyCount,
+    monthly: monthlyCount,
+    yearly: yearlyCount,
     allTime: allTransactions,
   };
 
-  return averages;
+  return counts;
 }
 
-function calculateAverage(array: number[]): number {
-  if (array.length === 0) return 0;
-  const sum = array.reduce((a: number, b: number) => a + b, 0);
-  return sum / array.length;
-}

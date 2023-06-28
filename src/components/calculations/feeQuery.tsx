@@ -374,7 +374,7 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
         }
       );
 
-     const bridgeFeePromises = timeframeTransactions.flatMap(
+      const bridgeFeePromises = timeframeTransactions.flatMap(
         (transaction: BlockTransaction) => {
           return transaction.transactions[0].data.bridge_fee.map(
             async (fee: Fee) => {
@@ -394,8 +394,12 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
                     const feeInUSD =
                       (parseFloat(fee.amount) / Math.pow(10, decimals)) *
                       tokenPrice;
-
-                    if (feeInUSD > secondMaxBridgeFeeInUSD && feeInUSD < maxBridgeFeeInUSD - Number(38000)) {
+                    // Do not consider fees that are above 1000$.
+                    if (feeInUSD > 1000) {
+                      return;
+                    }
+                    
+                    if (feeInUSD > secondMaxBridgeFeeInUSD && feeInUSD < maxBridgeFeeInUSD) {
                       secondMaxBridgeFeeInUSD = feeInUSD;
                       secondMaxBridgeFeeDenom = humanReadableDenom;
                       secondTxHashRecordBridge = transaction.transactions[0].tx_hash;
@@ -403,7 +407,7 @@ export async function getMostValuableFees(): Promise<MostValuableFee[]> {
                       secondMaxBridgeFeeInUSD = maxBridgeFeeInUSD;
                       secondMaxBridgeFeeDenom = maxBridgeFeeDenom;
                       secondTxHashRecordBridge = txHashRecordBridge;
-
+      
                       maxBridgeFeeInUSD = feeInUSD;
                       maxBridgeFeeDenom = humanReadableDenom;
                       txHashRecordBridge = transaction.transactions[0].tx_hash;
