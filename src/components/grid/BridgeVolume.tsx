@@ -159,7 +159,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-           $1.22B
+           $1.23B
           </Text>
         </Flex>
         <BridgeVolumeChart data={BridgeVolumeChartData}/>
@@ -247,7 +247,7 @@ export const BridgeVolume = () => {
             fontSize="32px"
             color="#FFFFFF"
           >
-            $43.27M
+            $46.46M
           </Text>
         </Flex>
       </Flex>
