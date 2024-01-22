@@ -2,26 +2,37 @@ import axios from "axios";
 
 function formatNumber(num: number): string {
   if (num >= 1_000_000_000) {
-      return (num / 1_000_000_000).toFixed(2) + 'B';
+    return (num / 1_000_000_000).toFixed(2) + "B";
   } else if (num >= 1_000_000) {
-      return (num / 1_000_000).toFixed(2) + 'M';
+    return (num / 1_000_000).toFixed(2) + "M";
   } else if (num >= 1000) {
-      return (num / 1000).toFixed(2) + 'K';
+    return (num / 1000).toFixed(2) + "K";
   } else {
-      return num.toString();
+    return num.toString();
   }
 }
 
 export async function getBridgeTvl() {
   try {
-    const response = await axios.get("https://api.chandrastation.com/gravity/bridge_volume");
+    const response = await axios.get(
+      "https://api.chandrastation.com/gravity/bridge_volume"
+    );
     const { vol, tvl } = response.data[0];
 
     return {
       vol: formatNumber(vol),
-      tvl: formatNumber(tvl)
+      tvl: formatNumber(tvl),
     };
-  } catch (error) {
+  } catch (error) {}
+}
 
-  }
+export async function getDefiLlamaTVL() {
+  try {
+    const response = await axios.get("https://api.llama.fi/tvl/gravity-bridge");
+    const tvl = response.data;
+
+    return {
+      tvl: formatNumber(tvl),
+    };
+  } catch (error) {}
 }
